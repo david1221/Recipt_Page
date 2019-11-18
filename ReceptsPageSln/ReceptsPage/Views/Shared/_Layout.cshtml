@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Hamex_Xohanoc</title>
+    <link rel="stylesheet" href="~/css/style3.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/MyStyle.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Articles" asp-action="Index" class="navbar-brand">Համեղ տեսականի</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        @*<a asp-area="" asp-controller="Home" asp-action="Index">*@
+
+                        <div class="dropdown bajinnera openH">
+                            <button class="btn  btn-default dropdown-toggle " type="button" data-toggle="dropdown" id="button-t" aria-expanded="false">
+                                Բաժիններ
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a class="test" tabindex="-1" href="#" id="drop1"> Ազգային խոհանոց <span class="caret"></span></a>
+                                    <ul class="dropdown-menu dropmenu1 dropmenu12">
+                                        <li><a tabindex="-1" href="#">Հայկական խոհանոց</a></li>
+                                        <li><a tabindex="-1" href="#">Վրացական խոհանոց</a></li>
+                                        <li><a tabindex="-1" href="#">Իտալական խոհանոց</a></li>
+                                        <li><a tabindex="-1" href="#">Ֆրանսիական խոհանոց</a></li>
+                                        <li><a tabindex="-1" href="#">Արևելյան խոհանոց</a></li>
+                                        <li><a tabindex="-1" href="#">Չինական խոհանոց</a></li>
+                                        <li><a tabindex="-1" href="#">Մեքսիկական խոհանոց</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown-submenu">
+                                    <a class="test" tabindex="-1" href="#" id="drop2"> Տոնական <span class="caret"></span></a>
+                                    <ul class="dropdown-menu dropmenu2 dropmenu12">
+                                        <li><a tabindex="-1" href="#">Ամանորյա</a></li>
+                                        <li><a tabindex="-1" href="#">Զատկի ուտեստներ</a></li>
+                                        <li><a tabindex="-1" href="#">Ծննդյան</a></li>
+                                        <li><a tabindex="-1" href="#">պասի ուտեստներ</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a class="test" tabindex="-1" href="#" id="drop3"> Ամենօրյա <span class="caret"></span></a>
+                                    <ul class="dropdown-menu dropmenu3 dropmenu12">
+                                        <li><a tabindex="-1" href="#">Առաջին ուտեստ</a></li>
+                                        <li><a tabindex="-1" href="#">Տաք ճաշ</a></li>
+                                        <li><a tabindex="-1" href="#">Աղանդեր</a></li>
+                                        <li><a tabindex="-1" href="#">Մանկական կերակուր</a></li>
+                                        <li><a tabindex="-1" href="#">Նախաճաշ</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        @*</a>*@
+                    </li>
+                    <li><a asp-area="" asp-controller="Articles" asp-action="AddArticle">Ավելացնել բաղադրատոմս</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Մեր մասին</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <partial name="_CookieConsentPartial" />
+
+
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false);
+
+    <div class="wrapper">
+        <!-- Sidebar Holder -->
+        <nav id="sidebar">
+            <div id="dismiss">
+                <i class="glyphicon glyphicon-arrow-left"></i>
+            </div>
+
+
+
+            <ul class="list-unstyled components">
+                <p> <img src="~/images/list-icon.png" width="40" height="22" alt="Ցանկ" /></p>
+
+
+
+
+                <li>
+                    <a href="#">Ինչ եփել այսօր</a>
+                </li>
+                <li>
+                    <a href="#">Տորթեր</a>
+                </li>
+                <li> <a href="#">Թխվածքներ</a></li>
+                <li> <a href="#">Պիցաներ</a></li>
+                <li> <a href="#">Աղցաններ</a></li>
+                <li>
+
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdownLeftBar">Առողջ ապրելակերպ</a>
+                    <ul class="collapse list-unstyled dropdown-menu-left-bar" id="pageSubmenu">
+                        <li><a href="#">Դիետաներ</a></li>
+                        <li><a href="#">Առողջ սնունդ</a></li>
+                        <li><a href="#">Օգտակար խորհուրդներ</a></li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdownLeftBar">Այլ</a>
+                    <ul class="collapse list-unstyled dropdown-menu-left-bar" id="homeSubmenu">
+                        <li><a href="#">Նկարներ</a></li>
+                        <li><a href="#">Վիդեոներ</a></li>
+                        <li><a href="#">Ռեստորաններ</a></li>
+                    </ul>
+                </li>
+
+
+            </ul>
+
+
+        </nav>
+
+        <!-- Page Content Holder -->
+        <div id="content">
+
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+
+                    <div class="navbar-header">
+                        <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn ">
+                            <i class="glyphicon glyphicon-align-left"></i>
+                            <span>Բացել ցանկը</span>
+                        </button>
+                    </div>
+                    <div class="container body-content">
+
+                        @RenderBody()
+                        <div class="modal-footer"><p>Company © DaLA. All rights reserved.</p></div>
+                        <hr />
+
+
+                    </div>
+
+
+
+                </div>
+            </nav>
+
+        </div>
+
+
+        <div class="overlay "></div>
+
+    </div>
+
+
+
+
+
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <!-- Bootstrap Js CDN -->
+    @*   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+    <!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#dismiss, .overlay').on('click', function () {
+                $('#sidebar').removeClass('active');
+                $('.overlay').removeClass('active');
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').addClass('active');
+                $('.overlay').addClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+
+    </script>
+
+</body>
+</html>

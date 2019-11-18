@@ -1,0 +1,439 @@
+﻿
+.navbar-btn {
+    margin-top: 70px;
+    padding-left: 10px;
+    background-color: #88d622;
+    border: none;
+    position: fixed;
+    z-index: 1500;
+}
+
+    .navbar-btn:hover {
+        background-color: #a4de57;
+        border: none;
+    }
+
+.btn-info:focus, .btn-info.focus {
+    color: #fff;
+    background-color: #a2e051;
+    border-color: #1b6d85;
+}
+
+.btn-info:active, .btn-info.active, .open > .dropdown-toggle.btn-info {
+    color: #fff;
+    background-color: #a3e44f;
+    background-image: none;
+    border-color: #88d622;
+}
+
+    .btn-info:active:hover, .btn-info.active:hover, .open > .dropdown-toggle.btn-info:hover, .btn-info:active:focus, .btn-info.active:focus, .open > .dropdown-toggle.btn-info:focus, .btn-info:active.focus, .btn-info.active.focus, .open > .dropdown-toggle.btn-info.focus {
+        color: #fff;
+        background-color: #88d622;
+        border-color: #88d622;
+    }
+
+.btn-default {
+    color: #333;
+    background-color: #88d622;
+    border-color: #87d225;
+}
+
+.btn-default {
+    color: #065d31;
+    background-color: #88d622;
+    border-color: #87d225;
+    font-size: 15px;
+}
+
+    .btn-default:hover {
+        color: #333;
+        background-color: #8bda25;
+        border-color: #88d622;
+        color: #fcfff8;
+    }
+
+.bajinnera {
+    margin: 8px;
+    font-size: 20px
+}
+
+.btn-default:active:hover, .btn-default.active:hover, .open > .dropdown-toggle.btn-default:hover, .btn-default:active:focus, .btn-default.active:focus, .open > .dropdown-toggle.btn-default:focus, .btn-default:active.focus, .btn-default.active.focus, .open > .dropdown-toggle.btn-default.focus {
+    color: #333;
+    background-color: #91de2c;
+    border-color: #88d622;
+}
+
+.btn-default:hover {
+    color: #333;
+    background-color: #8bda25;
+    border-color: #88d622;
+    color: #fcfff8;
+}
+
+.btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+    color: #333;
+    background-color: #90de2a;
+    background-image: none;
+    border-color: #88d622;
+}
+
+.btn-default:focus, .btn-default.focus {
+    color: #333;
+    background-color: #91e02b;
+    border-color: #88d622;
+}
+
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+    outline: 0px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #ffffff;
+    color: #212322;
+    text-decoration: none;
+}
+
+ul ul li a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #ffffff;
+    color: #212322;
+    text-decoration: none;
+}
+
+ul a {
+    padding-left: 30px !important;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+
+.dropdown-menu > li > a {
+    display: block;
+    clear: both;
+    line-height: 1.42857;
+    color: rgb(51, 51, 51);
+    white-space: nowrap;
+    padding: 3px 20px;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    color: #000;
+}
+
+#sidebar {
+    width: 250px;
+    position: fixed;
+    top: 80px !important;
+    left: -250px;
+    height: 100vh;
+    z-index: 1501;
+    background: #3cb514;
+    color: #fff;
+    transition: all 0.3s;
+    overflow-y: scroll;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
+}
+
+    #sidebar ul li.active > a, a[aria-expanded="true"] {
+        color: #fff;
+        background: #3cb514;
+    }
+
+a {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #329811;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #0d4222;
+}
+
+#content {
+    width: 100%;
+    padding: 0px 10px;
+    min-height: 100vh;
+    transition: all 0.3s;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+.overlay {
+    top:0;
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 998;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+}
+
+.carousel-inner {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 25px;
+}
+
+#sidebar ul li a:hover {
+    color: #000000;
+    background: #3cb514;
+}
+
+#sidebar ul ul li a:hover {
+    color: #000000;
+    background: #fff;
+}
+
+.navbar-fixed-top, .navbar-fixed-bottom {
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1502;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 80px !important
+}
+
+.content_left_up_type div {
+    float: left;
+    margin: 2px;
+}
+
+.content_left_up_type {
+    float: none;
+    height: 25px;
+}
+    .content_left_up_type p {
+        background-color: #bfe6bc;
+        border-radius: 5px;
+        padding: 1px 5px;
+        margin-right: 1px
+    }
+.content_left_up_star {
+    margin-top: 3px;
+    margin-bottom: 5px;
+}
+
+    .content_left_up_star div span {
+        margin-left: 6px;
+    }
+
+    .content_left_up_star div {
+        float: left;
+        margin-left: 2px;
+    }
+
+.left-up-col {
+    padding-top: 15px;
+    border-right: 1px solid #bed2ca;
+    border-bottom: 1px solid #bed2ca;
+    padding-bottom: 10px;
+    height:434px;
+}
+
+    .left-up-col a {
+        color: #445244;
+        font-size: 18px;
+    }
+
+.content_left_up_result {
+    margin: 15px;
+}
+
+.content_left_up_text {
+    padding-left: 15px;
+}
+
+.content_left_up_img {
+    width: 100%;
+    height: 100%;
+}
+
+.content-justify {
+    display: flex;
+    justify-content: center;
+}
+
+.content_left_up_comment {
+    height: 27px;
+}
+.text-descr-gen p {
+    height: 85px;
+    overflow: hidden;
+}
+.border-carusel-my {
+    border-bottom: 3px solid #4f524a;
+    border-radius: 3px;
+    box-shadow: 2px 10px 17px #aaaaaa;
+}
+.carousel-inner img {
+    width: 1140px;
+    height: 360px;
+}
+.row {
+     margin-right: 0px; 
+     margin-left: 0px; 
+}
+.modal-footer {
+    padding-top: 30px;
+    background-color: #bfe2cf;
+    border-radius: 3px;
+}
+/*---------------------------------------------------------------------*/
+/*   Single  page     */
+/*---------------------------------------------------------------------*/
+.single-page-h1 {
+    color: #546554;
+    margin: 20px 0 30px 0;
+}
+.single-page-p {
+    margin-bottom:30px;
+}
+.single-page-desc{
+    margin-bottom:30px;
+}
+.single-page-img {
+    height: 70%;
+    width: 70%;
+}
+/*----------------------------------------------------------------------*/
+/*       Add Article              */
+/*----------------------------------------------------------------------*/
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 20px 15%;
+}
+
+form header {
+    margin: 0 0 20px 0;
+}
+
+    form header div {
+        font-size: 90%;
+        color: #999;
+    }
+
+    form header h2 {
+        margin: 0 0 5px 0;
+    }
+
+form > div {
+    clear: both;
+    overflow: hidden;
+    padding: 1px;
+    margin: 0 0 10px 0;
+}
+
+    form > div > fieldset > div > div {
+        margin: 0 0 5px 0;
+    }
+
+    form > div > label,
+    legend {
+        width: 25%;
+        float: left;
+        padding-right: 10px;
+    }
+
+    form > div > div,
+    form > div > fieldset > div {
+        width: 75%;
+        float: right;
+    }
+
+    form > div > fieldset label {
+        font-size: 90%;
+    }
+
+fieldset {
+    border: 0;
+    padding: 0;
+}
+
+input[type=text],
+input[type=email],
+input[type=url],
+input[type=password],
+textarea {
+    width: 100%;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+input[type=text],
+input[type=email],
+input[type=url],
+input[type=password] {
+    width: 50%;
+}
+
+    input[type=text]:focus,
+    input[type=email]:focus,
+    input[type=url]:focus,
+    input[type=password]:focus,
+    textarea:focus {
+        outline: 0;
+        border-color: #4697e4;
+    }
+
+@media (max-width: 600px) {
+    form > div {
+        margin: 0 0 15px 0;
+    }
+
+        form > div > label,
+        legend {
+            width: 100%;
+            float: none;
+            margin: 0 0 5px 0;
+        }
+
+        form > div > div,
+        form > div > fieldset > div {
+            width: 100%;
+            float: none;
+        }
+
+    input[type=text],
+    input[type=email],
+    input[type=url],
+    input[type=password],
+    textarea,
+    select {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1200px) {
+    form > div > label,
+    legend {
+        text-align: right;
+    }
+}

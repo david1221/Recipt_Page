@@ -1,0 +1,139 @@
+﻿@model ArticleP
+@{
+    ViewData["Title"] = "AddArticle";
+}
+
+
+
+
+    <div class="row">
+        <H1 class="single-page-h1">Ավելացնել Բաղադրատոմս</H1>
+        @*  <form asp-controller="Articles" asp-action="ArticlesEdit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="All"></div>
+
+            <div>
+                <label asp-for="Title"></label>
+                <input asp-for="Title" />
+                <span asp-validation-for="Title"></span>
+            </div>
+            <div>
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description"></textarea>
+                <span asp-validation-for="Description"></span>
+            </div>
+
+            <select id="Select1" multiple>
+
+                @for (int i = 0; i < 10; i++)
+                { string tags = "tags";
+                    <option asp-for=@tags+i>@tags+i</option>
+                }
+
+            </select>
+            <input type="submit" value="Ավելացնել" />
+        </form>
+        *@
+
+    <form asp-controller="Articles" asp-action="ArticlesEdit" method="post">
+
+
+        <input type="hidden" asp-for="ArticleId" />
+        @*<div asp-validation-summary="All"></div>*@
+     
+
+
+        <div>
+            <label asp-for="Title">
+                Անվանումը
+            </label>
+            <div>
+                <input asp-for="Title" type="text"required/>
+                <span asp-validation-for="Title"></span>
+            </div>
+
+        </div>
+
+        <div>
+            <label asp-for="Description">
+                Նկարագիրը
+            </label>
+
+            <div>
+                <textarea asp-for="Description"required rows="10" cols="50"></textarea>
+
+            </div>
+            <span asp-validation-for="Description"></span>
+
+        </div>
+
+        @*<div>
+            <fieldset>
+
+                <legend id="title5" class="desc">
+                    Select a Choice
+                </legend>
+
+                <div>
+                    <input id="radioDefault_5" name="Field5" type="hidden" value="">
+                    <div>
+                        <input id="Field5_0" name="Field5" type="radio" value="First Choice" tabindex="5" checked="checked">
+                        <label class="choice" for="Field5_0">First Choice</label>
+                    </div>
+                    <div>
+                        <input id="Field5_1" name="Field5" type="radio" value="Second Choice" tabindex="6">
+                        <label class="choice" for="Field5_1">Second Choice</label>
+                    </div>
+                    <div>
+                        <input id="Field5_2" name="Field5" type="radio" value="Third Choice" tabindex="7">
+                        <label class="choice" for="Field5_2">Third Choice</label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>*@
+
+        @*<div>
+            <fieldset>
+                <legend id="title6" class="desc">
+                    Check All That Apply
+                </legend>
+                <div>
+                    <div>
+                        <input id="Field6" name="Field6" type="checkbox" value="First Choice" tabindex="8">
+                        <label class="choice" for="Field6">First Choice</label>
+                    </div>
+                    <div>
+                        <input id="Field7" name="Field7" type="checkbox" value="Second Choice" tabindex="9">
+                        <label class="choice" for="Field7">Second Choice</label>
+                    </div>
+                    <div>
+                        <input id="Field8" name="Field8" type="checkbox" value="Third Choice" tabindex="10">
+                        <label class="choice" for="Field8">Third Choice</label>
+                        </span>
+                    </div>
+            </fieldset>
+        </div>*@
+
+        @*<div>
+            <label class="desc" id="title106" for="Field106">
+                Select a Choice
+            </label>
+            <div>
+                <select id="Field106" name="Field106" class="field select medium" tabindex="11">
+                    <option value="First Choice">First Choice</option>
+                    <option value="Second Choice">Second Choice</option>
+                    <option value="Third Choice">Third Choice</option>
+                </select>
+            </div>
+        </div>*@
+
+        <div>
+            <div>
+                <input type="submit" value="Ավելացնել" />
+            </div>
+        </div>
+
+    </form>
+    </div>
+
+
