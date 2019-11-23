@@ -20,9 +20,8 @@ namespace ReceptsPage.Models
         }
         //public IQueryable<category> GetArticlesBySession(int a)
         //{
-        //    var a = articlePContetxt.Categories;
-        //    return a.Find; Where(x => x.TagsArticles);
-
+        //    return articlePContetxt.Categories.Where(x=>x.CategoryId==a).Select(x=>x.ArticlesC.ToArray);
+         
         //}
 
         public ArticleP GetArticlePById(int id)

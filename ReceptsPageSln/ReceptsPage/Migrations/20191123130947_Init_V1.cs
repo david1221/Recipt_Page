@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ReceptsPage.Migrations
 {
-    public partial class _initial : Migration
+    public partial class Init_V1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,16 +53,7 @@ namespace ReceptsPage.Migrations
                 {
                     CategoryId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Amanorya = table.Column<string>(nullable: true),
-                    Cnndyan = table.Column<string>(nullable: true),
-                    SurbZatik = table.Column<string>(nullable: true),
-                    Amenorya = table.Column<string>(nullable: true),
-                    TaqUteest = table.Column<string>(nullable: true),
-                    AragSnund = table.Column<string>(nullable: true),
-                    Azgayin = table.Column<string>(nullable: true),
-                    Vracakan = table.Column<string>(nullable: true),
-                    Xmorexen = table.Column<string>(nullable: true),
-                    Tonakan = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -176,33 +167,91 @@ namespace ReceptsPage.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Articles",
+                name: "SubCategories",
                 columns: table => new
                 {
-                    ArticleId = table.Column<int>(nullable: false)
+                    SubCategoryId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(nullable: false),
-                    Description = table.Column<string>(nullable: false),
-                    DateAdded = table.Column<DateTime>(nullable: true),
-                    ImgGeneral = table.Column<byte[]>(nullable: true),
-                    Star = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
                     CategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Articles", x => x.ArticleId);
+                    table.PrimaryKey("PK_SubCategories", x => x.SubCategoryId);
                     table.ForeignKey(
-                        name: "FK_Articles_Categories_CategoryId",
+                        name: "FK_SubCategories_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Articles",
+                columns: table => new
+                {
+                    ArticleId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(maxLength: 50, nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    DateAdded = table.Column<DateTime>(nullable: true),
+                    ImgGeneral = table.Column<byte[]>(nullable: true),
+                    Star = table.Column<string>(nullable: true),
+                    SubCategoryId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Articles", x => x.ArticleId);
+                    table.ForeignKey(
+                        name: "FK_Articles_SubCategories_SubCategoryId",
+                        column: x => x.SubCategoryId,
+                        principalTable: "SubCategories",
+                        principalColumn: "SubCategoryId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "Name" },
+                values: new object[] { 1, "Ազգային" });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "Name" },
+                values: new object[] { 2, "Տոնական" });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "Name" },
+                values: new object[] { 3, "Ամենօրյա" });
+
+            migrationBuilder.InsertData(
+                table: "SubCategories",
+                columns: new[] { "SubCategoryId", "CategoryId", "Name" },
+                values: new object[,]
+                {
+                    { 1, 1, "Հայկական խոհանոց" },
+                    { 2, 1, "Վրացական խոհանոց" },
+                    { 3, 1, "Իտալական խոհանոց" },
+                    { 4, 1, "Ֆրանսիական խոհանոց" },
+                    { 5, 1, "Արևելյան խոհանոց" },
+                    { 6, 1, "Չինական խոհանոց" },
+                    { 7, 1, "Մեքսիկական խոհանոց" },
+                    { 8, 2, "Ամանորյա" },
+                    { 9, 2, "Զատկի ուտեստներ" },
+                    { 10, 2, "Ծննդյան" },
+                    { 11, 2, "Պասի ուտեստներ" },
+                    { 12, 3, "Առաջին ուտեստ" },
+                    { 13, 3, "Տաք ճաշ" },
+                    { 14, 3, "Աղանդեր" },
+                    { 15, 3, "Մանկական կերակուր" },
+                    { 16, 3, "Նախաճաշ" }
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_CategoryId",
+                name: "IX_Articles_SubCategoryId",
                 table: "Articles",
-                column: "CategoryId");
+                column: "SubCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -242,6 +291,11 @@ namespace ReceptsPage.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubCategories_CategoryId",
+                table: "SubCategories",
+                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -265,13 +319,16 @@ namespace ReceptsPage.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "SubCategories");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

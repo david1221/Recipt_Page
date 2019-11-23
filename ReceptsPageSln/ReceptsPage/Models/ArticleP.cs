@@ -14,14 +14,14 @@ namespace ReceptsPage.Models
 
         [Required, MaxLength(50)]
         public string Title { get; set; }
-        [Required(ErrorMessage = "Լրացրեք դաշտը")]
+        [Required(ErrorMessage = "Լրացրեք դաշտը")] 
         public string Description { get; set; }
         public DateTime? DateAdded { get; set; }
         public byte[] ImgGeneral { get; set; }
 
         public string Star { get; set; }
-        public int? CategoryId { set; get; }
-        public virtual category Category { get; set; }
+        public int? SubCategoryId { set; get; }
+        public virtual SubCategory SubCategory { get; set; }
 
     }
     

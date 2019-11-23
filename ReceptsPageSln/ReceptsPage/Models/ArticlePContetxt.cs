@@ -15,24 +15,56 @@ namespace ReceptsPage.Models
         public ArticlePContetxt(DbContextOptions<ArticlePContetxt> options) : base(options) { }
 
         public DbSet<ArticleP> Articles { get; set; }
-        public DbSet<category> Categories { get; set; }
-        
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
-            //modelBuilder.Entity<ArticleP>().HasData(new ArticleP
-            //{
-            //    Id = 1,
-            //    Title = "Новый спутник запущен на орбиту",
-            //    Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-            //    DateAdded = DateTime.Now,
-            //    Star = "A",
 
-            //     ImgGeneral= new byte[10]
-            //}) ;
+            modelBuilder.Entity<Category>().HasData(
+                new
+                {
+                    CategoryId = 1,
+                    Name = "Ազգային"
+                },
+                 new
+                 {
+                     CategoryId = 2,
+                     Name = "Տոնական"
+                 },
+                  new
+                  {
+                      CategoryId = 3,
+                      Name = "Ամենօրյա"
+                  }
 
-
+                );
+            modelBuilder.Entity<SubCategory>().HasData(
+               new { SubCategoryId = 1, Name = "Հայկական խոհանոց",CategoryId = 1  },
+               new { SubCategoryId = 2, Name = "Վրացական խոհանոց", CategoryId= 1 },
+               new { SubCategoryId = 3, Name = "Իտալական խոհանոց", CategoryId = 1 },
+               new { SubCategoryId = 4, Name = "Ֆրանսիական խոհանոց", CategoryId = 1 },
+               new { SubCategoryId = 5, Name = "Արևելյան խոհանոց", CategoryId = 1 },
+               new { SubCategoryId = 6, Name = "Չինական խոհանոց", CategoryId = 1 },
+               new { SubCategoryId = 7, Name = "Մեքսիկական խոհանոց", CategoryId = 1 },
+                     
+                     
+               new { SubCategoryId = 8, Name = "Ամանորյա", CategoryId = 2 },
+               new { SubCategoryId = 9, Name = "Զատկի ուտեստներ", CategoryId = 2 },
+               new { SubCategoryId = 10, Name = "Ծննդյան", CategoryId = 2 },
+               new { SubCategoryId = 11, Name = "Պասի ուտեստներ", CategoryId = 2 },
+                    
+                     
+               new { SubCategoryId = 12, Name = "Առաջին ուտեստ", CategoryId = 3 },
+               new { SubCategoryId = 13, Name = "Տաք ճաշ", CategoryId = 3 },
+               new { SubCategoryId = 14, Name = "Աղանդեր", CategoryId = 3 },
+               new { SubCategoryId = 15, Name = "Մանկական կերակուր", CategoryId = 3 },
+               new { SubCategoryId = 16, Name = "Նախաճաշ", CategoryId = 3 }
+               );
+                
         }
     }
 }
+       
+    
