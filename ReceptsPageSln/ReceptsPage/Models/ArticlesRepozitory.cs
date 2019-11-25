@@ -18,12 +18,27 @@ namespace ReceptsPage.Models
             return articlePContetxt.Articles.OrderByDescending(x => x.DateAdded.Value);
 
         }
-        //public IQueryable<category> GetArticlesBySession(int a)
+        //public IQueryable<Category> GetArticlesBySession(int a)
         //{
-        //    return articlePContetxt.Categories.Where(x=>x.CategoryId==a).Select(x=>x.ArticlesC.ToArray);
-         
-        //}
+        //    return articlePContetxt.Categories.ToList.Property(x=>x.Name).Where(x => x.CategoryId == a).Select(x => x.Name).ToArray();
 
+        //}
+        public IQueryable<ArticleP> SubCategoryById(int id)
+        {
+            return articlePContetxt.Articles.Where(x=>x.SubCategoryId==id).OrderByDescending(x => x.DateAdded);
+        }
+
+
+        public string SubCategoryByIdSingle(int id)
+        {
+            return articlePContetxt.SubCategories.Single(x => x.SubCategoryId == id).Name;
+        }
+
+
+        public IQueryable<SubCategory> SubCategories()
+        {
+            return articlePContetxt.SubCategories;
+        }
         public ArticleP GetArticlePById(int id)
         {
             return articlePContetxt.Articles.Single(x => x.ArticleId == id);

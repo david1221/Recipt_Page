@@ -3,21 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ReceptsPage.Models;
 
 namespace ReceptsPage.Controllers
 {
     public class ArticlesController : Controller
     {
-        
+
         private readonly ArticlesRepozitory articlesRepozitory;
         public ArticlesController(ArticlesRepozitory articlesRepozitory)
         {
             this.articlesRepozitory = articlesRepozitory;
+
         }
+
         public IActionResult Index()
         {
             var model = articlesRepozitory.GetArticles();
+
+            return View(model);
+        }
+        public IActionResult Categories(int id)
+        {
+            ViewBag.Name = articlesRepozitory.SubCategoryByIdSingle(id);
+
+            var model = articlesRepozitory.SubCategoryById(id);
+           
             return View(model);
         }
         //public IActionResult Sessions()
@@ -32,17 +44,28 @@ namespace ReceptsPage.Controllers
             return View(model);
         }
         public IActionResult AddArticle(int id)
-
         {
             ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById(id);
             
+           var a = new List<SubCategory>();
+            foreach (var item in articlesRepozitory.SubCategories())
+            {
+              a.Add( new SubCategory() { Name=item.Name,SubCategoryId=item.SubCategoryId });
+            }
+            ViewBag.Category = a;
+
             return View(model);
         }
+
+
+
+
+
         public IActionResult ArticlesEdit(int id)
         {
             //либо создаем новую статью, либо выбираем существующую и передаем в качестве модели в представление
-            ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById(id);
-            
+            ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById((int)id);
+
             return View(model);
         }
         [HttpPost] //в POST-версии метода сохраняем/обновляем запись в БД
@@ -51,6 +74,7 @@ namespace ReceptsPage.Controllers
             if (ModelState.IsValid)
             {
                 model.DateAdded = DateTime.Now;
+
                 articlesRepozitory.SaveArticle(model);
                 return RedirectToAction("Index");
             }

@@ -1,0 +1,39 @@
+﻿@model IQueryable<ArticleP>
+   
+        @{
+            ViewData["Title"] = "Categories";
+        }
+
+        
+
+    <div class="row">
+        <h2 class="text-center">@ViewBag.Name</h2>
+        
+        @foreach (var entity in Model.Cast<ArticleP>())
+        {
+            <div class="col-md-6 left-up-col">
+
+                <div class="content_left_up_text text-descr-gen">
+                    <p>@entity.Title</p>
+                    <p>@entity.Description</p>
+                </div>
+                <div class="content_left_up_type content-justify">
+                    <div id="new_year_type"><p>ամանորյա</p></div>
+                    <div id="birtday_type"><p>ծննդյան</p></div>
+                    <div id="holyday_type"><p>տոնական</p></div>
+                </div>
+                <div class="content_left_up_comment content-justify">
+                    <div class="content_left_up_star">
+                        <div id="star1_left_up"><img src="~/images/star_all.png" alt="star"></div>
+                        <div id="star2_left_up"><img src="~/images/star_all.png" alt="star"></div>
+                        <div id="star3_left_up"><img src="~/images/star_all.png" alt="star"></div>
+                        <div id="star4_left_up"><img src="~/images/star_all.png" alt="star"></div>
+                        <div id="star5_left_up"><img src="~/images/star_nall.png" alt="star"></div>
+                        <div id="content_left_up_result_div"><span>Rating 4 (10 Votes)</span></div>
+                    </div>
+                </div>
+
+            </div>
+        }
+
+    </div>
