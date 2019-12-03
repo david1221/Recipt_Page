@@ -1,6 +1,12 @@
-﻿@model IQueryable<ArticleP>
+﻿@using ReceptsPage.Models
+@using System
+@using PagedList.Core;
+
+
+@model ReceptsPage.ViewModels.IndexSlideArticles
+
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Գլխավոր էջ";
 }
 
 <div id="myCarousel" class="carousel slide border-carusel-my" data-ride="carousel" data-interval="6000">
@@ -8,41 +14,47 @@
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
+        <li data-target="#myCarousel" data-slide-to="4"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/recipe_1.jpg" alt="Nkar" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Ինչպես կարելի է պատրաստել․․․
-                    <a class="btn btn-default" href="#">
-                        Ավելին
-                    </a>
-                </p>
+        @{ string active = "";}
+        @foreach (ArticleP slide in Model.GetArticlesSlide.Where(x => x.IfFavorite == true).Cast<ArticleP>().Take(5))
+        {
+            if (slide == Model.GetArticlesSlide.Where(x => x.IfFavorite == true).First())
+            {
+                active = "active";
+            }
+            else
+            {
+                active = "";
+            }
+
+            <div class="item @active">
+                @{
+                    var base64S = Convert.ToBase64String(slide.ImgGeneral);
+                    var imgsrcS = string.Format("data:image/jpeg;base64,{0}", base64S);
+                }
+                <div class="view">
+                    <img src="@imgsrcS" alt="Nkar" class="img-responsive" />
+                    <div class="carousel-caption" role="option">
+                        <p>
+                            @if (slide.Description.Length > 35)
+                            {
+                                @slide.Description.Substring(0, 35);
+                            }
+
+                            <span style="font-size:18px">. . .  </span>
+                            <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@slide.ArticleId" class="text-center" style="color:#ffffff;font-size:18px;">
+                                <span class="btn btn-danger slidebtnIndex">Ավելին</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="item">
-            <img src="~/images/recipe_2.jpg" alt="nkar" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Այս համեղ կերակուրը կարող եք ․․․
-                    <a class="btn btn-default" href="#">
-                        Ավելին
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/recipe_3.jpg" alt="nkar" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Հեշտ, արագ ,համեղ ․․․
-                    <a class="btn btn-default" href="#">
-                        Ավելին
-                    </a>
-                </p>
-            </div>
-        </div>
+        }
+
+
     </div>
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -55,7 +67,7 @@
 </div>
 
 <div class="row">
-    @foreach (ArticleP entity in Model.Cast<ArticleP>().Take(20))
+    @foreach (ArticleP entity in Model.GetArticles.Cast<ArticleP>())
     {
         <div class="col-md-6 left-up-col">
             <div class="text-center"> <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center">@entity.Title</a></div>
@@ -63,21 +75,48 @@
                 <p>@entity.Description</p>
             </div>
             <div class="content_left_up_type content-justify">
-                <div id="new_year_type"><p>ամանորյա</p></div>
-                <div id="birtday_type"><p>ծննդյան</p></div>
-                <div id="holyday_type"><p>տոնական</p></div>
+                <div id="new_year_type">
+                    <p>
+                        @{string cat = "";
+                            if (entity.SubCategoryId != null)
+                            {
+                                int id = (int)entity.SubCategoryId;
+                                if (id != 17)
+                                {
+                                    cat = ViewBag.Name.SubCategoryByIdSingle(id);
+                                }<a asp-area="" asp-controller="Articles" asp-action="Categories" asp-route-id="@id">
+                                    @cat
+                                </a>
+                            }
+
+                        }
+                    </p>
+                </div>
+
+
             </div>
+
             <div class="content_left_up_comment content-justify">
                 <div class="content_left_up_star">
-                    <div id="star1_left_up"><img src="~/images/star_all.png" alt="star"></div>
-                    <div id="star2_left_up"><img src="~/images/star_all.png" alt="star"></div>
-                    <div id="star3_left_up"><img src="~/images/star_all.png" alt="star"></div>
-                    <div id="star4_left_up"><img src="~/images/star_all.png" alt="star"></div>
-                    <div id="star5_left_up"><img src="~/images/star_nall.png" alt="star"></div>
-                    <div id="content_left_up_result_div"><span>Rating 4 (10 Votes)</span></div>
+
                 </div>
             </div>
-            <div class="content-justify img-gen-size"> <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center"><img src="~/images/content_left_up_img.png" alt="Կարտոֆիլով նյոկի"></a></div>
+            <div class="content-justify img-gen-size">
+                <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center">
+                    @{
+                        var base64 = Convert.ToBase64String(entity.ImgGeneral);
+                        var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
+                    }
+                    <img src="@imgsrc" alt="Alternate Text11" />
+                </a>
+            </div>
         </div>
+
     }
+
 </div>
+<nav aria-label="ArticleP Padding">
+
+    <pager class="pagination"  list="@Model.GetArticles" asp-action="Index" asp-controller="Articles" asp-route-query="@Model.GetArticles" />
+
+</nav>

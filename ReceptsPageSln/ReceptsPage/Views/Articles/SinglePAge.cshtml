@@ -9,7 +9,13 @@
         <div class="col-lg-11 single-page-desc">
             <p class="single-page-p">@Model.Description</p>
 
-            <div class="content-justify "><img class="single-page-img" src="~/images/content_left_up_img.png" alt="Alternate Text" /></div>
+            <div class="content-justify ">
+                @{
+                    var base64 = Convert.ToBase64String(Model.ImgGeneral);
+                    var imgsrc= string.Format("data:image/jpeg;base64,{0}",base64);
+                }
+                <img class="single-page-img" src="@imgsrc" alt="Alternate Text11" />
+            </div>
 
         </div>
 

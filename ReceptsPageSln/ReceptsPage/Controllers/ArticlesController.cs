@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ReceptsPage.Models;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using PagedList.Core;
+using ReceptsPage.ViewModels;
 
 namespace ReceptsPage.Controllers
 {
@@ -18,11 +22,15 @@ namespace ReceptsPage.Controllers
 
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
-            var model = articlesRepozitory.GetArticles();
-
-            return View(model);
+            IndexSlideArticles indexSlide = new IndexSlideArticles();
+            indexSlide.GetArticles= articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null).ToPagedList(page ?? 1, 8);
+            indexSlide.GetArticlesSlide = articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null);
+            ViewBag.Name = articlesRepozitory;
+           
+            
+            return View(indexSlide);
         }
         public IActionResult Categories(int id)
         {
@@ -37,7 +45,7 @@ namespace ReceptsPage.Controllers
         //    var model = articlesRepozitory.GetArticles().Where(x=>x.TagsArticles.amanorya==1);
         //    return View(model);
         //}
-        public IActionResult SinglePage(int id)
+        public IActionResult SinglePage(int id  )
         {
             ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById(id);
 
@@ -46,6 +54,7 @@ namespace ReceptsPage.Controllers
         public IActionResult AddArticle(int id)
         {
             ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById(id);
+           
             
            var a = new List<SubCategory>();
             foreach (var item in articlesRepozitory.SubCategories())
@@ -69,12 +78,35 @@ namespace ReceptsPage.Controllers
             return View(model);
         }
         [HttpPost] //в POST-версии метода сохраняем/обновляем запись в БД
-        public IActionResult ArticlesEdit(ArticleP model)
+        public async Task<IActionResult> ArticlesEdit(ArticleP model,List<IFormFile> image)
         {
+           
             if (ModelState.IsValid)
-            {
+            {       
+                
                 model.DateAdded = DateTime.Now;
+                if (model.SubCategoryId==null)
+                {
+                    model.SubCategoryId = 17;
+                }
+                if (image!=null)
+                {
+                    foreach (var item in image)
+                    {
+                        if (item.Length > 0)
+                        {
+                            using (var stream = new MemoryStream())
+                            {
+                                await item.CopyToAsync(stream);
+                                model.ImgGeneral = stream.ToArray();
+                            }
 
+                        }
+                    }
+                }
+                
+               
+               
                 articlesRepozitory.SaveArticle(model);
                 return RedirectToAction("Index");
             }

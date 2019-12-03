@@ -191,9 +191,9 @@ namespace ReceptsPage.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
-                    b.Property<byte[]>("ImgGeneral");
+                    b.Property<bool>("IfFavorite");
 
-                    b.Property<string>("Star");
+                    b.Property<byte[]>("ImgGeneral");
 
                     b.Property<int?>("SubCategoryId");
 

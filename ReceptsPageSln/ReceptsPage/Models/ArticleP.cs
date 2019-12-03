@@ -19,7 +19,7 @@ namespace ReceptsPage.Models
         public DateTime? DateAdded { get; set; }
         public byte[] ImgGeneral { get; set; }
 
-        public string Star { get; set; }
+       public bool IfFavorite { get; set; }
         public int? SubCategoryId { set; get; }
         public virtual SubCategory SubCategory { get; set; }
 

@@ -1,0 +1,12 @@
+﻿
+
+<h1 class="mb-2">Բոլոր մեքենաները</h1>
+<h3>@Model.CurrCategory</h3>
+<div class="row mt-5 mb-2">
+    @foreach (Car car in Model.GetAllCars)
+    {
+        @Html.Partial("AllCars",car);    
+        }
+</div>
+
+
