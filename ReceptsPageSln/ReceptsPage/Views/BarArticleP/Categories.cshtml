@@ -1,0 +1,38 @@
+﻿@model IQueryable<BarArticleP>
+
+@{
+    if (Model.Any())
+    {
+           ViewData["Title"] = Model.First().BarCategory.Name;
+    }
+ 
+
+}
+
+
+
+<div class="row">
+    <h2 class="text-center category_title">@ViewBag.Name</h2>
+
+    @foreach (var entity in Model.Cast<BarArticleP>())
+    {
+        <div class="left-up-col col-lg-6 ">
+
+            <div class="content_left_up_text text-descr-gen text-descr-gen">
+                <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.BarArticleId" class="text-center"><h3>@entity.Title</h3></a>
+                <p>@entity.Description</p>
+            </div>
+            <div class="content-justify img-gen-size">
+                @{
+                    var base64 = Convert.ToBase64String(entity.ImgGeneral);
+                    var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
+                }
+                <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.BarArticleId" class="text-center"> <img class="img-thumbnail" src="@imgsrc" alt="Alternate Text11" /></a>
+            </div>
+
+
+
+        </div>
+    }
+
+</div>

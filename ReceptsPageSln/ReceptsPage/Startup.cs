@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ReceptsPage.Interfaces;
 using ReceptsPage.Models;
+using ReceptsPage.Repozitories;
 
 namespace ReceptsPage
 {
@@ -40,8 +42,11 @@ namespace ReceptsPage
                 // "data source=DESKTOP-16VRELJ/SQLEXPRESS;initial catalog=Articles;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;"
                 options.UseSqlServer(Configuration.GetConnectionString("MyConnection"));
             });
+      
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddTransient<ArticlesRepozitory>();
+            services.AddScoped<IGetArticles, ArticlesRepozitory>();
+            services.AddScoped<IBarArticles, BarArticlesRepozitory>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

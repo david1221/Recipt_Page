@@ -9,14 +9,15 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using PagedList.Core;
 using ReceptsPage.ViewModels;
+using ReceptsPage.Interfaces;
 
 namespace ReceptsPage.Controllers
 {
     public class ArticlesController : Controller
     {
 
-        private readonly ArticlesRepozitory articlesRepozitory;
-        public ArticlesController(ArticlesRepozitory articlesRepozitory)
+        private readonly IGetArticles articlesRepozitory;
+        public ArticlesController(IGetArticles articlesRepozitory)
         {
             this.articlesRepozitory = articlesRepozitory;
 

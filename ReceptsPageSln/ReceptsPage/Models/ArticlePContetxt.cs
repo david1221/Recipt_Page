@@ -52,12 +52,10 @@ namespace ReceptsPage.Models
                new { SubCategoryId = 6, Name = "Չինական խոհանոց", CategoryId = 1 },
                new { SubCategoryId = 7, Name = "Մեքսիկական խոհանոց", CategoryId = 1 },
 
-
                new { SubCategoryId = 8, Name = "Ամանորյա", CategoryId = 2 },
                new { SubCategoryId = 9, Name = "Զատկի ուտեստներ", CategoryId = 2 },
                new { SubCategoryId = 10, Name = "Ծննդյան", CategoryId = 2 },
                new { SubCategoryId = 11, Name = "Պասի ուտեստներ", CategoryId = 2 },
-
 
                new { SubCategoryId = 12, Name = "Առաջին ուտեստ", CategoryId = 3 },
                new { SubCategoryId = 13, Name = "Տաք ճաշ", CategoryId = 3 },
@@ -72,17 +70,13 @@ namespace ReceptsPage.Models
               new { BarCategoryId = 3, Name = "Թխվածքաբլիթներ", },
               new { BarCategoryId = 4, Name = "Պիցաներ", },
               new { BarCategoryId = 5, Name = "Աղցաններ", },
-                   
               new { BarCategoryId = 6, Name = "Դիետաներ", },
               new { BarCategoryId = 7, Name = "Առողջ սնունդ", },
               new { BarCategoryId = 8, Name = "Օգտայկար Խորհուրդներ", },
-                   
-
               new { BarCategoryId = 9, Name = "Նկարներ", },
               new { BarCategoryId = 10, Name = "Վիդեոներ", },
               new { BarCategoryId = 11, Name = "Ռեստորաններ", }
             );
-
         }
     }
 }
