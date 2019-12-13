@@ -16,7 +16,7 @@ namespace ReceptsPage.Models
         }
         public IQueryable<ArticleP> GetArticles()
         {
-            return _articlePContetxt.Articles.OrderByDescending(x => x.DateAdded.Value);
+            return _articlePContetxt.Articles.OrderByDescending(x => x.DateAdded.Value).Include(x=>x.SubCategory);
 
         }
         //public IQueryable<Category> GetArticlesBySession(int a)
@@ -26,15 +26,25 @@ namespace ReceptsPage.Models
         //}
         public IQueryable<ArticleP> SubCategoryById(int id)
         {
-            return _articlePContetxt.Articles.Where(x=>x.SubCategoryId==id).OrderByDescending(x => x.DateAdded);
+            return _articlePContetxt.Articles.Where(x=>x.SubCategoryId==id).OrderByDescending(x => x.DateAdded).Include(i=>i.SubCategory);
         }
 
 
-        public string SubCategoryByIdSingle(int id)
+       public string SubCategoryByIdSingle(int id)
         {
-            return _articlePContetxt.SubCategories.Single(x => x.SubCategoryId == id).Name;
-        }
+            try
+            {
+                return _articlePContetxt.SubCategories.Where(x => x.SubCategoryId == id).FirstOrDefault().Name;
+                
+            }
+            catch (Exception )
+            {
 
+                 return "Նման Բաժին գոյություն չունի";
+            }
+               
+           
+        }
 
         public IQueryable<SubCategory> SubCategories()
         {
@@ -43,7 +53,11 @@ namespace ReceptsPage.Models
 
         public ArticleP GetArticlePById(int id)
         {
-            return _articlePContetxt.Articles.Single(x => x.ArticleId == id);
+            
+            {
+                return _articlePContetxt.Articles.Include(i=>i.SubCategory).FirstOrDefault(x => x.ArticleId == id);
+            }
+           
         }
 
         public int SaveArticle(ArticleP articleP)

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using PagedList.Core;
 using ReceptsPage.ViewModels;
 using ReceptsPage.Interfaces;
+using System.Diagnostics;
 
 namespace ReceptsPage.Controllers
 {
@@ -22,45 +23,51 @@ namespace ReceptsPage.Controllers
             this.articlesRepozitory = articlesRepozitory;
 
         }
+        static byte[] img;
 
         public IActionResult Index(int? page)
         {
             IndexSlideArticles indexSlide = new IndexSlideArticles();
-            indexSlide.GetArticles= articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null).ToPagedList(page ?? 1, 8);
+            indexSlide.articlesRepozitory = articlesRepozitory;
+            indexSlide.GetArticles = articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null).ToPagedList(page ?? 1, 8);
             indexSlide.GetArticlesSlide = articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null);
-            ViewBag.Name = articlesRepozitory;
-           
-            
+
+
+
             return View(indexSlide);
         }
-        public IActionResult Categories(int id)
+        public IActionResult Categories(int id, int? page)
         {
-            ViewBag.Name = articlesRepozitory.SubCategoryByIdSingle(id);
+            CategoriesArticlesView cat = new CategoriesArticlesView();
+            //ViewBag.Name = articlesRepozitory.SubCategoryByIdSingle(id);
 
-            var model = articlesRepozitory.SubCategoryById(id);
-           
-            return View(model);
+            cat.articlesRepozitory = articlesRepozitory.SubCategoryById(id).ToPagedList(page ?? 1, 8);
+            cat.SubCategoryByIdSingle = articlesRepozitory.SubCategoryByIdSingle(id);
+            return View(cat);
         }
         //public IActionResult Sessions()
         //{   
         //    var model = articlesRepozitory.GetArticles().Where(x=>x.TagsArticles.amanorya==1);
         //    return View(model);
         //}
-        public IActionResult SinglePage(int id  )
+        public IActionResult SinglePage(int id)
         {
+
             ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById(id);
 
             return View(model);
         }
+
+
         public IActionResult AddArticle(int id)
         {
             ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById(id);
-           
-            
-           var a = new List<SubCategory>();
+
+
+            var a = new List<SubCategory>();
             foreach (var item in articlesRepozitory.SubCategories())
             {
-              a.Add( new SubCategory() { Name=item.Name,SubCategoryId=item.SubCategoryId });
+                a.Add(new SubCategory() { Name = item.Name, SubCategoryId = item.SubCategoryId });
             }
             ViewBag.Category = a;
 
@@ -75,39 +82,64 @@ namespace ReceptsPage.Controllers
         {
             //либо создаем новую статью, либо выбираем существующую и передаем в качестве модели в представление
             ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById((int)id);
-
+            var a = new List<SubCategory>();
+            foreach (var item in articlesRepozitory.SubCategories())
+            {
+                a.Add(new SubCategory() { Name = item.Name, SubCategoryId = item.SubCategoryId });
+            }
+            ViewBag.Category = a;
+            var selected = model.SubCategory.Name;
+            if (selected != null)
+            {
+                model.SubCategory.Name = selected;
+            }
+            else model.SubCategory.Name = "all";
+            //List<ArticleP> imglist = new List<ArticleP>(articlesRepozitory.GetArticles().ToArray().Length);
+            //foreach (var item in imglist)
+            //{
+            //    img = item.ImgGeneral;
+            img = model.ImgGeneral;
+            //}
             return View(model);
+
         }
         [HttpPost] //в POST-версии метода сохраняем/обновляем запись в БД
-        public async Task<IActionResult> ArticlesEdit(ArticleP model,List<IFormFile> image)
+        public async Task<IActionResult> ArticlesEdit(ArticleP model, List<IFormFile> image)
         {
-           
+
             if (ModelState.IsValid)
-            {       
-                
+            {
                 model.DateAdded = DateTime.Now;
-                if (model.SubCategoryId==null)
+                if (model.SubCategoryId == null)
                 {
                     model.SubCategoryId = 17;
                 }
-                if (image!=null)
+                if (image != null)
                 {
-                    foreach (var item in image)
+                    if (image.Count > 0)
                     {
-                        if (item.Length > 0)
+                        foreach (var item in image)
                         {
-                            using (var stream = new MemoryStream())
+                            if (item.Length > 0)
                             {
-                                await item.CopyToAsync(stream);
-                                model.ImgGeneral = stream.ToArray();
+                                using (var stream = new MemoryStream())
+                                {
+                                    await item.CopyToAsync(stream);
+                                    model.ImgGeneral = stream.ToArray();
+                                }
                             }
-
                         }
                     }
+                    else
+                    {
+                        if (model.ArticleId != default)
+                        {
+                            model.ImgGeneral = img;
+                        }
+                    }
+
                 }
-                
-               
-               
+
                 articlesRepozitory.SaveArticle(model);
                 return RedirectToAction("Index");
             }

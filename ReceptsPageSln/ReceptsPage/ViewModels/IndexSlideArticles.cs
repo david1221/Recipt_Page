@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PagedList.Core;
+using ReceptsPage.Interfaces;
 
 namespace ReceptsPage.ViewModels
 {
@@ -12,6 +13,7 @@ namespace ReceptsPage.ViewModels
         public IQueryable<ArticleP> GetArticlesSlide { get; set; }
         public IPagedList<ArticleP> GetArticles { get; set; }
 
+       public IGetArticles articlesRepozitory{get;set;}
 
     }
 }

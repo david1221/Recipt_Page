@@ -22,7 +22,7 @@ namespace ReceptsPage.Models
        public bool IfFavorite { get; set; }
         public int? SubCategoryId { set; get; }
         public virtual SubCategory SubCategory { get; set; }
-
+      
     }
     
    
