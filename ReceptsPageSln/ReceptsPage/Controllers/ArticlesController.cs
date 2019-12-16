@@ -23,14 +23,16 @@ namespace ReceptsPage.Controllers
             this.articlesRepozitory = articlesRepozitory;
 
         }
-        static byte[] img;
+        static byte[] img;//for change image 
 
         public IActionResult Index(int? page)
         {
-            IndexSlideArticles indexSlide = new IndexSlideArticles();
-            indexSlide.articlesRepozitory = articlesRepozitory;
-            indexSlide.GetArticles = articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null).ToPagedList(page ?? 1, 8);
-            indexSlide.GetArticlesSlide = articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null);
+            IndexSlideArticles indexSlide = new IndexSlideArticles
+            {
+                articlesRepozitory = articlesRepozitory,
+                GetArticles = articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null).ToPagedList(page ?? 1, 8),
+                GetArticlesSlide = articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null)
+            };
 
 
 
@@ -38,11 +40,13 @@ namespace ReceptsPage.Controllers
         }
         public IActionResult Categories(int id, int? page)
         {
-            CategoriesArticlesView cat = new CategoriesArticlesView();
-            //ViewBag.Name = articlesRepozitory.SubCategoryByIdSingle(id);
+            CategoriesArticlesView cat = new CategoriesArticlesView
+            {
+                //ViewBag.Name = articlesRepozitory.SubCategoryByIdSingle(id);
 
-            cat.articlesRepozitory = articlesRepozitory.SubCategoryById(id).ToPagedList(page ?? 1, 8);
-            cat.SubCategoryByIdSingle = articlesRepozitory.SubCategoryByIdSingle(id);
+                articlesRepozitory = articlesRepozitory.SubCategoryById(id).ToPagedList(page ?? 1, 8),
+                SubCategoryByIdSingle = articlesRepozitory.SubCategoryByIdSingle(id)
+            };
             return View(cat);
         }
         //public IActionResult Sessions()
@@ -77,7 +81,10 @@ namespace ReceptsPage.Controllers
 
 
 
-
+        public IActionResult About()
+        {
+            return View();
+        }
         public IActionResult ArticlesEdit(int id)
         {
             //либо создаем новую статью, либо выбираем существующую и передаем в качестве модели в представление
@@ -103,17 +110,14 @@ namespace ReceptsPage.Controllers
             return View(model);
 
         }
-        [HttpPost] //в POST-версии метода сохраняем/обновляем запись в БД
+        [HttpPost]
         public async Task<IActionResult> ArticlesEdit(ArticleP model, List<IFormFile> image)
         {
 
             if (ModelState.IsValid)
             {
                 model.DateAdded = DateTime.Now;
-                if (model.SubCategoryId == null)
-                {
-                    model.SubCategoryId = 17;
-                }
+                
                 if (image != null)
                 {
                     if (image.Count > 0)
@@ -137,17 +141,23 @@ namespace ReceptsPage.Controllers
                             model.ImgGeneral = img;
                         }
                     }
-
                 }
-
                 articlesRepozitory.SaveArticle(model);
                 return RedirectToAction("Index");
             }
 
             return View(model);
         }
-        [HttpPost] //т.к. удаление статьи изменяет состояние приложения, нельзя использовать метод GET
+        [HttpGet]
         public IActionResult ArticlesDelete(int id)
+        {
+            ArticleP model = articlesRepozitory.GetArticlePById(id);
+            return View(model);
+            //articlesRepozitory.DeleteArticle(new ArticleP() { ArticleId = id });
+            //return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public IActionResult ArticlesPostDelete(int id)
         {
             articlesRepozitory.DeleteArticle(new ArticleP() { ArticleId = id });
             return RedirectToAction("Index");

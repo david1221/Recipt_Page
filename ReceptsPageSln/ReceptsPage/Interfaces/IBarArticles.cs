@@ -13,6 +13,6 @@ namespace ReceptsPage.Interfaces
         IQueryable<BarCategory> BarCategories();
         void DeleteBarArticle(BarArticleP BarArticle);
         int SaveBarArticle(BarArticleP barArticleP);
-
+        string BarCategoryByIdSingle(int id);
     }
 }

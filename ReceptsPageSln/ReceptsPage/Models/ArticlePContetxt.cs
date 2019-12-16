@@ -40,7 +40,12 @@ namespace ReceptsPage.Models
                   {
                       CategoryId = 3,
                       Name = "Ամենօրյա"
-                  }
+                  },
+                new
+                {
+                    CategoryId = 4,
+                    Name = "Ընդհանուր"
+                }
 
                 );
             modelBuilder.Entity<SubCategory>().HasData(
@@ -61,7 +66,8 @@ namespace ReceptsPage.Models
                new { SubCategoryId = 13, Name = "Տաք ճաշ", CategoryId = 3 },
                new { SubCategoryId = 14, Name = "Աղանդեր", CategoryId = 3 },
                new { SubCategoryId = 15, Name = "Մանկական կերակուր", CategoryId = 3 },
-               new { SubCategoryId = 16, Name = "Նախաճաշ", CategoryId = 3 }
+               new { SubCategoryId = 16, Name = "Նախաճաշ", CategoryId = 3 },
+               new { SubCategoryId = 17, Name = "Այլ", CategoryId =4 }
             );
 
             modelBuilder.Entity<BarCategory>().HasData(
@@ -75,8 +81,10 @@ namespace ReceptsPage.Models
               new { BarCategoryId = 8, Name = "Օգտայկար Խորհուրդներ", },
               new { BarCategoryId = 9, Name = "Նկարներ", },
               new { BarCategoryId = 10, Name = "Վիդեոներ", },
-              new { BarCategoryId = 11, Name = "Ռեստորաններ", }
+              new { BarCategoryId = 11, Name = "Ռեստորաններ", },
+              new { BarCategoryId = 12, Name = "Այլ", }
             );
+
         }
     }
 }

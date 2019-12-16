@@ -1,24 +1,18 @@
-﻿@model ArticleP
+﻿@model BarArticleP
 
 @{
-    ViewData["Title"] = "AddArticle";
+    ViewData["Title"] = "Ավելացնել Բաղադրատոմս";
 }
-
-
-
 
 <div class="row">
     <div class="col-lg-10">
         <H1 class="single-page-h1">Ավելացնել Բաղադրատոմս</H1>
 
         <div class="col-md-8 ">
-            <form asp-controller="Articles" asp-action="ArticlesEdit" method="post" enctype="multipart/form-data">
+            <form asp-controller="BarArticleP" asp-action="ArticlesEdit" method="post" enctype="multipart/form-data">
 
-
-                <input type="hidden" asp-for="ArticleId" />
+                <input type="hidden" asp-for="BarArticleId" />
                 <div asp-validation-summary="ModelOnly"></div>
-
-
 
                 <div class="form-group">
                     <label asp-for="Title" class="text-left">
@@ -35,41 +29,31 @@
                     <label asp-for="Description" class="text-left">
                         Նկարագիրը
                     </label>
-
                     <div>
                         <textarea asp-for="Description" rows="10" cols="50" required></textarea>
-
                     </div>
                     <span asp-validation-for="Description"></span>
-
                 </div>
+
                 <div class="from-group">
-                    <input type="file" name="image" asp-for="ImgGeneral" id="image" />
+                    <label for="image" class="h4 btn-link text-left"><a style="color:#983232; cursor: pointer;">Ընտրել նկարը</a></label>
+                    <input type="file" name="image" asp-for="ImgGeneral" id="image" style="visibility:hidden">
+
                 </div>
                 <div class="form-group">
+                    @{ <select asp-for="BarCategoryId"
+                               asp-items="@(new SelectList(ViewBag.Category, "BarCategoryId", "Name"))">
 
 
-                    @{ <select asp-for="SubCategoryId"
-                               asp-items="@(new SelectList(ViewBag.Category,"SubCategoryId","Name"))">
-                            <option selected="selected" value="17">Ընտրեք բաժինը</option>
+                            <option selected="selected" value="12">Ընտրեք բաժինը</option>
                         </select>
                     }
-
-                </div>
-                <div class="form-group">
-                    <label class="text-left">Սլայդի համար ավելացնել</label>
-                    <input type="checkbox" asp-for="IfFavorite" style="height:30px;width:30px" />
-
                 </div>
 
                 <div class="form-group">
                     <input class="text-left" type="submit" value="Ավելացնել" />
                 </div>
-
-
             </form>
         </div>
     </div>
-
-
 </div>

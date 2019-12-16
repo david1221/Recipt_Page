@@ -1,17 +1,14 @@
-﻿@model ArticleP
-
-
-
+﻿@model BarArticleP
 
 <div class="row">
     <div class="col-lg-10">
         <H1 class="single-page-h1">Փոփոխել Բաղադրատոմս</H1>
 
         <div class="col-md-8 ">
-            <form asp-controller="Articles" asp-action="ArticlesEdit" method="post" enctype="multipart/form-data">
+            <form asp-controller="BarArticleP" asp-action="ArticlesEdit" method="post" enctype="multipart/form-data">
 
 
-                <input type="hidden" asp-for="ArticleId" />
+                <input type="hidden" asp-for="BarArticleId" />
                 <div asp-validation-summary="ModelOnly"></div>
 
 
@@ -33,7 +30,7 @@
                     </label>
 
                     <div>
-                        <textarea asp-for="Description" value="@Model.Description"  rows="10" cols="50" required></textarea>
+                        <textarea asp-for="Description" value="@Model.Description" rows="10" cols="50" required></textarea>
 
                     </div>
                     <span asp-validation-for="Description"></span>
@@ -47,17 +44,17 @@
                         }
                         <img class="single-page-img" name="model" asp-for="ImgGeneral" id="model" src="@imgsrc" alt="Alternate Text11" />
                     </div>
-                  
-                    
-                        <input type="file" name="image" asp-for="ImgGeneral" id="image">
-                    
-                    
+
+
+                    <input type="file" name="image" asp-for="ImgGeneral" id="image">
+
+
 
                 </div>
                 <div class="form-group">
 
 
-                    @{ <select asp-for="SubCategoryId" 
+                    @{ <select asp-for="BarCategoryId"
                                asp-items="@(new SelectList(ViewBag.Category,"SubCategoryId","Name"))">
 
                             <option>Ընտրել Բաժինը</option>
@@ -65,11 +62,7 @@
                     }
 
                 </div>
-                <div class="form-group">
-                    <label class="text-left">Սլայդի համար ավելացնել</label>
-                    <input type="checkbox"value="@Model.IfFavorite" asp-for="IfFavorite" style="height:30px;width:30px" />
-
-                </div>
+               
 
                 <div class="form-group">
                     <input class="text-left" type="submit" value="Փոփոխել" />

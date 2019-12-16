@@ -7,24 +7,23 @@ using System.Threading.Tasks;
 
 namespace ReceptsPage.Models
 {
-     public class BarArticleP
+    public class BarArticleP
     {
-        [Key ]
+        [Key]
         public int BarArticleId { get; set; }
 
-        [Required, MaxLength(50)]
+        [Required(ErrorMessage = "Լրացրեք դաշտը"), MaxLength(50)]
         public string Title { get; set; }
-        [Required(ErrorMessage = "Լրացրեք դաշտը")] 
+        [Required(ErrorMessage = "Լրացրեք դաշտը")]
         public string Description { get; set; }
         public DateTime? DateAdded { get; set; }
         public byte[] ImgGeneral { get; set; }
-
         public string Star { get; set; }
         public int? BarCategoryId { set; get; }
         public virtual BarCategory BarCategory { get; set; }
 
     }
-    
-   
+
+
 
 }

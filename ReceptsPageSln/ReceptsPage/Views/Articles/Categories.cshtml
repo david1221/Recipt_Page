@@ -2,19 +2,18 @@
 @model ReceptsPage.ViewModels.CategoriesArticlesView
 
 @{
-    ViewData["Title"] = "Categories";
+    ViewData["Title"] =@Model.SubCategoryByIdSingle ;
 }
 
 
 
 <div class="row">
-   
-        <h2 class="text-center category_title">@Model.SubCategoryByIdSingle</h2>
-    
+
+    <h2 class="text-center category_title">@Model.SubCategoryByIdSingle</h2>
+
     @foreach (var entity in Model.articlesRepozitory.Cast<ArticleP>())
     {
         <div class="left-up-col col-lg-6 ">
-
             <div class="content_left_up_text text-descr-gen text-descr-gen">
                 <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center"><h3>@entity.Title</h3></a>
                 <p>@entity.Description</p>
@@ -28,12 +27,9 @@
 
 
                         <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center"> <img class="img-thumbnail" src="@imgsrc" alt="Alternate Text11" /></a>
-                        }
                     }
+                }
             </div>
-
-
-
         </div>
     }
 
@@ -43,6 +39,4 @@
     {
         <pager class="pagination" list="@Model.articlesRepozitory" asp-action="Categories" asp-controller="Articles" asp-route-query="@Model.articlesRepozitory" />
     }
-
-
 </nav>

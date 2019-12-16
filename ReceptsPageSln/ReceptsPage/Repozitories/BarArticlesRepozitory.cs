@@ -27,9 +27,21 @@ namespace ReceptsPage.Repozitories
 
         public IQueryable<BarArticleP> BarCategoryById(int id)
         {
-            return _articlePContetxt.BarArticles.Where(c => c.BarCategoryId == id).Include(c => c.BarCategory);
+        
+            return _articlePContetxt.BarArticles.Where(c => c.BarCategoryId == id).Where(m=>m.ImgGeneral!=null).Include(c => c.BarCategory).OrderByDescending(x=>x.DateAdded);
         }
+        public string BarCategoryByIdSingle(int id)
+        {
+            try
+            {
+                return _articlePContetxt.BarCategories.Where(x => x.BarCategoryId == id).FirstOrDefault().Name;
+            }
+            catch (Exception)
+            {
 
+                return "Նման Բաժին գոյություն չունի";
+            }
+        }
         public void DeleteBarArticle(BarArticleP BarArticle)
         {
             _articlePContetxt.BarArticles.Remove(BarArticle);

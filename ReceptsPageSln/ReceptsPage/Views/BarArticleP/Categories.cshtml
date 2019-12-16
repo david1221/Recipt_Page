@@ -1,38 +1,40 @@
-﻿@model IQueryable<BarArticleP>
+﻿@model ReceptsPage.ViewModels.CategoriesBarArticlesView
 
 @{
-    if (Model.Any())
+    if (Model.BarCategoryByIdSingle.Any())
     {
-           ViewData["Title"] = Model.First().BarCategory.Name;
+        ViewData["Title"] = Model.BarArticlesRepozitory;
     }
- 
-
 }
 
 
+    <div class="row">
+        <h2 class="text-center category_title">@Model.BarCategoryByIdSingle</h2>
 
-<div class="row">
-    <h2 class="text-center category_title">@ViewBag.Name</h2>
-
-    @foreach (var entity in Model.Cast<BarArticleP>())
-    {
-        <div class="left-up-col col-lg-6 ">
-
-            <div class="content_left_up_text text-descr-gen text-descr-gen">
-                <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.BarArticleId" class="text-center"><h3>@entity.Title</h3></a>
-                <p>@entity.Description</p>
-            </div>
-            <div class="content-justify img-gen-size">
-                @{
+        @foreach (var entity in Model.BarArticlesRepozitory.Cast<BarArticleP>())
+        {
+    <div class="left-up-col col-lg-6 ">
+        <div class="content_left_up_text text-descr-gen text-descr-gen">
+            <a asp-area="" asp-controller="BarArticleP" asp-action="SinglePageBarArticleP" asp-route-id="@entity.BarArticleId" class="text-center"><h3>@entity.Title</h3></a>
+            <p>@entity.Description</p>
+        </div>
+        <div class="content-justify img-gen-size">
+            @{if (entity.ImgGeneral != null)
+                {
                     var base64 = Convert.ToBase64String(entity.ImgGeneral);
                     var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
+                    <a asp-area="" asp-controller="BarArticleP" asp-action="SinglePageBarArticleP" asp-route-id="@entity.BarArticleId" class="text-center"> <img class="img-thumbnail" src="@imgsrc" alt="Alternate Text11" /></a>
                 }
-                <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.BarArticleId" class="text-center"> <img class="img-thumbnail" src="@imgsrc" alt="Alternate Text11" /></a>
-            </div>
-
-
-
+            }
         </div>
+        <div class="text-center mt-4 btn-link "> <a asp-area="" style="color:dodgerblue" asp-controller="BarArticleP" asp-action="ArticlesEdit" asp-route-id="@entity.BarArticleId" class="text-center">Փոփոխել</a></div>
+    </div>
+           
+        }
+    </div>
+<nav aria-label="ArticleP Padding">
+    @if (Model.BarArticlesRepozitory.Any())
+    {
+        <pager class="pagination" list="@Model.BarArticlesRepozitory" asp-action="Categories" asp-controller="BarArticleP" asp-route-query="@Model.BarArticlesRepozitory" />
     }
-
-</div>
+</nav>

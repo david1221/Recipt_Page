@@ -26,7 +26,8 @@ namespace ReceptsPage.Models
         //}
         public IQueryable<ArticleP> SubCategoryById(int id)
         {
-            return _articlePContetxt.Articles.Where(x=>x.SubCategoryId==id).OrderByDescending(x => x.DateAdded).Include(i=>i.SubCategory);
+            
+                return _articlePContetxt.Articles.Where(x=>x.SubCategoryId==id).Where(m => m.ImgGeneral != null).OrderByDescending(x => x.DateAdded).Include(i=>i.SubCategory);
         }
 
 
@@ -35,15 +36,12 @@ namespace ReceptsPage.Models
             try
             {
                 return _articlePContetxt.SubCategories.Where(x => x.SubCategoryId == id).FirstOrDefault().Name;
-                
-            }
+                            }
             catch (Exception )
             {
 
                  return "Նման Բաժին գոյություն չունի";
             }
-               
-           
         }
 
         public IQueryable<SubCategory> SubCategories()

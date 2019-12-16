@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReceptsPage.Models;
 
 namespace ReceptsPage.Migrations
 {
     [DbContext(typeof(ArticlePContetxt))]
-    partial class ArticlePContetxtModelSnapshot : ModelSnapshot
+    [Migration("20191214115911__Init_V4_add_bar_categoryAll")]
+    partial class _Init_V4_add_bar_categoryAll
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

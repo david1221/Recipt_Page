@@ -83,7 +83,7 @@
                         @*</a>*@
                     </li>
                     <li><a asp-area="" asp-controller="Articles" asp-action="AddArticle">Ավելացնել բաղադրատոմս</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Մեր մասին</a></li>
+                    <li><a asp-area="" asp-controller="Articles" asp-action="About">Մեր մասին</a></li>
                 </ul>
             </div>
         </div>
@@ -132,14 +132,14 @@
 
 
                 <li>
-                    <a  asp-controller="BarArticleP" asp-action="Categories" asp-route-id="1">Ինչ եփել այսօր</a>
+                    <a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="1">Ինչ եփել այսօր</a>
                 </li>
                 <li>
-                    <a  asp-controller="BarArticleP" asp-action="Categories" asp-route-id="2">Տորթեր</a>
+                    <a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="2">Տորթեր</a>
                 </li>
-                <li> <a  asp-controller="BarArticleP" asp-action="Categories" asp-route-id="3">Թխվածքներ</a></li>
-                <li> <a  asp-controller="BarArticleP" asp-action="Categories" asp-route-id="4">Պիցաներ</a></li>
-                <li> <a  asp-controller="BarArticleP" asp-action="Categories" asp-route-id="5">Աղցաններ</a></li>
+                <li> <a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="3">Թխվածքներ</a></li>
+                <li> <a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="4">Պիցաներ</a></li>
+                <li> <a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="5">Աղցաններ</a></li>
                 <li>
 
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdownLeftBar">Առողջ ապրելակերպ</a>
@@ -160,7 +160,10 @@
 
 
             </ul>
-
+            <ul class="list-unstyled components">
+                <li>    <a asp-controller="BarArticleP" asp-action="AddBarArticle">Ավելացնել Բաղադրատոմս</a></li>
+            </ul>
+        
 
         </nav>
 

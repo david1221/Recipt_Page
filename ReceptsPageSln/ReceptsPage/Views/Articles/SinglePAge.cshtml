@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "SinglePage";
 }
-<div class="row">
+
     <div class="col-md-12 ">
 
         <h1 class="text-center single-page-h1">@Model.Title</h1>
@@ -11,13 +11,26 @@
 
             <div class="content-justify ">
                 @{
-                    var base64 = Convert.ToBase64String(Model.ImgGeneral);
-                    var imgsrc= string.Format("data:image/jpeg;base64,{0}",base64);
+                    var base64 = Convert.ToBase64String(Model.ImgGeneral ?? new byte[0]);
+                    var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
                 }
-                <img class="single-page-img" src="@imgsrc" alt="Alternate Text11" />
+                @if (!string.IsNullOrEmpty(base64))
+                {
+                    <img class="single-page-img" src="@imgsrc" />
+                }
+
             </div>
+           
 
         </div>
-
     </div>
-</div>
+    <div class="text-center">
+        <a class="text-center col-lg-11" style="margin:5px 0px" asp-controller="Articles" asp-action="ArticlesDelete" asp-route-id="@Model.ArticleId"> <input type="button" id="Submit1" value="Ջնջել բաղադրատոմսը" /></a>
+
+           
+           
+            @*@Html.ActionLink("Ջնջել բաղադրատոմսը", "ArticlesDelete", new { id = Model.ArticleId },
+
+               new { onclick = "return confirm('Are sure wants to delete?');" })*@
+       
+    </div>
