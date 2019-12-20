@@ -6,7 +6,8 @@
 <div class="col-md-12 ">
     <h1 class="text-center single-page-h1">@Model.Title</h1>
     <div class="col-lg-11 single-page-desc">
-        <p class="single-page-p">@Model.Description</p>
+     
+        <div class="single-page-p" style="white-space: pre-wrap;">@Model.Description</div>
         <div class="content-justify ">
             @{
                 var base64 = Convert.ToBase64String(Model.ImgGeneral ?? new byte[0]);

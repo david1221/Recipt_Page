@@ -27,7 +27,7 @@ namespace ReceptsPage.Models
         public IQueryable<ArticleP> SubCategoryById(int id)
         {
             
-                return _articlePContetxt.Articles.Where(x=>x.SubCategoryId==id).Where(m => m.ImgGeneral != null).OrderByDescending(x => x.DateAdded).Include(i=>i.SubCategory);
+                return _articlePContetxt.Articles.Where(x=>x.SubCategoryId==id).OrderByDescending(x => x.DateAdded).Include(i=>i.SubCategory);
         }
 
 
@@ -73,8 +73,22 @@ namespace ReceptsPage.Models
 
         public void DeleteArticle(ArticleP article)
         {
-            _articlePContetxt.Articles.Remove(article);
-            _articlePContetxt.SaveChanges();
+           
+            try
+            {
+                _articlePContetxt.Articles.Remove(article);
+                _articlePContetxt.SaveChanges();
+            }
+            catch (Exception)
+            {
+            }
+            
         }
+        //public IEnumerable<ArticleP> ArticlePsImage()
+        //{
+
+        //    var model = _articlePContetxt.Articles;
+        //    return model;
+        //}
     }
 }

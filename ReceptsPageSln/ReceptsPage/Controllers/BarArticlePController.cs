@@ -15,27 +15,47 @@ namespace ReceptsPage.Controllers
     public class BarArticlePController : Controller
     {
         private readonly IBarArticles _barArticlesRepozitory;
-        public BarArticlePController(IBarArticles articlesRepozitory)
+        private readonly IArticleAndBar _allArticlesRepozitory;
+        public BarArticlePController(IBarArticles articlesRepozitory, IArticleAndBar allRepozitory)
         {
             _barArticlesRepozitory = articlesRepozitory;
+            _allArticlesRepozitory = allRepozitory;
 
         }
         static byte[] imgBar; // for change image save the field ImgBar
         public IActionResult Categories(int id, int? page)     //IQuryable<BarArticleP> get a list BarArticleP of category
         {
-           
+            if (id!=9)
+            {
                 CategoriesBarArticlesView catedories = new CategoriesBarArticlesView()
                 {
                     BarCategoryByIdSingle = _barArticlesRepozitory.BarCategoryByIdSingle(id),
                     BarArticlesRepozitory = _barArticlesRepozitory.BarCategoryById(id).ToPagedList(page ?? 1, 8)
                 };
                 return View(catedories);
-            
+
+            }
+            else
+            {
+                return RedirectToAction("PageArticleImage", "BarArticleP");
+            }
+
         }
         public IActionResult SinglePageBarArticleP(int id)          //Single Page one BarArticle
         {
             BarArticleP model = id == default ? new BarArticleP() : _barArticlesRepozitory.BarGetArticlePById(id);
             return View(model);
+        }
+        public IActionResult PageArticleImage(int? page)          //Single Page one BarArticle
+        {
+            ImageArticlePage catedories = new ImageArticlePage()
+            {
+                ArticleImage = _allArticlesRepozitory.ArticleImage().ToPagedList(page ?? 1, 18),
+               // barArticleImage= _allArticlesRepozitory.BarArticleImage().ToPagedList(page ?? 1, 18)
+            };
+            return View(catedories);
+           
+           
         }
 
         public IActionResult AddBarArticle(int id)

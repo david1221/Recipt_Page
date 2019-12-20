@@ -14,5 +14,6 @@ namespace ReceptsPage.Interfaces
         void DeleteBarArticle(BarArticleP BarArticle);
         int SaveBarArticle(BarArticleP barArticleP);
         string BarCategoryByIdSingle(int id);
+       
     }
 }

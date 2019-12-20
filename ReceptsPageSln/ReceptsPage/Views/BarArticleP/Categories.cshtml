@@ -17,6 +17,7 @@
         <div class="content_left_up_text text-descr-gen text-descr-gen">
             <a asp-area="" asp-controller="BarArticleP" asp-action="SinglePageBarArticleP" asp-route-id="@entity.BarArticleId" class="text-center"><h3>@entity.Title</h3></a>
             <p>@entity.Description</p>
+            
         </div>
         <div class="content-justify img-gen-size">
             @{if (entity.ImgGeneral != null)
@@ -29,7 +30,7 @@
         </div>
         <div class="text-center mt-4 btn-link "> <a asp-area="" style="color:dodgerblue" asp-controller="BarArticleP" asp-action="ArticlesEdit" asp-route-id="@entity.BarArticleId" class="text-center">Փոփոխել</a></div>
     </div>
-           
+    
         }
     </div>
 <nav aria-label="ArticleP Padding">

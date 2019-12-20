@@ -45,7 +45,8 @@ namespace ReceptsPage
       
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IGetArticles, ArticlesRepozitory>();
-            services.AddScoped<IBarArticles, BarArticlesRepozitory>();
+            services.AddScoped<IBarArticles, BarArticlesRepozitory>(); 
+            services.AddScoped<IArticleAndBar, ArticleAndBarRepozitory>();
 
         }
 

@@ -20,5 +20,6 @@ namespace ReceptsPage.Interfaces
 
         void DeleteArticle(ArticleP article);
         string SubCategoryByIdSingle(int id);
+      
     }
 }

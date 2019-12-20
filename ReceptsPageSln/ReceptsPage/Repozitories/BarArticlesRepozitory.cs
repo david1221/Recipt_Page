@@ -28,7 +28,7 @@ namespace ReceptsPage.Repozitories
         public IQueryable<BarArticleP> BarCategoryById(int id)
         {
         
-            return _articlePContetxt.BarArticles.Where(c => c.BarCategoryId == id).Where(m=>m.ImgGeneral!=null).Include(c => c.BarCategory).OrderByDescending(x=>x.DateAdded);
+            return _articlePContetxt.BarArticles.Where(c => c.BarCategoryId == id).Include(c => c.BarCategory).OrderByDescending(x=>x.DateAdded);
         }
         public string BarCategoryByIdSingle(int id)
         {
@@ -62,6 +62,11 @@ namespace ReceptsPage.Repozitories
             return barArticleP.BarArticleId;
         }
 
-        
+        //public IEnumerable<BarArticleP> BarArticleImage()
+        //{
+          
+        //    var model =_articlePContetxt.BarArticles;
+        //    return model ;
+        //}
     }
 }

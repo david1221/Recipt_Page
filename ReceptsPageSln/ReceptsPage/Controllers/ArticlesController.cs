@@ -95,12 +95,22 @@ namespace ReceptsPage.Controllers
                 a.Add(new SubCategory() { Name = item.Name, SubCategoryId = item.SubCategoryId });
             }
             ViewBag.Category = a;
-            var selected = model.SubCategory.Name;
-            if (selected != null)
+            try
             {
-                model.SubCategory.Name = selected;
+                var selected = model.SubCategory.Name;
+                if (selected != null)
+                {
+                    model.SubCategory.Name = selected;
+                }
+                else model.SubCategory.Name = "all";
             }
-            else model.SubCategory.Name = "all";
+            catch (Exception)
+            {
+
+               
+            }
+            
+           
             //List<ArticleP> imglist = new List<ArticleP>(articlesRepozitory.GetArticles().ToArray().Length);
             //foreach (var item in imglist)
             //{
@@ -117,7 +127,7 @@ namespace ReceptsPage.Controllers
             if (ModelState.IsValid)
             {
                 model.DateAdded = DateTime.Now;
-                
+               
                 if (image != null)
                 {
                     if (image.Count > 0)
