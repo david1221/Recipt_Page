@@ -1,0 +1,21 @@
+﻿@model ReceptsPage.IdentityViewModels.EditUserViewModel
+@{
+    ViewBag.Title = "Փոփոխել օգտատիրոջ տվյալները";
+}
+<form asp-action="Edit" asp-controller="Users">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email" class="control-label">Էլ․ հասցե</label>
+        <input type="text" asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Year" class="control-label">Ծննդյան տարեթիվը</label>
+        <input type="number" asp-for="Year" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="պահպանել" class="btn btn-outline-secondary" />
+    </div>
+</form>

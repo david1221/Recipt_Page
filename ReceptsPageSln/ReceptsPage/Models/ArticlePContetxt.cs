@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ReceptsPage.ModelIdentity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ReceptsPage.Models
 {
-    public class ArticlePContetxt : IdentityDbContext<IdentityUser>
+    public class ArticlePContetxt : IdentityDbContext<AppUser,AppRole,int>
     {
 
 
@@ -24,7 +25,7 @@ namespace ReceptsPage.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<ArticleP>().Property(n => n.Title).IsRequired(true);
             modelBuilder.Entity<Category>().HasData(
                 new
                 {
@@ -67,7 +68,7 @@ namespace ReceptsPage.Models
                new { SubCategoryId = 14, Name = "Աղանդեր", CategoryId = 3 },
                new { SubCategoryId = 15, Name = "Մանկական կերակուր", CategoryId = 3 },
                new { SubCategoryId = 16, Name = "Նախաճաշ", CategoryId = 3 },
-               new { SubCategoryId = 17, Name = "Այլ", CategoryId =4 }
+               new { SubCategoryId = 17, Name = "Այլ", CategoryId = 4 }
             );
 
             modelBuilder.Entity<BarCategory>().HasData(

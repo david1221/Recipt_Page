@@ -7,15 +7,16 @@
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Migrations\20191123130315_Init_V1.cs" />
-    <Compile Remove="Migrations\20191123130315_Init_V1.Designer.cs" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
     <PackageReference Include="PagedList.Core.Mvc" Version="2.1.0" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />

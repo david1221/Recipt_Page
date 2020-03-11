@@ -12,7 +12,7 @@ namespace ReceptsPage.Models
         [Key ]
         public int ArticleId { get; set; }
 
-        [Required, MaxLength(50)]
+        [Required(ErrorMessage = "Լրացրեք դաշտը") , MaxLength(50)]
         public string Title { get; set; }
         [Required(ErrorMessage = "Լրացրեք դաշտը")] 
         public string Description { get; set; }

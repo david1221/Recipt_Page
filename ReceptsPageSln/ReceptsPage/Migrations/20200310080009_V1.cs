@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ReceptsPage.Migrations
 {
-    public partial class Init_V1 : Migration
+    public partial class V1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,8 @@ namespace ReceptsPage.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
@@ -26,7 +27,8 @@ namespace ReceptsPage.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -40,25 +42,18 @@ namespace ReceptsPage.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Year = table.Column<int>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    CategoryId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
-                });
+          
+           
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
@@ -66,7 +61,7 @@ namespace ReceptsPage.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RoleId = table.Column<string>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -87,7 +82,7 @@ namespace ReceptsPage.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -109,7 +104,7 @@ namespace ReceptsPage.Migrations
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,8 +121,8 @@ namespace ReceptsPage.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -150,7 +145,7 @@ namespace ReceptsPage.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)
@@ -166,93 +161,15 @@ namespace ReceptsPage.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "SubCategories",
-                columns: table => new
-                {
-                    SubCategoryId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubCategories", x => x.SubCategoryId);
-                    table.ForeignKey(
-                        name: "FK_SubCategories_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "CategoryId",
-                        onDelete: ReferentialAction.Cascade);
-                });
+          
 
-            migrationBuilder.CreateTable(
-                name: "Articles",
-                columns: table => new
-                {
-                    ArticleId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(maxLength: 50, nullable: false),
-                    Description = table.Column<string>(nullable: false),
-                    DateAdded = table.Column<DateTime>(nullable: true),
-                    ImgGeneral = table.Column<byte[]>(nullable: true),
-                    Star = table.Column<string>(nullable: true),
-                    SubCategoryId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Articles", x => x.ArticleId);
-                    table.ForeignKey(
-                        name: "FK_Articles_SubCategories_SubCategoryId",
-                        column: x => x.SubCategoryId,
-                        principalTable: "SubCategories",
-                        principalColumn: "SubCategoryId",
-                        onDelete: ReferentialAction.Restrict);
-                });
+          
 
-            migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "CategoryId", "Name" },
-                values: new object[] { 1, "Ազգային" });
+          
 
-            migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "CategoryId", "Name" },
-                values: new object[] { 2, "Տոնական" });
+        
 
-            migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "CategoryId", "Name" },
-                values: new object[] { 3, "Ամենօրյա" });
-
-            migrationBuilder.InsertData(
-                table: "SubCategories",
-                columns: new[] { "SubCategoryId", "CategoryId", "Name" },
-                values: new object[,]
-                {
-                    { 1, 1, "Հայկական խոհանոց" },
-                    { 2, 1, "Վրացական խոհանոց" },
-                    { 3, 1, "Իտալական խոհանոց" },
-                    { 4, 1, "Ֆրանսիական խոհանոց" },
-                    { 5, 1, "Արևելյան խոհանոց" },
-                    { 6, 1, "Չինական խոհանոց" },
-                    { 7, 1, "Մեքսիկական խոհանոց" },
-                    { 8, 2, "Ամանորյա" },
-                    { 9, 2, "Զատկի ուտեստներ" },
-                    { 10, 2, "Ծննդյան" },
-                    { 11, 2, "Պասի ուտեստներ" },
-                    { 12, 3, "Առաջին ուտեստ" },
-                    { 13, 3, "Տաք ճաշ" },
-                    { 14, 3, "Աղանդեր" },
-                    { 15, 3, "Մանկական կերակուր" },
-                    { 16, 3, "Նախաճաշ" }
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Articles_SubCategoryId",
-                table: "Articles",
-                column: "SubCategoryId");
-
+          
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -292,10 +209,6 @@ namespace ReceptsPage.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_SubCategories_CategoryId",
-                table: "SubCategories",
-                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -319,6 +232,9 @@ namespace ReceptsPage.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BarArticles");
+
+            migrationBuilder.DropTable(
                 name: "SubCategories");
 
             migrationBuilder.DropTable(
@@ -326,6 +242,9 @@ namespace ReceptsPage.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "BarCategories");
 
             migrationBuilder.DropTable(
                 name: "Categories");

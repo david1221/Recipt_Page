@@ -23,7 +23,7 @@ namespace ReceptsPage.Controllers
             this.articlesRepozitory = articlesRepozitory;
 
         }
-        static byte[] img;//for change image 
+      //  static byte[] img;//for change image 
 
         public IActionResult Index(int? page)
         {
@@ -115,13 +115,13 @@ namespace ReceptsPage.Controllers
             //foreach (var item in imglist)
             //{
             //    img = item.ImgGeneral;
-            img = model.ImgGeneral;
+          
             //}
             return View(model);
 
         }
         [HttpPost]
-        public async Task<IActionResult> ArticlesEdit(ArticleP model, List<IFormFile> image)
+        public async Task<IActionResult> ArticlesEdit(ArticleP model, List<IFormFile> image, byte[] model1)
         {
 
             if (ModelState.IsValid)
@@ -144,13 +144,13 @@ namespace ReceptsPage.Controllers
                             }
                         }
                     }
-                    else
-                    {
-                        if (model.ArticleId != default)
-                        {
-                            model.ImgGeneral = img;
-                        }
-                    }
+                    //else
+                    //{
+                    //    if (model.ArticleId != default)
+                    //    {
+                    //        model.ImgGeneral = img;
+                    //    }
+                    //}
                 }
                 articlesRepozitory.SaveArticle(model);
                 return RedirectToAction("Index");

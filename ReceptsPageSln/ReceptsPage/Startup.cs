@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReceptsPage.Interfaces;
+using ReceptsPage.ModelIdentity;
 using ReceptsPage.Models;
 using ReceptsPage.Repozitories;
 
@@ -28,6 +30,10 @@ namespace ReceptsPage
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<AppUser, AppRole>(opt=>
+            {
+                opt.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<ArticlePContetxt>();
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -42,7 +48,9 @@ namespace ReceptsPage
                 // "data source=DESKTOP-16VRELJ/SQLEXPRESS;initial catalog=Articles;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;"
                 options.UseSqlServer(Configuration.GetConnectionString("MyConnection"));
             });
-      
+            
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IGetArticles, ArticlesRepozitory>();
             services.AddScoped<IBarArticles, BarArticlesRepozitory>(); 
@@ -67,13 +75,16 @@ namespace ReceptsPage
             app.UseHttpsRedirection();
                 app.UseStaticFiles();
                 app.UseCookiePolicy();
-
-                app.UseMvc(routes =>
+            app.UseAuthentication();
+            app.UseMvc(routes =>
                 {
                     routes.MapRoute(
                         name: "default",
                         template: "{controller=Articles}/{action=Index}/{id?}");
                 });
-            }
+            
+          
+        }
+      
         }
     }

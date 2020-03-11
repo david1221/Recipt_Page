@@ -1,0 +1,23 @@
+﻿
+@model ReceptsPage.IdentityViewModels.CreateUserViewModel
+@{
+    ViewBag.Title = "Ավելացնել օգտատեր";
+}
+<form asp-action="Create" asp-controller="Users">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Email" class="control-label">Էլ․ հասցե</label>
+        <input type="text" asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Password" class="control-label">Գաղտնաբառ</label>
+        <input type="password" asp-for="Password" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Year" class="control-label">Ծննդյան տարեթիվը</label>
+        <input type="number" asp-for="Year" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Ավելացնել" class="btn btn-outline-secondary" />
+    </div>
+</form>
