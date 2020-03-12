@@ -23,7 +23,7 @@ namespace ReceptsPage.Controllers
             this.articlesRepozitory = articlesRepozitory;
 
         }
-      //  static byte[] img;//for change image 
+   
 
         public IActionResult Index(int? page)
         {
@@ -49,11 +49,7 @@ namespace ReceptsPage.Controllers
             };
             return View(cat);
         }
-        //public IActionResult Sessions()
-        //{   
-        //    var model = articlesRepozitory.GetArticles().Where(x=>x.TagsArticles.amanorya==1);
-        //    return View(model);
-        //}
+       
         public IActionResult SinglePage(int id)
         {
 
@@ -87,7 +83,7 @@ namespace ReceptsPage.Controllers
         }
         public IActionResult ArticlesEdit(int id)
         {
-            //либо создаем новую статью, либо выбираем существующую и передаем в качестве модели в представление
+           
             ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById((int)id);
             var a = new List<SubCategory>();
             foreach (var item in articlesRepozitory.SubCategories())
@@ -110,13 +106,6 @@ namespace ReceptsPage.Controllers
                
             }
             
-           
-            //List<ArticleP> imglist = new List<ArticleP>(articlesRepozitory.GetArticles().ToArray().Length);
-            //foreach (var item in imglist)
-            //{
-            //    img = item.ImgGeneral;
-          
-            //}
             return View(model);
 
         }
@@ -144,13 +133,7 @@ namespace ReceptsPage.Controllers
                             }
                         }
                     }
-                    //else
-                    //{
-                    //    if (model.ArticleId != default)
-                    //    {
-                    //        model.ImgGeneral = img;
-                    //    }
-                    //}
+                   
                 }
                 articlesRepozitory.SaveArticle(model);
                 return RedirectToAction("Index");
@@ -163,8 +146,7 @@ namespace ReceptsPage.Controllers
         {
             ArticleP model = articlesRepozitory.GetArticlePById(id);
             return View(model);
-            //articlesRepozitory.DeleteArticle(new ArticleP() { ArticleId = id });
-            //return RedirectToAction("Index");
+           
         }
         [HttpPost]
         public IActionResult ArticlesPostDelete(int id)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReceptsPage.IdentityViewModels;
@@ -9,6 +10,7 @@ using ReceptsPage.ModelIdentity;
 
 namespace ReceptsPage.Controllers
 {
+  
     public class UsersController : Controller
     {
         UserManager<AppUser> _userManager;
