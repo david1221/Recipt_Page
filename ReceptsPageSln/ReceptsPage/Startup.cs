@@ -33,6 +33,8 @@ namespace ReceptsPage
             services.AddIdentity<AppUser, AppRole>(opt=>
             {
                 opt.User.RequireUniqueEmail = true;
+                opt.Password.RequiredUniqueChars = 0;
+                opt.Password.RequireNonAlphanumeric = false;
             }).AddEntityFrameworkStores<ArticlePContetxt>();
             services.Configure<CookiePolicyOptions>(options =>
             {

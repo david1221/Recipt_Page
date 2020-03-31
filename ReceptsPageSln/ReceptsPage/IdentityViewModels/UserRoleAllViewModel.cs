@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using ReceptsPage.ModelIdentity;
+﻿using ReceptsPage.ModelIdentity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,17 +6,24 @@ using System.Threading.Tasks;
 
 namespace ReceptsPage.IdentityViewModels
 {
-    public class ChangeRoleViewModel
+    public class UserRoleAllViewModel
     {
         public int UserId { get; set; }
         public string UserEmail { get; set; }
+        public List<AppUser> AllUsers { get; set; }
+        public IList<string> UserRoles { get; set; }
+
         public List<AppRole> AllRoles { get; set; }
 
-        public IList<string> UserRoles { get; set; }
-        public ChangeRoleViewModel()
+
+        public UserRoleAllViewModel()
         {
-            AllRoles = new List<AppRole>();
+            AllUsers = new List<AppUser>();
             UserRoles = new List<string>();
+            AllRoles = new List<AppRole>();
+
+            
         }
+
     }
 }

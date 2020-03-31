@@ -3,7 +3,7 @@
     ViewBag.Title = "Օգտատերերի ցուցակ";
 }
 
-<a asp-action="Create">Ավելացնել օգտատեր</a>
+<a asp-action="Register" asp-controller="Account"><h1>Ավելացնել օգտատեր</h1></a>
 
 <table class="table">
     <tr><th>Email</th><th>Год</th><th></th></tr>
@@ -14,8 +14,8 @@
             <td>@user.Year</td>
             <td>
                 <form asp-action="Delete" asp-route-id="@user.Id" method="post">
-                    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@user.Id">ՓՈփխել</a>
-                    <a class="btn btn-sm btn-primary" asp-action="ChangePassword" asp-route-id="@user.Id">
+                    <a class="btn btn-sm btn-primary" asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id">ՓՈփխել</a>
+                    <a class="btn btn-sm btn-primary"asp-controller="Users"  asp-action="ChangePassword" asp-route-id="@user.Id">
                         Փոփոխել գաղտնաբառը</a>
                         <button type="submit" class="btn btn-sm btn-danger">
                             Ջնջել

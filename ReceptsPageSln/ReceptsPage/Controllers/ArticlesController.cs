@@ -11,6 +11,7 @@ using PagedList.Core;
 using ReceptsPage.ViewModels;
 using ReceptsPage.Interfaces;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ReceptsPage.Controllers
 {
@@ -58,7 +59,7 @@ namespace ReceptsPage.Controllers
             return View(model);
         }
 
-
+        [Authorize(Roles = "user")]
         public IActionResult AddArticle(int id)
         {
             ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById(id);
@@ -81,6 +82,7 @@ namespace ReceptsPage.Controllers
         {
             return View();
         }
+        [Authorize(Roles ="admin")]
         public IActionResult ArticlesEdit(int id)
         {
            
@@ -110,6 +112,7 @@ namespace ReceptsPage.Controllers
 
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ArticlesEdit(ArticleP model, List<IFormFile> image, byte[] model1)
         {
 
@@ -142,6 +145,7 @@ namespace ReceptsPage.Controllers
             return View(model);
         }
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult ArticlesDelete(int id)
         {
             ArticleP model = articlesRepozitory.GetArticlePById(id);
@@ -149,6 +153,7 @@ namespace ReceptsPage.Controllers
            
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult ArticlesPostDelete(int id)
         {
             articlesRepozitory.DeleteArticle(new ArticleP() { ArticleId = id });

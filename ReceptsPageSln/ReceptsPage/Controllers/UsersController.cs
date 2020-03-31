@@ -13,25 +13,29 @@ namespace ReceptsPage.Controllers
   
     public class UsersController : Controller
     {
-        UserManager<AppUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
-        public UsersController(UserManager<AppUser> userManager)
+        public UsersController(UserManager<AppUser> userManager,RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public IActionResult Index() => View(_userManager.Users.ToList());
 
-        public IActionResult Create() => View();
+        
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserViewModel model)
         {
             if (ModelState.IsValid)
             {
-                AppUser user = new AppUser { Email = model.Email, UserName = model.Email, Year = model.Year };
+                AppUser user = new AppUser { Email = model.Email, UserName = model.Email, Year = model.Year, };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+               var roleResult= await _userManager.AddToRoleAsync(user, "user");
+                if (result.Succeeded && roleResult.Succeeded)
                 {
                     return RedirectToAction("Index");
                 }

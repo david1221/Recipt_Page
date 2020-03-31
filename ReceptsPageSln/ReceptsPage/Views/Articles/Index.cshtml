@@ -71,50 +71,54 @@
     {
 
 
-        <div class="col-md-6 left-up-col">
-            <div class="text-center"> <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center">@entity.Title</a></div>
-            <div class="content_left_up_text text-descr-gen">
-                <p>@entity.Description</p>
-            </div>
-            <div class="content_left_up_type content-justify">
-                <div id="new_year_type">
-                    <p>
-                        @{string cat = "";
-                            if (entity.SubCategoryId != null)
-                            {
-                                int id = (int)entity.SubCategoryId;
-                                if (id != 17)
-                                {
-                                    cat = entity.SubCategory.Name;
-                                }<a asp-area="" asp-controller="Articles" asp-action="Categories" asp-route-id="@id">
-                                    @cat
-                                </a>
-                            }
-
-                        }
-                    </p>
-                </div>
-
-
-            </div>
-
-            <div class="content_left_up_comment content-justify">
-                <div class="content_left_up_star">
-
-                </div>
-            </div>
-            <div class="content-justify img-gen-size">
-                <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center">
-                    @{
-                        var base64 = Convert.ToBase64String(entity.ImgGeneral??new byte[0]);
-                        var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
-                    }
-                    <img src="@imgsrc" alt="Alternate Text11" />
-                </a>
-
-            </div>
-            <div class="text-center mt-4 btn-link "> <a asp-area="" style="color:dodgerblue" asp-controller="Articles" asp-action="Articlesedit" asp-route-id="@entity.ArticleId" class="text-center">Փոփոխել</a></div>
+    <div class="col-md-6 left-up-col">
+        <div class="text-center"> <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center title_article_style">@entity.Title</a></div>
+        <div class="content_left_up_text text-descr-gen">
+            <p>@entity.Description</p>
         </div>
+        <div class="content_left_up_type content-justify">
+            <div id="new_year_type">
+                <p>
+                    @{string cat = "";
+                        if (entity.SubCategoryId != null)
+                        {
+                            int id = (int)entity.SubCategoryId;
+                            if (id != 17)
+                            {
+                                cat = entity.SubCategory.Name;
+                            }<a asp-area="" asp-controller="Articles" asp-action="Categories" asp-route-id="@id">
+                                @cat
+                            </a>
+                        }
+
+                    }
+                </p>
+            </div>
+
+
+        </div>
+
+        <div class="content_left_up_comment content-justify">
+            <div class="content_left_up_star">
+
+            </div>
+        </div>
+        <div class="content-justify img-gen-size">
+            <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center">
+                @{
+                    var base64 = Convert.ToBase64String(entity.ImgGeneral ?? new byte[0]);
+                    var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
+                }
+                <img src="@imgsrc" alt="Alternate Text11" />
+            </a>
+
+        </div>
+        @if (User.IsInRole("admin"))
+        {
+            <div style="margin:3px;" class="text-center"> <a asp-area="" style="font-size:14px;color:#fff" asp-controller="Articles" asp-action="Articlesedit" asp-route-id="@entity.ArticleId" class="text-center btn btn-primary">Փոփոխել</a></div>
+        }
+
+    </div>
 
     }
 

@@ -1,6 +1,11 @@
 ﻿@model IEnumerable<ReceptsPage.ModelIdentity.AppUser>
 
-<h2>Օգտատերերի ցուցակ</h2>
+
+<div class="col-md-8 col-lg-8 col-xs-12 col-sm-8"><h3>Օգտատերերի ցուցակ</h3></div>
+<div class="col-md-2 col-lg-2 col-xs-6 col-sm-2"><h3><a class="btn btn-default" asp-action="Roles" asp-controller="Roles">Կարգավիճակ</a></h3></div>
+<div class="col-md-2 col-lg-2 col-xs-6 col-sm-2"><h3><a class="btn btn-default" asp-action="EditAll" asp-controller="Roles">"User" բոլորի համար</a></h3></div>
+
+
 <table class="table">
     @foreach (var user in Model)
     {

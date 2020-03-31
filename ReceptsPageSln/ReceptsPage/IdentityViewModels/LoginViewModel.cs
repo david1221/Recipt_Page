@@ -5,7 +5,7 @@ namespace ReceptsPage.IdentityViewModels
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "ԷԼ․ հասցե")]
+        [Display(Name = "Էլ․ հասցե")]
         public string Email { get; set; }
 
         [Required]

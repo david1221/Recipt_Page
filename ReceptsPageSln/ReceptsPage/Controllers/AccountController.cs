@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReceptsPage.IdentityViewModels;
@@ -9,15 +10,18 @@ using ReceptsPage.ModelIdentity;
 
 namespace ReceptsPage.Controllers
 {
+   
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
         [HttpGet]
         public IActionResult Register()
@@ -31,8 +35,9 @@ namespace ReceptsPage.Controllers
             {
                 AppUser user = new AppUser { Email = model.Email , UserName = model.Email, Year = model.Year };
                 // добавляем пользователя
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+                var roleResult = await _userManager.AddToRoleAsync(user, "user");
+                if (result.Succeeded && roleResult.Succeeded)
                 {
                     // установка куки
                     await _signInManager.SignInAsync(user, false);
@@ -70,7 +75,7 @@ namespace ReceptsPage.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Articles");
                     }
                 }
                 else
@@ -82,11 +87,12 @@ namespace ReceptsPage.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
             // удаляем аутентификационные куки
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Articles");
         }
     }
 }

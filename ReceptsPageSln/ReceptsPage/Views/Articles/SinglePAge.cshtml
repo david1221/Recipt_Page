@@ -3,34 +3,30 @@
     ViewData["Title"] = "SinglePage";
 }
 
-    <div class="col-md-12 ">
+<div class="col-md-12 ">
 
-        <h1 class="text-center single-page-h1">@Model.Title</h1>
-        <div class="col-lg-11 single-page-desc">
-            <div class="single-page-p" style="white-space: pre-wrap;">@Model.Description</div>
+    <h1 class="text-center single-page-h1">@Model.Title</h1>
+    <div class="col-lg-11 single-page-desc">
+        <div class="single-page-p" style="white-space: pre-wrap;">@Model.Description</div>
 
-            <div class="content-justify ">
-                @{
-                    var base64 = Convert.ToBase64String(Model.ImgGeneral ?? new byte[0]);
-                    var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
-                }
-                @if (!string.IsNullOrEmpty(base64))
-                {
-                    <img class="single-page-img" src="@imgsrc" />
-                }
-
-            </div>
-
+        <div class="content-justify ">
+            @{
+                var base64 = Convert.ToBase64String(Model.ImgGeneral ?? new byte[0]);
+                var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
+            }
+            @if (!string.IsNullOrEmpty(base64))
+            {
+                <img class="single-page-img" src="@imgsrc" />
+            }
 
         </div>
-    </div>
-    <div class="text-center">
-        <a class="text-center col-lg-11" style="margin:5px 0px" asp-controller="Articles" asp-action="ArticlesDelete" asp-route-id="@Model.ArticleId"> <input type="button" id="Submit1" value="Ջնջել բաղադրատոմսը" /></a>
 
-           
-           
-            @*@Html.ActionLink("Ջնջել բաղադրատոմսը", "ArticlesDelete", new { id = Model.ArticleId },
 
-               new { onclick = "return confirm('Are sure wants to delete?');" })*@
-       
     </div>
+</div> @if (User.IsInRole("admin"))
+{
+    <div class="text-center col-xs-6 h4">
+        <a class="text-left"  style="margin:5px 0px" asp-controller="Articles" asp-action="ArticlesDelete" asp-route-id="@Model.ArticleId"> <input class="btn btn-danger"  type="button" id="Submit1" value="Ջնջել բաղադրատոմսը" /></a>
+    </div>
+    <div class="text-center col-xs-6 h4 "> <a asp-area="" asp-controller="Articles" asp-action="Articlesedit" asp-route-id="@Model.ArticleId" class="text-right col-lg-11 btn btn-default">Փոփոխել</a></div>
+}

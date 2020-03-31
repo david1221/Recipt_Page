@@ -13,5 +13,6 @@ namespace ReceptsPage.ModelIdentity
         public AppRole(string name)
             : base(name)
         { }
+
     }
 }

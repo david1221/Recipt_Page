@@ -10,7 +10,8 @@
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
+    </script>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -38,7 +39,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                       
+
 
                         <div class="dropdown bajinnera openH">
                             <button class="btn  btn-default dropdown-toggle " type="button" data-toggle="dropdown" id="button-t" aria-expanded="false">
@@ -78,13 +79,59 @@
                                         <li><a tabindex="-1" asp-controller="Articles" asp-action="Categories" asp-route-id="16">Նախաճաշ</a></li>
                                     </ul>
                                 </li>
+
                             </ul>
+
                         </div>
                         @*</a>*@
                     </li>
-                    <li><a asp-area="" asp-controller="Articles" asp-action="AddArticle">Ավելացնել բաղադրատոմս</a></li>
-                    <li><a asp-area="" asp-controller="Articles" asp-action="About">Մեր մասին</a></li>
+                    @if (User.IsInRole("user"))
+                    {
+                        <li><a asp-area="" asp-controller="Articles" asp-action="AddArticle">Ավելացնել բաղադրատոմս</a></li>
+                    }
+
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">Մեր մասին</a></li>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li><a asp-area="" asp-controller="Roles" asp-action="Index">Ադմին</a></li>
+}
+
+
+
                 </ul>
+                <div style="float:right">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="dropdown bajinnera openH">
+                            <button class="btn  btn-default dropdown-toggle " type="button" data-toggle="dropdown" id="button-t" aria-expanded="false">
+                                @User.Identity.Name
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+
+                                    <a tabindex="-1" asp-action="Person" asp-controller="home">@User.Identity.Name</a>
+                                    <form method="post" asp-controller="Account" asp-action="Logout">
+                                        <input type="submit" id="submit_Logout" value="Ելք" />
+                                    </form>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="dropdown bajinnera openH">
+                            <a tabindex="-1" class="btn login-button" asp-action="Login" asp-controller="Account">
+                                Մուտք
+                            </a>
+                            <a tabindex="-1" class="btn login-button" asp-action="Register" asp-controller="Account">
+                                Գրանցվել
+                            </a>
+
+
+                        </div>
+                    }
+                </div>
+
             </div>
         </div>
     </nav>
@@ -114,7 +161,7 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-    @RenderSection("Scripts", required: false);
+    @RenderSection("Scripts", required: false)
 
     <div class="wrapper">
         <!-- Sidebar Holder -->
@@ -163,17 +210,24 @@
             <ul class="list-unstyled components">
                 <li>    <a asp-controller="BarArticleP" asp-action="AddBarArticle">Ավելացնել Բաղադրատոմս</a></li>
             </ul>
-        
+
 
         </nav>
 
         <!-- Page Content Holder -->
         <div id="content">
 
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
+            <nav class="navbar navbar-default " id="content_top_margin_0">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <script type="text/javascript">
+                        $('#content_top_margin_0').attr('id', 'content_top_margin_50');
+                    </script>
+                }
 
-                    <div class="navbar-header">
+                <div class="container-fluid ">
+
+                    <div class="navbar-header ">
                         <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn ">
                             <i class="glyphicon glyphicon-align-left"></i>
                             <span>Բացել ցանկը</span>
@@ -184,6 +238,7 @@
                             @RenderBody()
                         </div>
                         <div class="modal-footer"><p>Company © DaLA. All rights reserved.</p></div>
+
                         <hr />
 
 
@@ -198,6 +253,7 @@
 
 
         <div class="overlay "></div>
+
 
     </div>
 

@@ -5,22 +5,22 @@ namespace ReceptsPage.IdentityViewModels
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "Էլ․ հասցե")]
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = "Год рождения")]
+        [Display(Name = "Ծննդյան տարեթիվ")]
         public int Year { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
+        [Display(Name = "Գաղտնաբառ")]
         public string Password { get; set; }
 
         [Required]
-        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
+        [Compare("Password", ErrorMessage = "գաղտնաբառերը չեն համընկնում")]
         [DataType(DataType.Password)]
-        [Display(Name = "Подтвердить пароль")]
+        [Display(Name = "Հաստատել գաղտնաբառը")]
         public string PasswordConfirm { get; set; }
     }
 }

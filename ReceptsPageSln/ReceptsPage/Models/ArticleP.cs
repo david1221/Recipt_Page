@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReceptsPage.ModelIdentity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,6 +23,8 @@ namespace ReceptsPage.Models
        public bool IfFavorite { get; set; }
         public int? SubCategoryId { set; get; }
         public virtual SubCategory SubCategory { get; set; }
+        public AppUser AppUser { get; set; }
+        public bool AdminConfirm { get; set; }
       
     }
     

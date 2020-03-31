@@ -49,6 +49,7 @@ namespace ReceptsPage.Models
                 }
 
                 );
+           
             modelBuilder.Entity<SubCategory>().HasData(
                new { SubCategoryId = 1, Name = "Հայկական խոհանոց", CategoryId = 1 },
                new { SubCategoryId = 2, Name = "Վրացական խոհանոց", CategoryId = 1 },

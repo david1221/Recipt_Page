@@ -1,11 +1,12 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Person";
 }
-<h1> </h1>
+
 
 @if (User.Identity.IsAuthenticated)
 {
-    <p style="margin-top:20px;">@User.Identity.Name</p>
+    <h1>Անձնական էջ</h1>
+    <p>@User.Identity.Name</p>
 
     <form method="post" asp-controller="Account" asp-action="Logout">
         <input type="submit" value="Ելք" />
