@@ -1,4 +1,5 @@
-﻿using ReceptsPage.Models;
+﻿using ReceptsPage.ModelIdentity;
+using ReceptsPage.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace ReceptsPage.Interfaces
         void DeleteBarArticle(BarArticleP BarArticle);
         int SaveBarArticle(BarArticleP barArticleP);
         string BarCategoryByIdSingle(int id);
-       
+        IQueryable<AppUser> GetBarArticlesByUser();
+
+
     }
 }

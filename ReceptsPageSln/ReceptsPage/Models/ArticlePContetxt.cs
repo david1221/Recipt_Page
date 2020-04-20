@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ReceptsPage.ModelIdentity;
+using ReceptsPage.Models.Comments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +22,18 @@ namespace ReceptsPage.Models
 
         public DbSet<BarCategory> BarCategories { get; set; }
         public DbSet<BarArticleP> BarArticles { get; set; }
+        public DbSet<MainComment> MainComments { get; set; }
+        public DbSet<MainComment> mainComments { get; set; }
+      
+        public DbSet<AppUser> AppUsers { get; set; }
+       
+        public DbSet<ChildComment> ChildComments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ArticleP>().Property(n => n.Title).IsRequired(true);
+     
             modelBuilder.Entity<Category>().HasData(
                 new
                 {

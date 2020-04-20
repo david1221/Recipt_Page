@@ -16,8 +16,11 @@ namespace ReceptsPage.Models
         public string Name { get; set; }
 
         public List<BarArticleP> BarArticles { get; set; }
-       
-        
+
+        public BarCategory()
+        {
+            BarArticles = new List<BarArticleP>();
+        }
 
 
 

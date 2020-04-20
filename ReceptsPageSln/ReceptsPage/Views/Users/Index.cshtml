@@ -1,27 +1,43 @@
-﻿@model IEnumerable<ReceptsPage.ModelIdentity.AppUser>
+﻿@using PagedList.Core;
+@model IPagedList<ReceptsPage.ModelIdentity.AppUser>
 @{
     ViewBag.Title = "Օգտատերերի ցուցակ";
 }
+<div class="col-md-6 "><h3>Օգտատերերի ցուցակ (Ընդհանուր <i>@Model.Count</i>)</h3></div>
 
+<div class="col-md-2 "><h3><a class="btn btn-default" asp-action="AdminEdit" asp-controller="Roles">Ադմիններ</a></h3></div>
+<div class="col-md-2 "><h3><a class="btn btn-default" asp-action="Roles" asp-controller="Roles">Պաշտոններ</a></h3></div>
+<div class="col-md-2 "><h3><a class="btn btn-default" asp-action="EditAll" asp-controller="Roles">"User" բոլորի համար</a></h3></div>
 <a asp-action="Register" asp-controller="Account"><h1>Ավելացնել օգտատեր</h1></a>
 
 <table class="table">
-    <tr><th>Email</th><th>Год</th><th></th></tr>
+    <tr><th>Email</th><th></th></tr>
     @foreach (var user in Model)
     {
         <tr>
             <td>@user.Email</td>
-            <td>@user.Year</td>
+
             <td>
                 <form asp-action="Delete" asp-route-id="@user.Id" method="post">
-                    <a class="btn btn-sm btn-primary" asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id">ՓՈփխել</a>
-                    <a class="btn btn-sm btn-primary"asp-controller="Users"  asp-action="ChangePassword" asp-route-id="@user.Id">
-                        Փոփոխել գաղտնաբառը</a>
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            Ջնջել
-                        </button>
+
+                    <a class="btn btn-sm btn-default" asp-controller="Roles" asp-action="Edit" asp-route-UserId="@user.Id" style=" padding: 4px 9px 1px 9px; "><img src="~/images/role-icon-user.png" alt="Role User" title="Օգտագործողի մուտքի իրավունքը" width="23" height="25" /></a>
+                    <a class="btn btn-sm btn-primary" asp-controller="Users" asp-action="UserPageForChange" asp-route-UserId="@user.Id"><img src="~/images/editing-user.png" alt="Change User" title="փոփոխել" width="19" height="19" /></a>
+                    <button type="submit" class="btn btn-sm btn-danger"><img src="~/images/Icon-Delete.png" alt="Delete user" title="Ջնջել օգտագործողին" width="19" height="19" /></button>
+                    @if (user.PasswordHash != null)
+                    {
+                        <a class="btn btn-sm btn-primary" asp-controller="Users" asp-action="ChangePasswordForUser" asp-route-id="@user.Id">Փոփոխել գաղտնաբառը</a>
+                    }
+                    else
+                    {
+                        <input type="button" value="Գրանցվել է արտաքին սերվերով" class="btn btn-sm btn-primary" />
+                    }
                 </form>
             </td>
         </tr>
     }
 </table>
+<nav aria-label="ArticleP Padding">
+
+    <pager class="pagination" list="@Model" asp-action="Index" asp-controller="Users" asp-route-query="@Model" />
+
+</nav>

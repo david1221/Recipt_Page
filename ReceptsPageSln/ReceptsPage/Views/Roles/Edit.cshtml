@@ -5,10 +5,19 @@
 <form asp-action="Edit" method="post">
     <input type="hidden" name="userId" value="@Model.UserId" />
     <div class="form-group">
-        @foreach (var role in Model.AllRoles)
-        {
-            <input type="checkbox" name="roles" value="@role.Name" @(Model.UserRoles.Contains(role.Name) ? "checked=checked" : "") />@role.Name <br />
-        }
+        <ul style="list-style-type:none;">
+            @foreach (var role in Model.AllRoles)
+            {   
+               
+                <li>
+                    <label for="@role.Id" style="cursor:pointer;width:auto;">
+                        <input type="checkbox" style="margin-right:10px;" name="roles" id="@role.Id" value="@role.Name" @(Model.UserRoles.Contains(role.Name) ? "checked=checked" : "") />@role.Name <br />
+                    </label>
+                </li>
+                
+            }
+        </ul>
     </div>
     <button type="submit" class="btn btn-primary">Պահպանել</button>
+    <a class="btn btn-default" asp-action="Index" asp-controller="Roles">Չեղարկել</a>
 </form>

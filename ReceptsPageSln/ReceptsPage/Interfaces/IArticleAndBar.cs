@@ -1,4 +1,5 @@
 ﻿using ReceptsPage.Models;
+using ReceptsPage.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace ReceptsPage.Interfaces
     {
        // IEnumerable<BarArticleP> BarArticleImage();
         IEnumerable<ArticleP> ArticleImage();
+        IEnumerable<BarArticleP> BarArticleImage();
+        IEnumerable<ImageAll> ImagesAll();
     }
 }

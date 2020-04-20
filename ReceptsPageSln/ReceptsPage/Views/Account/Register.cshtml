@@ -5,22 +5,27 @@
     <div>
         <label asp-for="Email"></label>
         <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
+    
     <div>
-        <label asp-for="Year"></label>
-        <input asp-for="Year" />
-        <span asp-validation-for="Year"></span>
+        <label asp-for="Gender"></label>
+        <label id="Gender1" style=" width: auto; cursor:pointer;"><input type="radio" value="Իգական" id="Gender1" asp-for="Gender" style="margin-left:8px;" />Իգական</label>
+         <label id="Gender1" style=" width: auto; cursor:pointer;"><input type="radio" value="Արական" id="Gender2" asp-for="Gender" style="margin-left:8px;" />Արական</label>
+
+
+        <span class="text-danger" asp-validation-for="Gender"></span>
     </div>
+
     <div>
         <label asp-for="Password"></label>
         <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
+        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="PasswordConfirm"></label>
         <input asp-for="PasswordConfirm" />
-        <span asp-validation-for="PasswordConfirm"></span>
+        <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
     </div>
     <div>
         <input type="submit" value="Գրանցվել" />

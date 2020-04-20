@@ -1,0 +1,288 @@
+﻿@model ReceptsPage.ModelIdentity.AppUser
+@{
+    ViewData["Title"] = "Person";
+}
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h1>Անձնական էջ</h1>
+    <form asp-action="Person" asp-controller="Users" method="post" enctype="multipart/form-data">
+
+        <div class="form-group row ">
+
+
+            @{
+                var base64 = Convert.ToBase64String(Model.PhotoUser ?? new byte[0]);
+                var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
+            }
+            @if (!string.IsNullOrEmpty(base64))
+            {
+                <div class="col-sm-2">
+                    <img src="@imgsrc" id="UserImage" width="100" height="100" />
+
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-2">
+                    <img src="~/images/userNonImage.png" id="UserImage" width="100" height="100" />
+                </div><div class="col-sm-4">
+                    <div class="custom-file">
+                        <input type="file" id="imageUser" name="imageUser" class="form-control custom-file-input">
+
+                        <label class="custom-file-label">Ավելացնել լուսանկար...</label>
+
+                    </div>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(base64))
+            {<div class="col-sm-4">
+                    <div class="custom-file">
+                        <input type="file" id="imageUser" name="imageUser" class="form-control custom-file-input">
+
+                        <label class="custom-file-label">Փոխել լուսանկարը</label>
+
+                    </div>
+                    <input type="hidden" name="PhotoUser" asp-for="PhotoUser" id="PhotoUser" value="@imgsrc">
+                    <div class="form-group">
+                        <label class="text-left" style="font-weight: 100;color: #6f7579;">Պահպանել առնաց նկար</label>
+                        <input type="checkbox" id="imageNon" name="imageNon" style="height:15px;width:15px" />
+
+                    </div>
+                </div>
+            }
+        </div>
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).next('.custom-file-label').html("");
+                });
+            });
+        </script>
+        <table class="table  table-responsive">
+            <tr>
+                <td>Անուն</td>
+                @if (Model.FirstName != null)
+                {
+                    @*<td> <input class="btn active" type="button" asp-for="FirstName" id="buttonFirstName" value="@Model.FirstName" /></td>*@
+                    <td><label class="control-label"><span class="text-left FirstNameButtonChangeType ">@Model.FirstName</span></label>  </td>
+                    <td><input type="button" @*onclick="changeTypeButtonFirstName()"*@ class="btn  btn-primary editFirstNameButton" value="Խմբագրել" /></td>
+                    <td>
+                    </td>
+                }
+                else
+                {
+
+                    <td><label class="control-label"><span class="text-left FirstNameButtonChangeType "></span></label>  </td>
+                    <td> <input type="button" id="edit" class="btn  btn-primary active editFirstNameButton" value="Ավելացնել Անուն" /></td>
+                    <td></td>
+                }
+
+            </tr>
+            <tr>
+                <td>Ազգանուն</td>
+                @if (Model.LastName != null)
+                {
+
+                    <td><label class="control-label" asp-for="LastName" value="@Model.LastName"><span class="text-left LastNameButtonChangeType ">@Model.LastName</span></label>  </td>
+                    <td><input type="button" class="btn  btn-primary editLastNameButton" value="Խմբագրել" /></td>
+                    <td>
+                    </td>
+                }
+                else
+                {
+
+                    <td><label class="control-label"><span class="text-left LastNameButtonChangeType "></span></label>  </td>
+                    <td> <input type="button" id="edit" class="btn  btn-primary active editLastNameButton" value="Ավելացնել Ազգանուն" /></td>
+                    <td></td>
+                }
+            </tr>
+            <tr>
+                <td>Սեռը</td>
+                @if (Model.Gender != null && Model.Gender != "0")
+                {
+
+                    <td><label class="control-label"><span class="text-left GenderButtonChangeType ">@Model.Gender</span></label>  </td>
+                    <td><input type="button" class="btn  btn-primary editGenderButton" value="Խմբագրել" /></td>
+                    <td>
+                    </td>
+                }
+                else
+                {
+
+                    <td><label class="control-label"><span class="text-left GenderButtonChangeType "></span></label>  </td>
+                    <td> <input type="button" id="edit" class="btn  btn-primary active editGenderButton" value="Խմբագրել" /></td>
+                    <td></td>
+                }
+
+            </tr>
+            <tr>
+                <td>Ծննդյան ամսաթիվ</td>
+                @if (Model.Birthdate != null)
+                {
+
+                    <td><label class="control-label"><span class="text-center BirthdateButtonChangeType ">@Model.Birthdate.Value.ToShortDateString()</span></label>  </td>
+                    <td><input type="button" class="btn  btn-primary editBirthdateButton" value="Խմբագրել" /></td>
+                    <td>
+                    </td>
+                }
+                else
+                {
+
+                    <td><label class="control-label"><span class="text-left BirthdateButtonChangeType "></span></label>  </td>
+                    <td> <input type="button" id="edit" class="btn  btn-primary active editBirthdateButton" value="Ավելացնել Ծննդյան ամսաթիվը" /></td>
+                    <td></td>
+                }
+            </tr>
+            <tr>
+                <td>Էլեկտրոնային հասցե </td>
+                <td><b> @User.Identity.Name</b></td>
+                <td></td>
+                <td>
+
+                    @if (Model.EmailConfirmed)
+                    {
+                        <input type="button" style="cursor: auto" class="btn btn-default active" value="էլ․ հասցեն հաստատված է" />
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="ConfirmEmailRequest">
+                            <input class="btn btn-primary" type="button" OnClick="return alert('Ստուգեք Ձեր էլ․ հասցեն')" value="Հաստատել  էլ․ հասցեն" />
+                        </a>
+
+                        
+
+                    }
+
+                </td>
+            </tr>
+            <tr>
+                <td>Բջջային հեռախոսահամար</td>
+                @if (Model.PhoneNumber != null)
+                {
+                    <td><label class="control-label"><span style="margin-right7px;" class="text-left PhoneNumberButtonChangeType ">@Model.PhoneNumber</span></label><span style="color:darkred"> @ViewBag.phone</span> </td>
+                    <td><input type="button" class="btn  btn-primary editPhoneNumberButton" value="Խմբագրել" /></td>
+                    @if (Model.PhoneNumberConfirmed)
+                    {
+                        <td><input type="button" class="btn btn-default active" style="cursor: auto" value="Հեռախոսահամարը  հաստատված է" /></td>
+                    }
+                    else
+                    {
+                        <td><input type="button" class="btn btn-primary active" value="Հաստատել hեռախոսահամարը" /></td>
+                    }
+                }
+                else
+                {
+
+                    <td><label class="control-label"><span class="text-left PhoneNumberButtonChangeType "></span></label>  </td>
+                    <td> <input type="button" id="edit" class="btn  btn-primary active editPhoneNumberButton" value="Ավելացնել բջջային հեռխոսահամար" /></td>
+                    <td></td>
+                }
+            </tr>
+            <tr>
+                <td>Իմ Բաղադրատոմսերը</td>
+
+
+                <td colspan="3">
+                    @if (ViewBag.countArticle > 0)
+                    {
+                        <a asp-action="PersonArticles" asp-route-userId="@Model.Id" class="btn btn-primary"> Իմ բաղադրատոմսերը թվով @ViewBag.countArticle</a>
+                    }
+                    else
+                    {
+                        <input class="btn btn-primary" type="button" value="Դուք ավելացված բաղադրատոմս չունեք" />
+                    }
+                </td>
+
+            </tr>
+            <tr>
+                <td>Հավանած Բաղադրատոմսերը</td>
+
+
+                <td colspan="3">
+                    @if (ViewBag.countArticle > 0)
+                    {
+                        <a asp-action="PersonArticles" class="btn btn-primary"> Իմ բաղադրատոմսերը թվով @ViewBag.countArticle</a>
+                    }
+                    else
+                    {
+                        <input class="btn btn-primary" type="button" value="Դուք Հավանած բաղադրատոմս չունեք" />
+                    }
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="4"> <input type="submit" class="btn btn-default" value="Պահպանել փոփոխությունները" /></td>
+            </tr>
+
+            <tr>
+                <td colspan="4" style="margin-top:15px"> <a asp-action="ChangePassword"  asp-controller="Users" class="btn btn-primary">Փոխել գաղտնաբառը</a></td>
+            </tr>
+        </table>
+        <input type="hidden" name="FirstName" value="@Model.FirstName" />
+        <input type="hidden" name="LastName" value="@Model.LastName" />
+        <input type="hidden" name="Birthdate" value="@Model.Birthdate" />
+        <input type="hidden" name="PhoneNumber" value="@Model.PhoneNumber" />
+        <input type="hidden" name="Gender" value="@Model.Gender" />
+
+    </form>
+
+
+    <form method="post" asp-controller="Account" asp-action="Logout">
+        <input class="btn btn-primary" type="submit" style="margin-left:9px;" value="Ելք Հաշվից" />
+    </form>
+
+}
+else
+{
+    <a class="btn btn-default" asp-controller="Account" asp-action="Login">Մուտք</a>
+    <a class="btn btn-default" asp-controller="Account" asp-action="Register">Գրանցվել</a>
+}
+<script type="text/javascript">
+
+    //function changeTypeButtonFirstName() {
+    //    document.getElementById('buttonFirstName').type = 'text';
+    //}
+    //function changeTypeButton() {
+    //    document.getElementById('buttonNumber').type = 'text';
+    //}
+
+
+</script>
+<script>
+    $('.editFirstNameButton').click(function () {
+        var text = $('.FirstNameButtonChangeType').text();
+        var input = $('<input type="text" style="width:140px;text-align:left;" class="btn" name="FirstName" value="' + text + '" />')
+        $('.FirstNameButtonChangeType').text('').append(input);
+    });
+    $('.editLastNameButton').click(function () {
+        var text = $('.LastNameButtonChangeType').text();
+        var input = $('<input type="text" style="width:140px;text-align:left;" class="btn" name="LastName"  value="' + text + '" />')
+        $('.LastNameButtonChangeType').text('').append(input);
+    });
+    $('.editBirthdateButton').click(function () {
+        var text = $('.BirthdateButtonChangeType').text();
+        var input = $('<input type="date" style="width:150px;text-align:center;" class="btn" name="Birthdate" " value="' + text + '" />')
+        $('.BirthdateButtonChangeType').text('').append(input);
+    });
+    $('.editPhoneNumberButton').click(function () {
+        var text = $('.PhoneNumberButtonChangeType').text();
+        if (text==null) {
+            var input = $('<input type="text" style="width:140px;text-align:left;" class="btn" name="PhoneNumber" " value="Նշված հեռախոսահամարը արդեն զբաղված է" />')
+        }
+        var input = $('<input type="text" style="width:140px;text-align:left;" class="btn" name="PhoneNumber" " value="' + text + '" />')
+        $('.PhoneNumberButtonChangeType').text('').append(input);
+    });
+    $('.editGenderButton').click(function () {
+        var text = $('.GenderButtonChangeType').text();
+        var input = $(' <label for="Gender1" style="cursor:pointer;"><input type="radio" id="Gender1" value="Իգական"  name="Gender"  style="margin-left:8px;" />Իգական</label><label for="Gender2" style="margin-bottom: 0; padding-bottom: 5px;cursor:pointer;"><input type="radio" value="Արական"  id="Gender2" name="Gender" style="margin-left:8px;" />Արական</label>')
+        $('.GenderButtonChangeType').text('').append(input);
+    });
+
+
+</script>

@@ -1,4 +1,5 @@
 ﻿using ReceptsPage.ModelIdentity;
+using ReceptsPage.Models.Comments;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,7 +26,13 @@ namespace ReceptsPage.Models
         public virtual SubCategory SubCategory { get; set; }
         public AppUser AppUser { get; set; }
         public bool AdminConfirm { get; set; }
-      
+       public List<MainComment> mainComments { get; set; }
+        public ArticleP()
+        {
+            mainComments = new List<MainComment>();
+            AppUser = new AppUser();
+
+        }
     }
     
    

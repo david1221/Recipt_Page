@@ -1,6 +1,9 @@
 ﻿
+body {
+    background: #d3e6d7 !important;
+}
 .navbar-btn {
-    margin-top: 70px;
+    margin-top: 75px;
     padding-left: 10px;
     background-color: #88d622;
     border: none;
@@ -158,6 +161,7 @@ a {
     position: absolute;
     top: 0;
     right: 0;
+    background: #d3e6d7;
 }
 
 .overlay.active {
@@ -203,7 +207,7 @@ a {
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-    margin-top: 80px !important
+    margin-top: 85px !important
 }
 
 .content_left_up_type div {

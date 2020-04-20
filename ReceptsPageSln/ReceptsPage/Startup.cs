@@ -35,7 +35,7 @@ namespace ReceptsPage
                 opt.User.RequireUniqueEmail = true;
                 opt.Password.RequiredUniqueChars = 0;
                 opt.Password.RequireNonAlphanumeric = false;
-            }).AddEntityFrameworkStores<ArticlePContetxt>();
+            }).AddEntityFrameworkStores<ArticlePContetxt>().AddDefaultTokenProviders();  
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -54,9 +54,22 @@ namespace ReceptsPage
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddScoped<IGetArticles, ArticlesRepozitory>();
             services.AddScoped<IBarArticles, BarArticlesRepozitory>(); 
             services.AddScoped<IArticleAndBar, ArticleAndBarRepozitory>();
+            services.AddScoped<IGetComments, CommentRepozitory>();
+
+
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "267845699502-93k5p9c36ghv8v001mv6j8djmuvl0vg0.apps.googleusercontent.com";
+                options.ClientSecret = "FVPqqBgjmU_2LNemUbY8MJUZ";
+
+            }).AddFacebook(options=> {
+                options.AppId = "3237336539652232";
+                options.AppSecret = "1eb970fe446f6b4c303bfc5ca5996ca0";
+            });
 
         }
 

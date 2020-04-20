@@ -1,9 +1,14 @@
-﻿@model List<UserRoleAllViewModel>
+﻿@model UserRoleAllViewModel
 @{
     ViewData["Title"] = "EditRoelsAll";
 }
-
+<div class="row">
+    <div class="col-sm-2 "><h3><a class="btn btn-default" asp-action="AdminEdit" asp-controller="Roles">Ադմիններ</a></h3></div>
+    <div class="col-sm-2 "><h3><a class="btn btn-default" asp-action="Roles" asp-controller="Roles">Պաշտոններ</a></h3></div>
+    <div class="col-sm-2 "><h3><a class="btn btn-default" asp-action="EditAll" asp-controller="Roles">"User" բոլորի համար</a></h3></div>
+</div>
 <h2>Կարգավիճակ "User"-ի համար</h2>
+<h4 style="background: #88d622;padding: 6px; width:fit-content ; border-radius: 6px;"> Ընդհանուր <i>@Model.AllUsers.Count</i> գրանցված օգտատեր,որից "user" է @Model.AllUsersRoleUser օգտատեր</h4>
 <script>
     function toggle(source) {
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -12,6 +17,7 @@
                 checkboxes[i].checked = source.checked;
         }
     }
+
 </script>
 
 <br />
@@ -20,9 +26,9 @@
 
     <table>
         <tr>
-            <td style="padding:6px 15px 6px 6px"></td>
+            <td style="padding: 6px 15px 6px 6px"></td>
 
-            <td style="padding:6px 15px 6px 6px">User</td>
+            <td style="padding:6px 15px 6px 6px">User </td>
         </tr>
         <tr>
 
@@ -30,23 +36,23 @@
                 <b>Ընտրել բոլորը</b>
             </td>
 
-            <td style="padding:6px 15px 6px 6px;text-align: center"><input type="checkbox" onclick="toggle(this);" /></td>
+            <td style="padding:6px 15px 6px 6px;text-align: center"><input type="checkbox"  onclick="toggle(this);" /></td>
         </tr>
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.AllUsersPage)
         {
 
 
             <tr>
 
                 <td style="padding:6px 15px 6px 6px">
-                    @item.AllUsers.FirstOrDefault(u => u.Id == item.UserId)
+                    <a class="btn btn-primary" style="width:260px;text-align: left" title="Դեպի տվյալ օգտատեր" asp-action="UserPageForChange" asp-controller="Users" asp-route-userId="@item.Id">@item.Email</a>
 
                 </td>
 
                 <td style="padding:6px 15px 6px 6px;text-align: center">
-                    <input type="checkbox" name="userId" value="@item.UserId" @(item.UserRoles.Contains("user") ? "checked=checked" : "") />
-
+                    <input type="checkbox" name="userId" value="@item.Id" @(Model.userRoles.FirstOrDefault(u => u.Id == item.Id).UserRoles.Contains("user") ? "checked=checked" : "") />
+                    <input type="hidden" name="userId1" value="@item.Id" />
                 </td>
             </tr>
 
@@ -58,5 +64,10 @@
 
 
     <button type="submit" class="btn btn-default">Պահպանել</button>
-    <a class="btn btn-default" asp-action="Index" asp-controller="Roles">Չեղարկել</a>
+    <a class="btn btn-primary" asp-action="Index" asp-controller="Users">Չեղարկել</a>
 </form>
+<nav aria-label="ArticleP Padding">
+
+    <pager class="pagination" list="@Model.AllUsersPage" asp-action="EditAll" asp-controller="Roles" asp-route-query="@Model.AllUsersPage" />
+
+</nav>

@@ -1,4 +1,5 @@
-﻿@model ReceptsPage.ViewModels.ImageArticlePage
+﻿@using PagedList.Core
+@model IPagedList<ReceptsPage.ViewModels.ImageAll>
 
 @{
     
@@ -10,16 +11,16 @@
 <div class="row">
 
 
-    @foreach (var entity in Model.ArticleImage.Cast<ArticleP>())
+    @foreach (var entity in Model.Cast<ImageAll>())
     {
         <div class="left-up-col col-lg-4 ">
 
             <div class="content-justify img-gen-size">
-                @{if (entity.ImgGeneral != null)
+                @{if (entity.image != null)
                     {
-                        var base64 = Convert.ToBase64String(entity.ImgGeneral);
+                        var base64 = Convert.ToBase64String(entity.image);
                         var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
-                        <a asp-area="" asp-controller="Articles" asp-action="SinglePAge" asp-route-id="@entity.ArticleId" class="text-center"> <img class="img-thumbnail" src="@imgsrc" alt="Alternate Text11" title="@entity.Title" /></a>
+                        <a  asp-controller="@entity.category" asp-action="@entity.action" asp-route-id="@entity.ArticleId" class="text-center"> <img class="img-thumbnail" src="@imgsrc"  title="@entity.Title" /></a>
                     }
                 }
             </div>
@@ -31,6 +32,6 @@
 <nav aria-label="ArticleP Padding">
 
     
-    <pager class="pagination" list="@Model.ArticleImage" asp-action="PageArticleImage" asp-controller="BarArticleP" asp-route-query="@Model.ArticleImage" />
+    <pager class="pagination" list="@Model"  asp-action="PageArticleImage" asp-controller="BarArticleP" asp-route-query="@Model" />
    
 </nav>

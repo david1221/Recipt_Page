@@ -1,4 +1,5 @@
-﻿using ReceptsPage.ModelIdentity;
+﻿using PagedList.Core;
+using ReceptsPage.ModelIdentity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,21 +9,20 @@ namespace ReceptsPage.IdentityViewModels
 {
     public class UserRoleAllViewModel
     {
-        public int UserId { get; set; }
-        public string UserEmail { get; set; }
-        public List<AppUser> AllUsers { get; set; }
-        public IList<string> UserRoles { get; set; }
 
-        public List<AppRole> AllRoles { get; set; }
+        public string UserEmail { get; set; }
+        public IPagedList<AppUser> AllUsersPage { get; set; }
+        public List<AppUser> AllUsers { get; set; }
+        public int AllUsersRoleUser { get; set; }
+
+        public List<UserRolesOnlyViewModel> userRoles { get; set; }
+
 
 
         public UserRoleAllViewModel()
         {
+            userRoles = new List<UserRolesOnlyViewModel>();
             AllUsers = new List<AppUser>();
-            UserRoles = new List<string>();
-            AllRoles = new List<AppRole>();
-
-            
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using ReceptsPage.Models;
+﻿using ReceptsPage.ModelIdentity;
+using ReceptsPage.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace ReceptsPage.Interfaces
 
         void DeleteArticle(ArticleP article);
         string SubCategoryByIdSingle(int id);
-      
+         IQueryable<AppUser> GetArticlesByUser();
+
     }
 }

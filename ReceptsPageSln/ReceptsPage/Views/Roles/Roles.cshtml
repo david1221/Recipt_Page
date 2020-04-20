@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<ReceptsPage.ModelIdentity.AppRole>
-
+<div class="row">
+    <div class="col-sm-2 "><h3><a class="btn btn-default" asp-action="AdminEdit" asp-controller="Roles">Ադմիններ</a></h3></div>
+    <div class="col-sm-2 "><h3><a class="btn btn-default" asp-action="EditAll" asp-controller="Roles">"User" բոլորի համար</a></h3></div>
+</div>
 <h2>Դերերի ցուցակ</h2>
 <table class="table">
     @foreach (var role in Model)
@@ -16,5 +19,5 @@
         </tr>
     }
 </table>
-<a class="btn btn-default"  asp-action="Create">Ավելացնել դեր</a>
-<a class="btn btn-default"  asp-action="UserList">Օգտատերերի ցուցակ</a>
+<a class="btn btn-default" asp-action="Create">Ավելացնել դեր</a>
+<a class="btn btn-default" asp-action="Index" asp-controller="Users">Օգտատերերի ցուցակ</a>

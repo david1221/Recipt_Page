@@ -8,31 +8,59 @@
 }
 
 
-    <div class="row">
-        <h2 class="text-center category_title">@Model.BarCategoryByIdSingle</h2>
+<div class="row">
+    <h2 class="text-center category_title">@Model.BarCategoryByIdSingle</h2>
 
-        @foreach (var entity in Model.BarArticlesRepozitory.Cast<BarArticleP>())
-        {
-    <div class="left-up-col col-lg-6 ">
-        <div class="content_left_up_text text-descr-gen text-descr-gen">
-            <a asp-area="" asp-controller="BarArticleP" asp-action="SinglePageBarArticleP" asp-route-id="@entity.BarArticleId" class="text-center"><h3>@entity.Title</h3></a>
-            <p>@entity.Description</p>
+    @foreach (var entity in Model.BarArticlesRepozitory.Cast<BarArticleP>())
+    {
+
+        <div class="col-md-6 left-up-col">
+
+
+            <div class=col-md-12>
+                <h5 class="text-right" style="color:cadetblue;margin:0;">@entity.DateAdded.Value.ToString("yyyy-MM-dd HH:mm tt")</h5>
+            </div>
+            <div class="text-center"> <a asp-area="" asp-controller="BarArticleP" asp-action="SinglePageBarArticleP" asp-route-id="@entity.BarArticleId" class="text-center title_article_style">@entity.Title</a></div>
+            <div class="content_left_up_text text-descr-gen">
+                <p>@entity.Description</p>
+            </div>
+
+
+            <div class="content_left_up_comment content-justify">
+                <div class="content_left_up_star">
+
+                </div>
+            </div>
+            <div class="content-justify img-gen-size" style="height:236px;">
+                <a asp-area="" asp-controller="BarArticleP" asp-action="SinglePageBarArticleP" asp-route-id="@entity.BarArticleId" class="text-center">
+                    @{var imgsrc = "";
+
+                        if (entity.ImgGeneral == null)
+                        {
+                            //imgsrc = ViewBag.imgPath;
+                            imgsrc = "\\images\\default.jpg";
+                        }
+                        else
+                        {
+                            var base64 = Convert.ToBase64String(entity.ImgGeneral ?? new byte[0]);
+                            imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
+                        }
+                    }
+                    <img src="@imgsrc" alt="Առանց նկար" />
+                </a>
+
+            </div>
+            @if (User.IsInRole("admin"))
+            {
+                <div style="margin:3px;" class="text-center"> <a asp-area="" style="font-size:14px;color:#fff" asp-controller="BarArticleP" asp-action="BarArticlesEdit" asp-route-id="@entity.BarArticleId" class="text-center btn btn-primary">Փոփոխել</a></div>
+            }
+
+
             
         </div>
-        <div class="content-justify img-gen-size">
-            @{if (entity.ImgGeneral != null)
-                {
-                    var base64 = Convert.ToBase64String(entity.ImgGeneral);
-                    var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
-                    <a asp-area="" asp-controller="BarArticleP" asp-action="SinglePageBarArticleP" asp-route-id="@entity.BarArticleId" class="text-center"> <img class="img-thumbnail" src="@imgsrc" alt="Alternate Text11" /></a>
-                }
-            }
-        </div>
-        <div class="text-center mt-4 btn-link "> <a asp-area="" style="color:dodgerblue" asp-controller="BarArticleP" asp-action="ArticlesEdit" asp-route-id="@entity.BarArticleId" class="text-center">Փոփոխել</a></div>
-    </div>
-    
-        }
-    </div>
+
+    }
+</div>
 <nav aria-label="ArticleP Padding">
     @if (Model.BarArticlesRepozitory.Any())
     {

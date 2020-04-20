@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ReceptsPage.Interfaces;
+using ReceptsPage.ModelIdentity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +9,25 @@ using System.Threading.Tasks;
 
 namespace ReceptsPage.Models
 {
-    public class ArticlesRepozitory: IGetArticles
+    public class ArticlesRepozitory : IGetArticles
     {
         private readonly ArticlePContetxt _articlePContetxt;
-        public ArticlesRepozitory(ArticlePContetxt articlePContetxt)
+        private readonly UserManager<AppUser> appUsers;
+
+        public ArticlesRepozitory(ArticlePContetxt articlePContetxt, UserManager<AppUser> appUsers)
         {
             _articlePContetxt = articlePContetxt;
+            this.appUsers = appUsers;
         }
         public IQueryable<ArticleP> GetArticles()
         {
-            return _articlePContetxt.Articles.OrderByDescending(x => x.DateAdded.Value).Include(x=>x.SubCategory);
+            return _articlePContetxt.Articles.OrderByDescending(x => x.DateAdded.Value).Include(x => x.SubCategory).Include(x => x.AppUser).Include(c => c.mainComments);
+
+        }
+        public IQueryable<AppUser> GetArticlesByUser()
+        {
+            //return appUsers.OrderByDescending(x => x.DateAdded.Value).Include(x => x.SubCategory).Include(x => x.AppUser);
+            return _articlePContetxt.AppUsers.Include(mc => mc.MainMomments).Include(cc => cc.ChildComments).Include(a => a.Articles).ThenInclude(s => s.SubCategory);
 
         }
         //public IQueryable<Category> GetArticlesBySession(int a)
@@ -26,21 +37,21 @@ namespace ReceptsPage.Models
         //}
         public IQueryable<ArticleP> SubCategoryById(int id)
         {
-            
-                return _articlePContetxt.Articles.Where(x=>x.SubCategoryId==id).OrderByDescending(x => x.DateAdded).Include(i=>i.SubCategory);
+
+            return _articlePContetxt.Articles.Where(x => x.SubCategoryId == id).OrderByDescending(x => x.DateAdded).Include(i => i.SubCategory);
         }
 
 
-       public string SubCategoryByIdSingle(int id)
+        public string SubCategoryByIdSingle(int id)
         {
             try
             {
                 return _articlePContetxt.SubCategories.Where(x => x.SubCategoryId == id).FirstOrDefault().Name;
-                            }
-            catch (Exception )
+            }
+            catch (Exception)
             {
 
-                 return "Նման Բաժին գոյություն չունի";
+                return "Նման Բաժին գոյություն չունի";
             }
         }
 
@@ -51,11 +62,11 @@ namespace ReceptsPage.Models
 
         public ArticleP GetArticlePById(int id)
         {
-            
+
             {
-                return _articlePContetxt.Articles.Include(i=>i.SubCategory).FirstOrDefault(x => x.ArticleId == id);
+                return _articlePContetxt.Articles.Include(x => x.SubCategory).Include(x => x.AppUser).FirstOrDefault(x => x.ArticleId == id);
             }
-           
+
         }
 
         public int SaveArticle(ArticleP articleP)
@@ -73,7 +84,7 @@ namespace ReceptsPage.Models
 
         public void DeleteArticle(ArticleP article)
         {
-           
+
             try
             {
                 _articlePContetxt.Articles.Remove(article);
@@ -82,7 +93,7 @@ namespace ReceptsPage.Models
             catch (Exception)
             {
             }
-            
+
         }
         //public IEnumerable<ArticleP> ArticlePsImage()
         //{

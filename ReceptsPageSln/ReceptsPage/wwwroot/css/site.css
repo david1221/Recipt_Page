@@ -1,9 +1,9 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+﻿3 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
 body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: #f7fff8;
+    background: #d3e6d7 !important;
 }
 
 /* Wrapping element */
@@ -11,6 +11,7 @@ body {
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    background: #dcf1e4;
 }
 
 /* Carousel */
@@ -146,7 +147,7 @@ ul.dropdown-menu ul.dropdown-menu {
     }
 
 
-@media screen and (min-width: 768px) and (max-width: 991px) {
+@media screen and (min-width: 768px) and (max-width: 1200px) {
     #content_top_margin_50 {
         top: 50px;
     }
@@ -170,3 +171,6 @@ ul.dropdown-menu ul.dropdown-menu {
         background-color: transparent;
     }
 
+.control-label .FirstNameButtonChangeType .LastNameButtonChangeType .BirthdateButtonChangeType ․PhoneNumberButtonChangeType .GenderButtonChangeType {
+    display: inline-block;
+}

@@ -7,6 +7,8 @@
     <title>@ViewData["Title"] - Hamex_Xohanoc</title>
     <link rel="stylesheet" href="~/css/style3.css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta property="fb:app_id" content="3237336539652232" />
+
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -25,6 +27,8 @@
     </environment>
 </head>
 <body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hy_AM/sdk.js#xfbml=1&version=v6.0&appId=3237336539652232&autoLogAppEvents=1"></script>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -93,8 +97,23 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">Մեր մասին</a></li>
                     @if (User.IsInRole("admin"))
                     {
-                        <li><a asp-area="" asp-controller="Roles" asp-action="Index">Ադմին</a></li>
-}
+
+
+                        <li>
+                            <div class="dropdown bajinnera openH">
+                                <button class="btn  btn-default dropdown-toggle " type="button" data-toggle="dropdown" id="button-t" aria-expanded="false">
+                                    Ադմին
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-submenu"><a tabindex="-1" asp-controller="Users" asp-action="Index">Users</a></li>
+                                    <li class="dropdown-submenu"><a tabindex="-1" asp-controller="Roles" asp-action="Roles">Roles</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+
+                    }
 
 
 
@@ -107,10 +126,15 @@
                                 @User.Identity.Name
                                 <span class="caret"></span>
                             </button>
+                            <img src="@Url.Action("Photo", "Users", new { UserId = User.Identity.Name })" style="border-radius:50%" width="40" height="40" />
                             <ul class="dropdown-menu">
                                 <li class="dropdown-submenu">
 
-                                    <a tabindex="-1" asp-action="Person" asp-controller="home">@User.Identity.Name</a>
+                                    <a tabindex="-1" asp-action="Person" asp-controller="Users">Անձնական էջ</a>
+                                    @if (User.IsInRole("admin"))
+                                    {
+                                        <a tabindex="-1" asp-action="IndexNonConfirm" asp-controller="Articles">Օգտատիրոջ կողմից ավելացված</a>
+                                    }
                                     <form method="post" asp-controller="Account" asp-action="Logout">
                                         <input type="submit" id="submit_Logout" value="Ելք" />
                                     </form>
@@ -199,7 +223,7 @@
                 <li class="active">
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdownLeftBar">Այլ</a>
                     <ul class="collapse list-unstyled dropdown-menu-left-bar" id="homeSubmenu">
-                        <li><a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="9">Նկարներ</a></li>
+                        <li><a asp-controller="BarArticleP" asp-action="PageArticleImage">Նկարներ</a></li>
                         <li><a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="10">Վիդեոներ</a></li>
                         <li><a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="11">Ռեստորաններ</a></li>
                     </ul>
@@ -207,9 +231,13 @@
 
 
             </ul>
-            <ul class="list-unstyled components">
-                <li>    <a asp-controller="BarArticleP" asp-action="AddBarArticle">Ավելացնել Բաղադրատոմս</a></li>
-            </ul>
+            @if (User.IsInRole("user") || User.IsInRole("admin"))
+            {
+                <ul class="list-unstyled components">
+                    <li>    <a asp-controller="BarArticleP" asp-action="AddBarArticle">Ավելացնել Բաղադրատոմս</a></li>
+                </ul>
+            }
+
 
 
         </nav>
@@ -237,6 +265,7 @@
                         <div class="row">
                             @RenderBody()
                         </div>
+
                         <div class="modal-footer"><p>Company © DaLA. All rights reserved.</p></div>
 
                         <hr />

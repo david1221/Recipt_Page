@@ -1,0 +1,119 @@
+﻿@model BarArticleP
+
+
+
+
+<div class="row">
+    <div class="col-lg-10">
+        <H1 class="single-page-h1">Փոփոխել Բաղադրատոմս</H1>
+
+        <div class="col-md-8 ">
+            <form asp-controller="BarArticles" asp-action="BarArticlesEdit" method="post" enctype="multipart/form-data">
+
+
+                <input type="hidden" asp-for="BarArticleId" />
+                <input type="hidden" name="userName" value="@Model.AppUser.Email" />
+                @if (User.IsInRole("admin"))
+                {
+                    <input type="hidden" name="ArticleUser" value="@Model.AppUser.Email" />
+                }
+                else
+                {
+                    <input type="hidden" name="ArticleUser" value="aaa" />
+                }
+
+
+                <div asp-validation-summary="ModelOnly"></div>
+
+
+
+                <div class="form-group">
+                    <label asp-for="Title" class="text-left">
+                        Անվանումը
+                    </label>
+                    <div>
+                        <input asp-for="Title" type="text" value="@Model.Title" required autocomplete="off" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description" class="text-left">
+                        Նկարագիրը
+                    </label>
+
+                    <div>
+                        <textarea asp-for="Description" value="@Model.Description" rows="10" cols="50" required></textarea>
+
+                    </div>
+                    <span asp-validation-for="Description"></span>
+
+                </div>
+                <div class="from-group">
+                    <div class="content-justify ">
+
+                        @{
+                            var base64 = Convert.ToBase64String(Model.ImgGeneral ?? new byte[0]);
+                            var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
+                        }
+                        @if (!string.IsNullOrEmpty(base64))
+                        {
+                            <img class="single-page-img" src="@imgsrc" />
+                            <input type="hidden" class="single-page-img" asp-for="ImgGeneral" style="margin-bottom:30px;">
+
+                        }
+
+                    </div>
+                    <div class="col-sm-6">
+                        <img src="/images/uploadButton.png" id="upfile1" style="cursor:pointer;width:250px;" />
+                        <input type="file" id="image" name="image" style="display:none" />
+                    </div>
+                    <script>
+                        $("#upfile1").click(function () {
+                            $("#image").trigger('click');
+                        });</script>
+                    @if (!string.IsNullOrEmpty(base64))
+                    {
+                        <div class="col-sm-6">
+                            <div class="form-group">
+
+                                <label class="text-left" style="font-weight: 100;color: #6f7579;">Պահպանել առնաց նկար</label>
+                                <input type="checkbox" id="imageNon" name="imageNon" style="height:20px;width:20px" />
+
+                            </div>
+                        </div>}
+
+                </div>
+                <div class="form-group">
+
+
+                    @{ <select asp-for="BarCategoryId"
+                               asp-items="@(new SelectList(ViewBag.Category,"BarCategoryId","Name"))">
+
+                            <option>Ընտրել Բաժինը</option>
+                        </select>
+                    }
+
+                </div>
+                @if (User.IsInRole("admin"))
+                {
+
+                    <div class="form-group">
+                        <label class="text-left">Ավելացնել ցանկոմ երևալու համար</label>
+                        <input type="checkbox" asp-for="AdminConfirm" style="height:30px;width:30px" />
+
+                    </div>
+                }
+                <div class="form-group">
+                    <input class="text-left btn btn-default" type="submit" value="Փոփոխել" />
+                    <a class="text-left btn btn-default" asp-action="index" asp-controller="Articles">Չեղարկել</a>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+
+</div>

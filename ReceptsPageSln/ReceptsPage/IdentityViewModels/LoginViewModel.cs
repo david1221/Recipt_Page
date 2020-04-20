@@ -1,14 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authentication;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ReceptsPage.IdentityViewModels
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Գրել Էլ․հասցեն")]
         [Display(Name = "Էլ․ հասցե")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Գրել գաղտնաբառը")]
         [DataType(DataType.Password)]
         [Display(Name = "Գաղտնաբառ")]
         public string Password { get; set; }
@@ -17,6 +19,12 @@ namespace ReceptsPage.IdentityViewModels
         public bool RememberMe { get; set; }
 
         public string ReturnUrl { get; set; }
+
+        public List<AuthenticationScheme> ExternalLogins { get; set; }
+        public LoginViewModel()
+        {
+            ExternalLogins = new List<AuthenticationScheme>();
+        }
     }
 
 }

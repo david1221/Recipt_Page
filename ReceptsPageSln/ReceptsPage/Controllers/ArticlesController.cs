@@ -12,114 +12,143 @@ using ReceptsPage.ViewModels;
 using ReceptsPage.Interfaces;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using ReceptsPage.ModelIdentity;
+using Microsoft.AspNetCore.Hosting;
+using ReceptsPage.Models.Comments;
+using ReceptsPage.CommentViewModels;
 
 namespace ReceptsPage.Controllers
 {
     public class ArticlesController : Controller
     {
-
         private readonly IGetArticles articlesRepozitory;
-        public ArticlesController(IGetArticles articlesRepozitory)
+        private readonly UserManager<AppUser> userManager;
+        private readonly IHostingEnvironment iHostingEnvironment;
+        private readonly IGetComments _commentsRepoziory;
+
+        public ArticlesController(IGetArticles articlesRepozitory, UserManager<AppUser> userManager, IGetComments GetComments, IHostingEnvironment IHostingEnvironment)
         {
             this.articlesRepozitory = articlesRepozitory;
-
+            this.userManager = userManager;
+            iHostingEnvironment = IHostingEnvironment;
+            _commentsRepoziory = GetComments;
         }
-   
+
+        /// <summary>
+        /// Index PAge
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
 
         public IActionResult Index(int? page)
         {
             IndexSlideArticles indexSlide = new IndexSlideArticles
             {
                 articlesRepozitory = articlesRepozitory,
-                GetArticles = articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null).ToPagedList(page ?? 1, 8),
+                GetArticles = articlesRepozitory.GetArticles().Where(x => x.AdminConfirm == true).ToPagedList(page ?? 1, 8),
                 GetArticlesSlide = articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null)
             };
-
-
+            // ViewBag.imgPath = Path.Combine(iHostingEnvironment.WebRootPath, @"images\default.jpg");
 
             return View(indexSlide);
         }
+        /// <summary>
+        /// articles page added from user
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "admin")]
+        public IActionResult IndexNonConfirm(int? page)
+        {
+            IndexSlideArticles indexSlide = new IndexSlideArticles
+            {
+                articlesRepozitory = articlesRepozitory,
+                GetArticles = articlesRepozitory.GetArticles().Where(x => x.AdminConfirm == false).ToPagedList(page ?? 1, 8),
+                GetArticlesSlide = articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null)
+            };
+
+            return View(indexSlide);
+        }
+        /// <summary>
+        /// Category Page for Article
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
         public IActionResult Categories(int id, int? page)
         {
             CategoriesArticlesView cat = new CategoriesArticlesView
             {
                 //ViewBag.Name = articlesRepozitory.SubCategoryByIdSingle(id);
 
-                articlesRepozitory = articlesRepozitory.SubCategoryById(id).ToPagedList(page ?? 1, 8),
+                articlesRepozitory = articlesRepozitory.SubCategoryById(id).Where(x => x.AdminConfirm == true).ToPagedList(page ?? 1, 8),
                 SubCategoryByIdSingle = articlesRepozitory.SubCategoryByIdSingle(id)
             };
             return View(cat);
         }
-       
+        /// <summary>
+        /// Single Page Article
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult SinglePage(int id)
         {
-
-            ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById(id);
-
-            return View(model);
-        }
-
-        [Authorize(Roles = "user")]
-        public IActionResult AddArticle(int id)
-        {
-            ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById(id);
-
-
-            var a = new List<SubCategory>();
-            foreach (var item in articlesRepozitory.SubCategories())
-            {
-                a.Add(new SubCategory() { Name = item.Name, SubCategoryId = item.SubCategoryId });
-            }
-            ViewBag.Category = a;
-
-            return View(model);
-        }
-
-
-
-
-        public IActionResult About()
-        {
-            return View();
-        }
-        [Authorize(Roles ="admin")]
-        public IActionResult ArticlesEdit(int id)
-        {
-           
-            ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById((int)id);
-            var a = new List<SubCategory>();
-            foreach (var item in articlesRepozitory.SubCategories())
-            {
-                a.Add(new SubCategory() { Name = item.Name, SubCategoryId = item.SubCategoryId });
-            }
-            ViewBag.Category = a;
             try
             {
-                var selected = model.SubCategory.Name;
-                if (selected != null)
+                ArticleP model = articlesRepozitory.GetArticlePById(id);
+                SinglePageVieModel singlePageVieModel = new SinglePageVieModel();
+                singlePageVieModel.articleP = model;
+               // singlePageVieModel.mainComments = _commentsRepoziory.GetAllMainComments(model.ArticleId);
+                if (User.IsInRole("user") || model.AdminConfirm == true)
                 {
-                    model.SubCategory.Name = selected;
+
+                    return View(singlePageVieModel);
                 }
-                else model.SubCategory.Name = "all";
+                else return NotFound();
+
             }
             catch (Exception)
             {
-
-               
+                RedirectToAction("Index", "Articles");
             }
-            
-            return View(model);
+            return NotFound();
 
         }
-        [HttpPost]
-        [Authorize(Roles = "admin")]
-        public async Task<IActionResult> ArticlesEdit(ArticleP model, List<IFormFile> image, byte[] model1)
+        /// <summary>
+        /// Add Article Get method
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "user")]
+        public IActionResult AddArticle(int id)
         {
 
+            ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById(id);
+            var selectList = new List<SubCategory>();
+            foreach (var item in articlesRepozitory.SubCategories())
+            {
+                selectList.Add(new SubCategory() { Name = item.Name, SubCategoryId = item.SubCategoryId });
+            }
+            ViewBag.Category = selectList;
+
+            return View(model);
+        }
+        /// <summary>
+        /// Add article Post method
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="image"></param>
+        /// <param name="model1"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "user")]
+        public async Task<IActionResult> AddArticle(ArticleP model, List<IFormFile> image)
+        {
             if (ModelState.IsValid)
             {
                 model.DateAdded = DateTime.Now;
-               
+                model.AppUser = userManager.FindByNameAsync(User.Identity.Name).Result;
                 if (image != null)
                 {
                     if (image.Count > 0)
@@ -136,28 +165,248 @@ namespace ReceptsPage.Controllers
                             }
                         }
                     }
-                   
+                    //else
+                    //{
+                    //    var imgPath = Path.Combine(iHostingEnvironment.WebRootPath, @"images\default.jpg");
+                    //    byte[] buffer = null;
+                    //    using (FileStream fs = new FileStream(imgPath, FileMode.Open, FileAccess.Read))
+                    //    {
+                    //        buffer = new byte[fs.Length];
+                    //        fs.Read(buffer, 0, (int)fs.Length);
+                    //        model.ImgGeneral = buffer;
+                    //    }
+                    //}
                 }
+
                 articlesRepozitory.SaveArticle(model);
                 return RedirectToAction("Index");
             }
-
             return View(model);
         }
+        /// <summary>
+        /// Edit Article Get method
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
+        [Authorize(Roles = "admin,user")]
+        public IActionResult ArticlesEdit(int id, string userName)
+        {
+            if ((User.IsInRole("admin") || User.Identity.Name == userName) && (articlesRepozitory.GetArticlesByUser().FirstOrDefault(u => u.Email == User.Identity.Name) == articlesRepozitory.GetArticlePById(id).AppUser) || (User.IsInRole("admin")))
+            {
+                ArticleP model = id == default ? new ArticleP() : articlesRepozitory.GetArticlePById((int)id);
+                var a = new List<SubCategory>();
+                foreach (var item in articlesRepozitory.SubCategories())
+                {
+                    a.Add(new SubCategory() { Name = item.Name, SubCategoryId = item.SubCategoryId });
+                }
+                ViewBag.Category = a;
+                try
+                {
+                    var selected = model.SubCategory.Name;
+                    if (selected != null)
+                    {
+                        model.SubCategory.Name = selected;
+                    }
+                    else model.SubCategory.Name = "all";
+                }
+                catch (Exception)
+                { }
+
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Articles");
+            }
+
+        }
+        /// <summary>
+        /// Edit Article Post method
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="image"></param>
+        /// <param name="model1"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "user,admin")]
+        public async Task<IActionResult> ArticlesEdit(ArticleP model, List<IFormFile> image, string userName, string ArticleUser, string imageNon)
+        {
+            if (User.IsInRole("admin") || User.Identity.Name == userName)
+            {
+                if (ModelState.IsValid)
+                {
+                    model.DateAdded = DateTime.Now;
+                    if (User.IsInRole("admin"))
+                    {
+                        AppUser user = userManager.FindByNameAsync(ArticleUser).Result;
+                        if (user!=null)
+                        {
+                            model.AppUser = user;
+                        }
+                    }
+                    else
+                    {
+                        model.AppUser = userManager.FindByNameAsync(User.Identity.Name).Result;
+
+                    }
+
+                    if (image != null && imageNon != "on")
+                    {
+                        if (image.Count > 0)
+                        {
+                            foreach (var item in image)
+                            {
+                                if (item.Length > 0)
+                                {
+                                    using (var stream = new MemoryStream())
+                                    {
+                                        await item.CopyToAsync(stream);
+                                        model.ImgGeneral = stream.ToArray();
+                                    }
+                                }
+                            }
+                        }
+
+                        //else
+                        //{
+                        //    var imgPath = Path.Combine(iHostingEnvironment.WebRootPath, @"images\default.jpg");
+                        //    byte[] buffer = null;
+                        //    using (FileStream fs = new FileStream(imgPath, FileMode.Open, FileAccess.Read))
+                        //    {
+                        //        buffer = new byte[fs.Length];
+                        //        fs.Read(buffer, 0, (int)fs.Length);
+                        //        model.ImgGeneral = buffer;
+                        //    }
+                        //}
+                    }
+                    else
+                    {
+                        model.ImgGeneral = null;
+                    }
+                    articlesRepozitory.SaveArticle(model);
+                    return RedirectToAction("Index");
+                }
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Articles");
+            }
+
+
+        }
+        /// <summary>
+        /// Confirm Article By Admin
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="image"></param>
+        /// <param name="model1"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public IActionResult ArticlesConfirmByAdmin(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                ArticleP model = articlesRepozitory.GetArticlePById(id);
+                model.AdminConfirm = true;
+                articlesRepozitory.SaveArticle(model);
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index", "Articles");
+        }
+
+        /// <summary>
+        /// Delete Article Get method
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "admin")]
         public IActionResult ArticlesDelete(int id)
         {
             ArticleP model = articlesRepozitory.GetArticlePById(id);
             return View(model);
-           
+
         }
+        /// <summary>
+        /// Delete Article Post method
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "admin")]
         public IActionResult ArticlesPostDelete(int id)
         {
             articlesRepozitory.DeleteArticle(new ArticleP() { ArticleId = id });
             return RedirectToAction("Index");
+        }
+        /// <summary>
+        /// About site
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult About()
+        {
+
+            return View();
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "user,admin")]
+        public async Task<IActionResult> AddMainComment(SinglePageVieModel comment)
+        {
+            if (ModelState.IsValid)
+            {
+                string id = comment.mainCommentViewModel.UserId.ToString();
+                var user = await userManager.FindByIdAsync(id);
+                if (User.Identity.IsAuthenticated && user.Email == User.Identity.Name)
+                {
+                    ArticleP _articleP = articlesRepozitory.GetArticlePById(comment.mainCommentViewModel.ArticleId);
+                    MainComment mainComment = new MainComment
+                    {
+                        appUser = user,
+                        articleP = _articleP,
+                        Date = DateTime.Now,
+                        Text = comment.mainCommentViewModel.Text
+                    };
+                    _commentsRepoziory.SaveMainComments(mainComment);
+                }
+                return RedirectToAction("SinglePage", new { id = comment.mainCommentViewModel.ArticleId });
+            }
+            else
+            {
+                return RedirectToAction("SinglePage", new { id = comment.mainCommentViewModel.ArticleId });
+
+            }
+        }
+        [HttpPost]
+        [Authorize(Roles = "user,admin")]
+        public async Task<IActionResult> AddChildComment(SinglePageVieModel comment)
+        {
+            if (ModelState.IsValid)
+            {
+                string id = comment.ChildCommentViewModel.UserId.ToString();
+                var user = await userManager.FindByIdAsync(id);
+                if (User.Identity.IsAuthenticated && user.Email == User.Identity.Name)
+                {
+                    MainComment main = _commentsRepoziory.GetCommentByMainId(comment.mainCommentViewModel.Id);
+                    ChildComment childComment = new ChildComment
+                    {
+                        mainCommentId = comment.ChildCommentViewModel.MainCommentID,
+                        Date = DateTime.Now,
+                        Text = comment.mainCommentViewModel.Text
+                    };
+                    _commentsRepoziory.SaveChildComments(childComment);
+                }
+                return RedirectToAction("SinglePage", new { id = comment.mainCommentViewModel.ArticleId });
+            }
+            else
+            {
+                return RedirectToAction("SinglePage", new { id = comment.mainCommentViewModel.ArticleId });
+
+            }
         }
     }
 }

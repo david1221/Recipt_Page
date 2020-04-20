@@ -1,7 +1,7 @@
 ﻿@model ArticleP
 
 @{
-    ViewData["Title"] = "AddArticle";
+    ViewData["Title"] = "Ավելացնել բաղադրատոմս";
 }
 
 
@@ -12,10 +12,11 @@
         <H1 class="single-page-h1">Ավելացնել Բաղադրատոմս</H1>
 
         <div class="col-md-8 ">
-            <form asp-controller="Articles" asp-action="ArticlesEdit" method="post" enctype="multipart/form-data">
+            <form asp-controller="Articles" asp-action="AddArticle" method="post" enctype="multipart/form-data">
 
 
                 <input type="hidden" asp-for="ArticleId" />
+                
                 <div asp-validation-summary="ModelOnly"></div>
 
 
@@ -44,7 +45,13 @@
 
                 </div>
                 <div class="from-group">
-                    <input type="file" name="image" asp-for="ImgGeneral" id="image" />
+                    <img src="/images/uploadButton.png" id="upfile1" style="cursor:pointer;width:250px;" />
+                    <input type="file" id="image" name="image" style="display:none" />
+
+                    <script>
+                        $("#upfile1").click(function () {
+                            $("#image").trigger('click');
+                        });</script>
                 </div>
                 <div class="form-group">
 
@@ -55,16 +62,25 @@
                         </select>
                     }
 
-                </div>
-                <div class="form-group">
-                    <label class="text-left">Սլայդի համար ավելացնել</label>
-                    <input type="checkbox" asp-for="IfFavorite" style="height:30px;width:30px" />
+                </div> @if (User.IsInRole("admin"))
+                {
+                    <div class="form-group">
+                        <label class="text-left">Սլայդի համար ավելացնել</label>
+                        <input type="checkbox" asp-for="IfFavorite" style="height:30px;width:30px" />
 
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="text-left">Գլխավոր էջի համար ավելացնել</label>
+                        <input type="checkbox" asp-for="AdminConfirm" style="height:30px;width:30px" />
+
+                    </div>
+                }
+                <div class="form-group">
+                    <input class="text-left btn btn-default" type="submit" value="Ավելացնել" />
                 </div>
 
-                <div class="form-group">
-                    <input class="text-left btn btn-default"  type="submit" value="Ավելացնել" />
-                </div>
 
 
             </form>

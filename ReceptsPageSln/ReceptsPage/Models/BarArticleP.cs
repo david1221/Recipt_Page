@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReceptsPage.ModelIdentity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,6 +22,13 @@ namespace ReceptsPage.Models
         public string Star { get; set; }
         public int? BarCategoryId { set; get; }
         public virtual BarCategory BarCategory { get; set; }
+        public AppUser AppUser { get; set; }
+        public bool AdminConfirm { get; set; }
+        public BarArticleP()
+        {
+            AppUser = new AppUser();
+            BarCategory = new BarCategory();
+        }
 
     }
 

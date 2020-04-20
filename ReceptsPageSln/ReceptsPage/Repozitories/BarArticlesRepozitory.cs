@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReceptsPage.Interfaces;
+using ReceptsPage.ModelIdentity;
 using ReceptsPage.Models;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,12 @@ namespace ReceptsPage.Repozitories
         {
             return _articlePContetxt.BarArticles.Include(c=>c.BarCategory).FirstOrDefault(c => c.BarArticleId == id);
         }
+        public IQueryable<AppUser> GetBarArticlesByUser()
+        {
+            //return appUsers.OrderByDescending(x => x.DateAdded.Value).Include(x => x.SubCategory).Include(x => x.AppUser);
+            return _articlePContetxt.AppUsers.Include(mc => mc.MainMomments).Include(cc => cc.ChildComments).Include(a => a.BarArticles).ThenInclude(s => s.BarCategory);
 
+        }
         public IQueryable<BarCategory> BarCategories()
         {
             return _articlePContetxt.BarCategories;

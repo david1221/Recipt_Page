@@ -1,7 +1,7 @@
-﻿@model BarArticleP
+﻿@model AddBarArticleViewModel
 
 @{
-    ViewData["Title"] = "Ավելացնել Բաղադրատոմս";
+    ViewData["Title"] = "Ցանկում ավելացնել բաղադրատոմս";
 }
 
 <div class="row">
@@ -9,47 +9,54 @@
         <H1 class="single-page-h1">Ավելացնել Բաղադրատոմս</H1>
 
         <div class="col-md-8 ">
-            <form asp-controller="BarArticleP" asp-action="ArticlesEdit" method="post" enctype="multipart/form-data">
+            <form asp-controller="BarArticleP" asp-action="AddBarArticle" method="post" enctype="multipart/form-data">
 
-                <input type="hidden" asp-for="BarArticleId" />
+                <input type="hidden" asp-for="@Model.barArtcileP.BarArticleId" />
+                <input type="hidden" name="AppUser" />
                 <div asp-validation-summary="ModelOnly"></div>
 
                 <div class="form-group">
-                    <label asp-for="Title" class="text-left">
+                    <label asp-for="@Model.barArtcileP.Title" class="text-left">
                         Անվանումը
                     </label>
                     <div>
-                        <input asp-for="Title" type="text" required autocomplete="off" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
+                        <input asp-for="@Model.barArtcileP.Title" type="text"  autocomplete="off" />
+                        <span asp-validation-for="@Model.barArtcileP.Title" class="text-danger"></span>
                     </div>
 
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Description" class="text-left">
+                    <label asp-for="@Model.barArtcileP.Description" class="text-left">
                         Նկարագիրը
                     </label>
                     <div>
-                        <textarea asp-for="Description" rows="10" cols="50" required></textarea>
+                        <textarea asp-for="@Model.barArtcileP.Description" rows="10" cols="50"></textarea>
+                        <span asp-validation-for="@Model.barArtcileP.Description" class="text-danger"></span>
                     </div>
-                    <span asp-validation-for="Description"></span>
+                   
                 </div>
 
                 <div class="from-group">
-                    <label for="image" class="h4 btn-link text-left"><a style="color:#983232; cursor: pointer;">Ընտրել նկարը</a></label>
-                    <input type="file" name="image" asp-for="ImgGeneral" id="image" style="visibility:hidden">
+                    <label for="image" class="h4 btn-link text-left"><a style="cursor: pointer;" class="btn btn-default">Ավելացնել նկար</a></label>
+                    <input type="file" name="image" asp-for="@Model.barArtcileP.ImgGeneral" id="image" style="visibility:hidden">
 
                 </div>
                 <div class="form-group">
-                    @{ <select asp-for="BarCategoryId"
-                               asp-items="@(new SelectList(ViewBag.Category, "BarCategoryId", "Name"))">
-
-
-                            <option selected="selected" value="12">Ընտրեք բաժինը</option>
+                    @{ <select asp-for="@Model.barArtcileP.BarCategoryId"
+                               asp-items="@(new SelectList(Model.barCategories, "BarCategoryId", "Name"))">
+                            <option selected="selected" value="0">Ընտրեք բաժինը</option>
                         </select>
+                      
                     }
                 </div>
-
+                @if (User.IsInRole("admin"))
+                {
+                    <div class="form-group">
+                        <label class="text-left">Ցանկում ցույց տալու համար </label>
+                        <input type="checkbox" asp-for="@Model.barArtcileP.AdminConfirm" style="height:30px;width:30px" />
+                    </div>
+                }
                 <div class="form-group">
                     <input class="text-left" type="submit" value="Ավելացնել" />
                 </div>

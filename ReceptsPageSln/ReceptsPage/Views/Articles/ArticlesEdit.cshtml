@@ -12,7 +12,17 @@
 
 
                 <input type="hidden" asp-for="ArticleId" />
-                <input type="hidden" asp-for="ImgGeneral" />
+                <input type="hidden" name="userName" value="@Model.AppUser.Email" />
+                @if (User.IsInRole("admin"))
+                {
+                    <input type="hidden" name="ArticleUser" value="@Model.AppUser.Email" />
+                }
+                else
+                {
+                    <input type="hidden" name="ArticleUser" value="aaa" />
+                }
+
+                
                 <div asp-validation-summary="ModelOnly"></div>
 
 
@@ -42,18 +52,37 @@
                 </div>
                 <div class="from-group">
                     <div class="content-justify ">
+
                         @{
                             var base64 = Convert.ToBase64String(Model.ImgGeneral ?? new byte[0]);
                             var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
+                        }
+                        @if (!string.IsNullOrEmpty(base64))
+                        {
+                            <img class="single-page-img" src="@imgsrc"/>
+                            <input type="hidden" class="single-page-img"  asp-for="ImgGeneral"   style="margin-bottom:30px;">
 
                         }
-                        <input type="image" class="single-page-img" name="model1" asp-for="ImgGeneral" id="model1" src="@imgsrc" value="@imgsrc">
+
                     </div>
+                    <div class="col-sm-6">
+                        <img src="/images/uploadButton.png" id="upfile1" style="cursor:pointer;width:250px;" />
+                        <input type="file" id="image" name="image" style="display:none" />
+                    </div>
+                    <script>
+                        $("#upfile1").click(function () {
+                            $("#image").trigger('click');
+                        });</script>
+                    @if (!string.IsNullOrEmpty(base64))
+                    {
+                        <div class="col-sm-6">
+                            <div class="form-group">
 
+                                <label class="text-left" style="font-weight: 100;color: #6f7579;">Պահպանել առնաց նկար</label>
+                                <input type="checkbox" id="imageNon" name="imageNon" style="height:20px;width:20px" />
 
-                    <input type="file" name="image" id="image">
-
-
+                            </div>
+                        </div>}
 
                 </div>
                 <div class="form-group">
@@ -67,12 +96,22 @@
                     }
 
                 </div>
-                <div class="form-group">
-                    <label class="text-left">Սլայդի համար ավելացնել</label>
-                    <input type="checkbox" asp-for="IfFavorite" style="height:30px;width:30px" />
+                @if (User.IsInRole("admin"))
+                {
 
-                </div>
 
+                    <div class="form-group">
+                        <label class="text-left">Սլայդի համար ավելացնել</label>
+                        <input type="checkbox" asp-for="IfFavorite" style="height:30px;width:30px" />
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="text-left">Գլխավոր էջի համար ավելացնել</label>
+                        <input type="checkbox" asp-for="AdminConfirm" style="height:30px;width:30px" />
+
+                    </div>
+                }
                 <div class="form-group">
                     <input class="text-left btn btn-default" type="submit" value="Փոփոխել" />
                     <a class="text-left btn btn-default" asp-action="index">Չեղարկել</a>

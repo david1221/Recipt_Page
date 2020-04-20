@@ -135,6 +135,8 @@ namespace ReceptsPage.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<DateTime?>("Birthdate");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -144,6 +146,8 @@ namespace ReceptsPage.Migrations
                     b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("FirstName");
+
+                    b.Property<string>("Gender");
 
                     b.Property<string>("LastName");
 
@@ -163,14 +167,14 @@ namespace ReceptsPage.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<byte[]>("PhotoUser");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
-
-                    b.Property<int>("Year");
 
                     b.HasKey("Id");
 
@@ -224,6 +228,8 @@ namespace ReceptsPage.Migrations
                     b.Property<int>("BarArticleId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AdminConfirm");
 
                     b.Property<int?>("AppUserId");
 
@@ -359,6 +365,52 @@ namespace ReceptsPage.Migrations
                             CategoryId = 4,
                             Name = "Ընդհանուր"
                         });
+                });
+
+            modelBuilder.Entity("ReceptsPage.Models.Comments.ChildComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Text");
+
+                    b.Property<int>("appUserId");
+
+                    b.Property<int>("mainCommentId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("appUserId");
+
+                    b.HasIndex("mainCommentId");
+
+                    b.ToTable("ChildComments");
+                });
+
+            modelBuilder.Entity("ReceptsPage.Models.Comments.MainComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Text");
+
+                    b.Property<int?>("appUserId");
+
+                    b.Property<int?>("articlePArticleId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("appUserId");
+
+                    b.HasIndex("articlePArticleId");
+
+                    b.ToTable("MainComment");
                 });
 
             modelBuilder.Entity("ReceptsPage.Models.SubCategory", b =>
@@ -540,13 +592,37 @@ namespace ReceptsPage.Migrations
 
             modelBuilder.Entity("ReceptsPage.Models.BarArticleP", b =>
                 {
-                    b.HasOne("ReceptsPage.ModelIdentity.AppUser")
+                    b.HasOne("ReceptsPage.ModelIdentity.AppUser", "AppUser")
                         .WithMany("BarArticles")
                         .HasForeignKey("AppUserId");
 
                     b.HasOne("ReceptsPage.Models.BarCategory", "BarCategory")
                         .WithMany("BarArticles")
                         .HasForeignKey("BarCategoryId");
+                });
+
+            modelBuilder.Entity("ReceptsPage.Models.Comments.ChildComment", b =>
+                {
+                    b.HasOne("ReceptsPage.ModelIdentity.AppUser")
+                        .WithMany("ChildComments")
+                        .HasForeignKey("appUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ReceptsPage.Models.Comments.MainComment")
+                        .WithMany("childComments")
+                        .HasForeignKey("mainCommentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ReceptsPage.Models.Comments.MainComment", b =>
+                {
+                    b.HasOne("ReceptsPage.ModelIdentity.AppUser", "appUser")
+                        .WithMany("MainMomments")
+                        .HasForeignKey("appUserId");
+
+                    b.HasOne("ReceptsPage.Models.ArticleP", "articleP")
+                        .WithMany("mainComments")
+                        .HasForeignKey("articlePArticleId");
                 });
 
             modelBuilder.Entity("ReceptsPage.Models.SubCategory", b =>
