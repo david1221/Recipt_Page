@@ -1,1 +1,13 @@
-﻿<h2>Not Found</h2>
+﻿@if (ViewBag.ErrorTitle==null)
+{
+    <h3>Հարցման ըթացքում տեղի է ունեցել սխալ։Մեր սպասարկման թիմը ստացավ այն և  աշխատում է  սխալը վերացելու ուղղությամբ
+        </h3>    
+    <h5>
+        Խնդրում ենք կապ հաստատել մեզ հետ <b>info.pagerecepts@gmail.com</b> էլեկտրոնային հասցեի միջոցով։
+    </h5>
+    <h5>Շնորհակալություն</h5>
+}else
+	{
+<h1 class="text-danger">@ViewBag.ErrorTitle</h1>
+<h6 class="text-danger">@ViewBag.ErrorMessege</h6>
+	}

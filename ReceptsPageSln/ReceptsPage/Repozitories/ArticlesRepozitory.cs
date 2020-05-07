@@ -21,14 +21,24 @@ namespace ReceptsPage.Models
         }
         public IQueryable<ArticleP> GetArticles()
         {
-            return _articlePContetxt.Articles.OrderByDescending(x => x.DateAdded.Value).Include(x => x.SubCategory).Include(x => x.AppUser).Include(c => c.mainComments);
+            return _articlePContetxt.Articles.OrderByDescending(x => x.DateAdded.Value).Include(x => x.SubCategory).Include(x => x.AppUser);
+
+        }
+        public IQueryable<ArticleP> GetArticlesWithoutSubCategory()
+        {
+            return _articlePContetxt.Articles.OrderByDescending(x => x.DateAdded.Value);
 
         }
         public IQueryable<AppUser> GetArticlesByUser()
         {
             //return appUsers.OrderByDescending(x => x.DateAdded.Value).Include(x => x.SubCategory).Include(x => x.AppUser);
-            return _articlePContetxt.AppUsers.Include(mc => mc.MainMomments).Include(cc => cc.ChildComments).Include(a => a.Articles).ThenInclude(s => s.SubCategory);
-
+            //return _articlePContetxt.AppUsers.Include(mc => mc.MainMomments).Include(cc => cc.ChildComments).Include(a => a.Articles).ThenInclude(s => s.SubCategory);
+            return _articlePContetxt.AppUsers.Include(a => a.Articles).ThenInclude(s => s.SubCategory);
+        }
+        public IQueryable<AppUser> GetArticlesByUserWithoutSubCategory()
+        {
+           
+            return _articlePContetxt.AppUsers.Include(a => a.Articles);
         }
         //public IQueryable<Category> GetArticlesBySession(int a)
         //{
@@ -62,10 +72,17 @@ namespace ReceptsPage.Models
 
         public ArticleP GetArticlePById(int id)
         {
-
+            try
             {
                 return _articlePContetxt.Articles.Include(x => x.SubCategory).Include(x => x.AppUser).FirstOrDefault(x => x.ArticleId == id);
             }
+            catch (Exception)
+            {
+
+                return new ArticleP { ArticleId = 0 }; 
+            }
+
+            
 
         }
 

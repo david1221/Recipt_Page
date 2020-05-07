@@ -43,6 +43,7 @@ namespace ReceptsPage.Controllers
 
         public IActionResult Index(int? page)
         {
+           
             IndexSlideArticles indexSlide = new IndexSlideArticles
             {
                 articlesRepozitory = articlesRepozitory,
@@ -97,22 +98,34 @@ namespace ReceptsPage.Controllers
             try
             {
                 ArticleP model = articlesRepozitory.GetArticlePById(id);
-                SinglePageVieModel singlePageVieModel = new SinglePageVieModel();
-                singlePageVieModel.articleP = model;
-               // singlePageVieModel.mainComments = _commentsRepoziory.GetAllMainComments(model.ArticleId);
-                if (User.IsInRole("user") || model.AdminConfirm == true)
+                if (model!=null)
                 {
-
-                    return View(singlePageVieModel);
+                    if (User.IsInRole("user") || model.AdminConfirm == true || model != null)
+                    {
+                        return View(model);
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Փնտրված բաղադրատոմսը գոյություն չունի";
+                        return View("NotFound");
+                    }
                 }
-                else return NotFound();
+                else
+                {
+                    ViewBag.ErrorMessage = "Փնտրված բաղադրատոմսը գոյություն չունի";
+                    return View("NotFound");
+                }
+
+                // singlePageVieModel.mainComments = _commentsRepoziory.GetAllMainComments(model.ArticleId);
+
 
             }
             catch (Exception)
             {
-                RedirectToAction("Index", "Articles");
+                 ;
             }
-            return NotFound();
+           
+            return View("NotFound");
 
         }
         /// <summary>
@@ -240,7 +253,7 @@ namespace ReceptsPage.Controllers
                     if (User.IsInRole("admin"))
                     {
                         AppUser user = userManager.FindByNameAsync(ArticleUser).Result;
-                        if (user!=null)
+                        if (user != null)
                         {
                             model.AppUser = user;
                         }
@@ -317,6 +330,7 @@ namespace ReceptsPage.Controllers
             return RedirectToAction("Index", "Articles");
         }
 
+
         /// <summary>
         /// Delete Article Get method
         /// </summary>
@@ -353,60 +367,60 @@ namespace ReceptsPage.Controllers
         }
 
 
-        [HttpPost]
-        [Authorize(Roles = "user,admin")]
-        public async Task<IActionResult> AddMainComment(SinglePageVieModel comment)
-        {
-            if (ModelState.IsValid)
-            {
-                string id = comment.mainCommentViewModel.UserId.ToString();
-                var user = await userManager.FindByIdAsync(id);
-                if (User.Identity.IsAuthenticated && user.Email == User.Identity.Name)
-                {
-                    ArticleP _articleP = articlesRepozitory.GetArticlePById(comment.mainCommentViewModel.ArticleId);
-                    MainComment mainComment = new MainComment
-                    {
-                        appUser = user,
-                        articleP = _articleP,
-                        Date = DateTime.Now,
-                        Text = comment.mainCommentViewModel.Text
-                    };
-                    _commentsRepoziory.SaveMainComments(mainComment);
-                }
-                return RedirectToAction("SinglePage", new { id = comment.mainCommentViewModel.ArticleId });
-            }
-            else
-            {
-                return RedirectToAction("SinglePage", new { id = comment.mainCommentViewModel.ArticleId });
+        //[HttpPost]
+        //[Authorize(Roles = "user,admin")]
+        //public async Task<IActionResult> AddMainComment(SinglePageVieModel comment)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        string id = comment.mainCommentViewModel.UserId.ToString();
+        //        var user = await userManager.FindByIdAsync(id);
+        //        if (User.Identity.IsAuthenticated && user.Email == User.Identity.Name)
+        //        {
+        //            ArticleP _articleP = articlesRepozitory.GetArticlePById(comment.mainCommentViewModel.ArticleId);
+        //            MainComment mainComment = new MainComment
+        //            {
+        //                appUser = user,
+        //                articleP = _articleP,
+        //                Date = DateTime.Now,
+        //                Text = comment.mainCommentViewModel.Text
+        //            };
+        //            _commentsRepoziory.SaveMainComments(mainComment);
+        //        }
+        //        return RedirectToAction("SinglePage", new { id = comment.mainCommentViewModel.ArticleId });
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("SinglePage", new { id = comment.mainCommentViewModel.ArticleId });
 
-            }
-        }
-        [HttpPost]
-        [Authorize(Roles = "user,admin")]
-        public async Task<IActionResult> AddChildComment(SinglePageVieModel comment)
-        {
-            if (ModelState.IsValid)
-            {
-                string id = comment.ChildCommentViewModel.UserId.ToString();
-                var user = await userManager.FindByIdAsync(id);
-                if (User.Identity.IsAuthenticated && user.Email == User.Identity.Name)
-                {
-                    MainComment main = _commentsRepoziory.GetCommentByMainId(comment.mainCommentViewModel.Id);
-                    ChildComment childComment = new ChildComment
-                    {
-                        mainCommentId = comment.ChildCommentViewModel.MainCommentID,
-                        Date = DateTime.Now,
-                        Text = comment.mainCommentViewModel.Text
-                    };
-                    _commentsRepoziory.SaveChildComments(childComment);
-                }
-                return RedirectToAction("SinglePage", new { id = comment.mainCommentViewModel.ArticleId });
-            }
-            else
-            {
-                return RedirectToAction("SinglePage", new { id = comment.mainCommentViewModel.ArticleId });
+        //    }
+        //}
+        //[HttpPost]
+        //[Authorize(Roles = "user,admin")]
+        //public async Task<IActionResult> AddChildComment(SinglePageVieModel comment)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        string id = comment.ChildCommentViewModel.UserId.ToString();
+        //        var user = await userManager.FindByIdAsync(id);
+        //        if (User.Identity.IsAuthenticated && user.Email == User.Identity.Name)
+        //        {
+        //            MainComment main = _commentsRepoziory.GetCommentByMainId(comment.mainCommentViewModel.Id);
+        //            ChildComment childComment = new ChildComment
+        //            {
+        //                mainCommentId = comment.ChildCommentViewModel.MainCommentID,
+        //                Date = DateTime.Now,
+        //                Text = comment.mainCommentViewModel.Text
+        //            };
+        //            _commentsRepoziory.SaveChildComments(childComment);
+        //        }
+        //        return RedirectToAction("SinglePage", new { id = comment.mainCommentViewModel.ArticleId });
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("SinglePage", new { id = comment.mainCommentViewModel.ArticleId });
 
-            }
-        }
+        //    }
+        //}
     }
 }

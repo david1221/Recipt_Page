@@ -22,6 +22,8 @@ namespace ReceptsPage.Interfaces
         void DeleteArticle(ArticleP article);
         string SubCategoryByIdSingle(int id);
          IQueryable<AppUser> GetArticlesByUser();
+        IQueryable<AppUser> GetArticlesByUserWithoutSubCategory();
+        IQueryable<ArticleP> GetArticlesWithoutSubCategory();
 
     }
 }

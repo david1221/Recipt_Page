@@ -12,7 +12,8 @@
 
 
 <div class="row">
-    <h1></h1>
+    <h4></h4>
+    <h4 style="background: #88d622; padding: 7px; border-radius: 9px;">Օգտատերերի կողմից Գլխավոր էջում ավելացնելու համար</h4>
     @foreach (ArticleP entity in Model.GetArticles.Cast<ArticleP>())
     {
         <div class="col-md-6 left-up-col ">
@@ -21,7 +22,7 @@
 
 
             <div class="content_left_up_text text-descr-gen">
-                <p>@entity.Description</p>
+                <p>@Html.Raw(entity.Description)</p>
             </div>
             <div class="content_left_up_type content-justify">
                 <div id="new_year_type">
@@ -70,7 +71,7 @@
             
             @if (User.IsInRole("admin"))
             {<div style="margin-top:5px" class="row">
-                    <div class="text-center col-xs-4"> <a asp-area="" style="font-size:14px;color:#fff" asp-controller="Articles" asp-action="Articlesedit" asp-route-id="@entity.ArticleId" class="text-center btn btn-primary">Փոփոխել</a></div>
+                    <div class="text-center col-xs-4"> <a asp-area="" style="font-size: 14px; color: #fff" asp-controller="Articles" asp-action="Articlesedit" asp-route-id="@entity.ArticleId" class="text-center btn btn-primary">Փոփոխել</a></div>
                     <div class="text-center col-xs-4">
                         <form asp-controller="Articles" asp-action="ArticlesConfirmByAdmin" asp-route-id="@entity.ArticleId" method="post">
                             <input type="submit" style="font-size:14px;color:#fff" value="Հաստատել" class="text-center btn btn-default">
@@ -78,7 +79,7 @@
                     </div>
                     <div class="text-center col-xs-4"> <a asp-area="" style="font-size:14px;color:#fff" asp-controller="Articles" asp-action="ArticlesDelete" asp-route-id="@entity.ArticleId" class="text-center btn btn-danger">Ջնջել</a></div>
                 </div>
-                <div class="text-justify"style="margin-top:10px" ><p>Ավելացվել է  <a asp-area="" asp-controller="Users" asp-action="Edit" asp-route-id="@entity.AppUser.Id" class="text-center  ">@entity.AppUser.Email</a> օգտատիրոջ կողմից,,որի ID=@entity.AppUser.Id</p></div>
+                <div class="text-justify"style="margin-top:10px" ><p>Ավելացվել է  <a  asp-controller="Users" asp-action="UserPageForChange" asp-route-userId="@entity.AppUser.Id" class="text-center  ">@entity.AppUser.Email</a> օգտատիրոջ կողմից,,որի ID=@entity.AppUser.Id</p></div>
             }
 
         </div>

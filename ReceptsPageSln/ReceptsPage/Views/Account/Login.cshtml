@@ -1,6 +1,6 @@
 ﻿@model ReceptsPage.IdentityViewModels.LoginViewModel
 @{
-    ViewBag.Title = "User Login";
+      ViewData["Title"] = "Մուտք";
 }
 <div class="row">
     <div class="col-md-6">
@@ -9,21 +9,23 @@
             <h2>Մուտք գործել </h2><hr />
             <div asp-validation-summary="ModelOnly"></div>
             <div>
-                <label asp-for="Email"></label>
+                <label asp-for="Email" style="text-align:left"></label>
                 <input asp-for="Email" />
                 <span asp-validation-for="Email"></span>
             </div>
             <div>
-                <label asp-for="Password"></label>
+                <label asp-for="Password" style="text-align:left"></label>
                 <input asp-for="Password" />
                 <span asp-validation-for="Password"></span>
+                <a asp-action="ForgotPassword"><h6>Մոռացե՞լ եք գաղտնաբառը</h6></a>
             </div>
+           
             <div>
                 <label asp-for="RememberMe"></label>
                 <input asp-for="RememberMe" />
             </div>
             <div>
-                <input type="submit" value="Մուտք" />
+                <input class="btn btn-default" type="submit" value="Մուտք" />
             </div>
         </form>
     </div>

@@ -14,6 +14,7 @@ namespace ReceptsPage.ViewModels
         public IPagedList<ArticleP> GetArticles { get; set; }
 
        public IGetArticles articlesRepozitory{get;set;}
+        public string By { get; set; }
 
     }
 }

@@ -3,7 +3,11 @@
 @{
     if (Model.BarCategoryByIdSingle.Any())
     {
-        ViewData["Title"] = Model.BarArticlesRepozitory;
+        ViewData["Title"] = Model.BarCategoryByIdSingle;
+    }
+    else
+    {
+        ViewData["Title"] ="Համեղ խոհանոց";
     }
 }
 
@@ -22,7 +26,7 @@
             </div>
             <div class="text-center"> <a asp-area="" asp-controller="BarArticleP" asp-action="SinglePageBarArticleP" asp-route-id="@entity.BarArticleId" class="text-center title_article_style">@entity.Title</a></div>
             <div class="content_left_up_text text-descr-gen">
-                <p>@entity.Description</p>
+                <p>@Html.Raw(entity.Description)</p>
             </div>
 
 

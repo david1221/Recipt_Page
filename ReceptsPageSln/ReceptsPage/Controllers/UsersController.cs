@@ -24,13 +24,15 @@ namespace ReceptsPage.Controllers
         private readonly RoleManager<AppRole> _roleManager;
         private readonly IGetArticles _articlesRepozitory;
         private readonly IHostingEnvironment iHostingEnvironment;
+        private readonly IBarArticles _barArticlesRepozitory;
 
-        public UsersController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IGetArticles articlesRepozitory, IHostingEnvironment IHostingEnvironment)
+        public UsersController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IGetArticles articlesRepozitory, IHostingEnvironment IHostingEnvironment, IBarArticles barArticlesRepozitory)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _articlesRepozitory = articlesRepozitory;
             iHostingEnvironment = IHostingEnvironment;
+            _barArticlesRepozitory = barArticlesRepozitory;
         }
         /// <summary>
         /// Select List User 
@@ -39,47 +41,6 @@ namespace ReceptsPage.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Index(int? page) => View(_userManager.Users.ToPagedList(page ?? 1, 10));
 
-
-        // [Authorize(Roles = "admin")]
-        //public async Task<IActionResult> Edit(int id)
-        //{
-        //    AppUser user = await _userManager.FindByIdAsync($"{id}");
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    EditUserViewModel model = new EditUserViewModel { Id = user.Id, Email = user.Email, Birthdate = user.Birthdate };
-        //    return View(model);
-        //}
-        //[Authorize(Roles = "admin")]
-        //[HttpPost]
-        //public async Task<IActionResult> Edit(EditUserViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        AppUser user = await _userManager.FindByIdAsync($"{model.Id}");
-        //        if (user != null)
-        //        {
-        //            user.Email = model.Email;
-        //            user.UserName = model.Email;
-        //            user.Birthdate = model.Birthdate;
-
-        //            var result = await _userManager.UpdateAsync(user);
-        //            if (result.Succeeded)
-        //            {
-        //                return RedirectToAction("Index");
-        //            }
-        //            else
-        //            {
-        //                foreach (var error in result.Errors)
-        //                {
-        //                    ModelState.AddModelError(string.Empty, error.Description);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return View(model);
-        //}
 
         /// <summary>
         /// Delete User by Id
@@ -175,7 +136,7 @@ namespace ReceptsPage.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [Authorize(Roles ="admin")]
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> ChangePasswordForUser(ChangePasswordViewModel model)
         {
@@ -212,25 +173,6 @@ namespace ReceptsPage.Controllers
             }
             return View(model);
         }
-        /// <summary>
-        /// Person GET method for change 
-        /// </summary>
-        /// <returns></returns>
-        [Authorize(Roles = "user")]
-        [HttpGet]
-        public async Task<IActionResult> Person()
-        {
-
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if (user != null)
-            {
-                var ap = _articlesRepozitory.GetArticlesByUser();
-                ViewBag.countArticle = _articlesRepozitory.GetArticles().Where(a => a.AppUser.Id == user.Id).Count();
-                return View(user);
-            }
-            return RedirectToAction("Index", "Articles");
-        }
-
         [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<IActionResult> UserPageForChange(string userId)
@@ -238,15 +180,19 @@ namespace ReceptsPage.Controllers
 
             var user = await _userManager.FindByIdAsync(userId);
             user.Articles = _articlesRepozitory.GetArticles().Where(u => u.AppUser.Id == int.Parse(userId)).ToList();
+            user.BarArticles = _barArticlesRepozitory.GetBarArticles().Where(u => u.AppUser.Id == int.Parse(userId)).ToList();
 
             if (user != null)
             {
-                var ap = _articlesRepozitory.GetArticlesByUser();
-                ViewBag.countArticle = _articlesRepozitory.GetArticles().Where(a => a.AppUser.Id == user.Id).Count();
                 return View(user);
             }
             return RedirectToAction("Index", "Articles");
         }
+
+        /// <summary>
+        /// Person GET method for change 
+        /// </summary>
+        /// <returns></returns>
 
         [Authorize(Roles = "admin")]
         [HttpPost]
@@ -264,7 +210,8 @@ namespace ReceptsPage.Controllers
 
             AppUser appUser = await _userManager.FindByNameAsync(user.EmailUser);
 
-            ViewBag.countArticle = _articlesRepozitory.GetArticles().Where(a => a.AppUser.Id == appUser.Id).Count();
+            ViewBag.countArticle = _articlesRepozitory.GetArticlesWithoutSubCategory().Where(a => a.AppUser.Id == appUser.Id).Count();
+            ViewBag.countBarArticle = _barArticlesRepozitory.GetBarArticlesWithoutBarCategory().Where(a => a.AppUser.Id == appUser.Id).Count();
             bool IsPhoneAlreadyRegistered = _userManager.Users.Any(item => item.PhoneNumber == phone && phone != appUser.PhoneNumber) && phone != null;
             appUser.Birthdate = user.Birthdate;
             appUser.FirstName = user.FirstName;
@@ -287,7 +234,7 @@ namespace ReceptsPage.Controllers
                         }
                     }
                 }
-            }      
+            }
             else
             {
                 appUser.PhotoUser = user.PhotoUser;
@@ -317,7 +264,7 @@ namespace ReceptsPage.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("UserPageForChange", new { UserId = appUser.Id } );
+                    return RedirectToAction("UserPageForChange", new { UserId = appUser.Id });
                 }
                 else
                 {
@@ -335,6 +282,23 @@ namespace ReceptsPage.Controllers
             }
 
         }
+      
+        [Authorize(Roles = "user")]
+        [HttpGet]
+        public async Task<IActionResult> Person()
+        {
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            user.Articles = _articlesRepozitory.GetArticlesWithoutSubCategory().Where(u=>u.AppUser.Email==User.Identity.Name).ToList();
+            user.BarArticles = _barArticlesRepozitory.GetBarArticlesWithoutBarCategory().Where(u => u.AppUser.Email == User.Identity.Name).ToList();
+
+            if (user != null)
+            {
+                return View(user);
+            }
+            return RedirectToAction("Index", "Articles");
+        }
+
         /// <summary>
         /// User Change  Post Method
         /// </summary>
@@ -357,7 +321,6 @@ namespace ReceptsPage.Controllers
             catch (Exception) {; }
 
             AppUser appUser = await _userManager.FindByNameAsync(User.Identity.Name);
-            ViewBag.countArticle = _articlesRepozitory.GetArticles().Where(a => a.AppUser.Id == appUser.Id).Count();
             bool IsPhoneAlreadyRegistered = _userManager.Users.Any(item => item.PhoneNumber == phone && phone != appUser.PhoneNumber) && phone != null;
             appUser.Birthdate = user.Birthdate;
             appUser.FirstName = user.FirstName;
@@ -420,7 +383,7 @@ namespace ReceptsPage.Controllers
         [Authorize(Roles = "user")]
         public async Task<IActionResult> PersonArticles(int? page, string userId)
         {
-            var ap = _articlesRepozitory.GetArticlesByUser();
+            var ap = _articlesRepozitory.GetArticlesByUserWithoutSubCategory();
             AppUser appUser = null;
             if (User.IsInRole("admin"))
             {
@@ -431,14 +394,35 @@ namespace ReceptsPage.Controllers
                 appUser = await _userManager.FindByNameAsync(ap.FirstOrDefault(u => u.Email == User.Identity.Name).Email);
             }
 
-            IndexSlideArticles indexSlide = new IndexSlideArticles
-            {
-                articlesRepozitory = _articlesRepozitory,
-                GetArticles = _articlesRepozitory.GetArticles().Where(x => x.AppUser.Id == appUser.Id).ToPagedList(page ?? 1, 10),
-                GetArticlesSlide = _articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null)
-            };
+            var model = _articlesRepozitory.GetArticles().Where(x => x.AppUser.Id == appUser.Id).ToPagedList(page ?? 1, 10);
+
             //ViewBag.imgPath = Path.Combine(iHostingEnvironment.WebRootPath, @"images\default.jpg");
-            return View(indexSlide);
+            return View(model);
+
+        }
+        /// <summary>
+        /// Get Articles page User
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "user")]
+        public async Task<IActionResult> PersonBarArticles(int? page, string userId)
+        {
+            var ap = _barArticlesRepozitory.GetBarArticlesByUserWithoutBarCategory();
+            AppUser appUser = null;
+            if (User.IsInRole("admin"))
+            {
+                appUser = await _userManager.FindByIdAsync(userId);
+            }
+            else
+            {
+                appUser = await _userManager.FindByNameAsync(ap.FirstOrDefault(u => u.Email == User.Identity.Name).Email);
+            }
+
+            var model = _barArticlesRepozitory.GetBarArticles().Where(x => x.AppUser.Id == appUser.Id).ToPagedList(page ?? 1, 10);
+
+            //ViewBag.imgPath = Path.Combine(iHostingEnvironment.WebRootPath, @"images\default.jpg");
+            return View(model);
 
         }
 

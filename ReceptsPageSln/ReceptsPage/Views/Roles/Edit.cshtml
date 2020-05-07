@@ -1,4 +1,7 @@
 ﻿@model ReceptsPage.IdentityViewModels.ChangeRoleViewModel
+@{
+    ViewData["Title"] = Model.UserEmail+ "օգտատիրոջ դերը";
+}
 
 <h2>Փոփոխել  @Model.UserEmail օգտատիրոջ դերը</h2>
 
@@ -7,17 +10,17 @@
     <div class="form-group">
         <ul style="list-style-type:none;">
             @foreach (var role in Model.AllRoles)
-            {   
-               
+            {
+
                 <li>
                     <label for="@role.Id" style="cursor:pointer;width:auto;">
                         <input type="checkbox" style="margin-right:10px;" name="roles" id="@role.Id" value="@role.Name" @(Model.UserRoles.Contains(role.Name) ? "checked=checked" : "") />@role.Name <br />
                     </label>
                 </li>
-                
+
             }
         </ul>
     </div>
     <button type="submit" class="btn btn-primary">Պահպանել</button>
-    <a class="btn btn-default" asp-action="Index" asp-controller="Roles">Չեղարկել</a>
+    <a class="btn btn-default" asp-action="Index" asp-controller="Users">Չեղարկել</a>
 </form>

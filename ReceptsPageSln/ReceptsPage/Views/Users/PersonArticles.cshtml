@@ -3,9 +3,12 @@
 @using PagedList.Core;
 
 
-@model ReceptsPage.ViewModels.IndexSlideArticles
+@model IPagedList<ArticleP>
+@{
+    ViewData["Title"] = "Ավելացրած բաղադրատոմսեր";
+}
 <div class="row">
-    @foreach (ArticleP entity in Model.GetArticles.Cast<ArticleP>())
+    @foreach (ArticleP entity in Model)
     {
 
 
@@ -15,7 +18,7 @@
             </div>
             <div class="text-center"> <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center title_article_style">@entity.Title</a></div>
             <div class="content_left_up_text text-descr-gen">
-                <p>@entity.Description</p>
+                <p>@Html.Raw(entity.Description)</p>
             </div>
             <div class="content_left_up_type content-justify">
                 <div id="new_year_type">
@@ -64,7 +67,7 @@
 
             </div>
             @if (User.IsInRole("admin"))
-            {   <div class="row">
+            {<div class="row">
                     <div class="text-center col-xs-6"> <a asp-area="" style="font-size:14px;color:#fff" asp-controller="Articles" asp-action="Articlesedit" asp-route-id="@entity.ArticleId" class="text-center btn btn-primary">Փոփոխել</a></div>
                     <div class="text-center col-xs-6"> <a asp-area="" style="font-size:14px;color:#fff" asp-controller="Articles" asp-action="ArticlesDelete" asp-route-id="@entity.ArticleId" class="text-center btn btn-danger">Ջնջել</a></div>
                 </div>}
@@ -76,6 +79,6 @@
 </div>
 <nav aria-label="ArticleP Padding">
 
-    <pager class="pagination" list="@Model.GetArticles" asp-action="PersonArticles" asp-controller="Users" asp-route-query="@Model.GetArticles" />
+    <pager class="pagination" list="@Model" asp-action="PersonArticles" asp-controller="Users" asp-route-query="@Model" />
 
 </nav>

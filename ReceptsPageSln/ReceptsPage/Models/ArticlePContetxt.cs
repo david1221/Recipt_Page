@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ReceptsPage.ModelIdentity;
 using ReceptsPage.Models.Comments;
+using ReceptsPage.Models.VideoModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace ReceptsPage.Models
         public DbSet<BarArticleP> BarArticles { get; set; }
         public DbSet<MainComment> MainComments { get; set; }
         public DbSet<MainComment> mainComments { get; set; }
+        public DbSet<VideoModelA> videoModels { get; set; }
       
         public DbSet<AppUser> AppUsers { get; set; }
        

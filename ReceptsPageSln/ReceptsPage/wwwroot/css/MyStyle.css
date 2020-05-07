@@ -2,6 +2,7 @@
 body {
     background: #d3e6d7 !important;
 }
+
 .navbar-btn {
     margin-top: 75px;
     padding-left: 10px;
@@ -259,6 +260,8 @@ a {
 
 .content_left_up_text {
     padding-left: 15px;
+    height: 89px;
+    overflow: hidden;
 }
 
 .content_left_up_img {
@@ -272,11 +275,10 @@ a {
 }
 
 .content_left_up_comment {
-    height: 27px;
+    height: 16px;
 }
 
 .text-descr-gen p {
-    height: 85px;
     overflow: hidden;
 }
 

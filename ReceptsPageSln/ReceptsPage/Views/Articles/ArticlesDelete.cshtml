@@ -1,13 +1,13 @@
 ﻿@model ArticleP
 @{
-    ViewData["Title"] = "Ջնջել Բաղադրատոմսը";
+    ViewData["Title"] = "Ջնջել Բաղադրատոմսը -";
 }
 
 <div class="col-md-12 ">
 
     <h1 class="text-center single-page-h1">@Model.Title</h1>
     <div class="col-lg-11 single-page-desc">
-        <p class="single-page-p">@Model.Description</p>
+        <p class="single-page-p">@Html.Raw(Model.Description)</p>
 
         <div class="content-justify ">
             @{
@@ -26,6 +26,7 @@
         @if (User.IsInRole("admin"))
         {
             <input class="btn btn-danger" type="submit" id="Submit1" value="Համոզվա՞ծ եք,որ ցանկանում եք ջնջել" />
+
         }
 
     </form>

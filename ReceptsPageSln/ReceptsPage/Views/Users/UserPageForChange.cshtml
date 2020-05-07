@@ -1,10 +1,10 @@
 ﻿@model ReceptsPage.ModelIdentity.AppUser
 
 @{
-    ViewData["Title"] = "User Page Information";
+    ViewData["Title"] = Model.Email + " փոփոխել";
 }
 
-
+   
 @if (User.Identity.IsAuthenticated)
 {
     <h1>@Model.Email ի անձնական տվյալները  <span style="font-size: 23px;font-style:italic;margin-left: 15px;font-weight:bold">ID @Model.Id</span></h1>
@@ -29,10 +29,11 @@
                 <div class="col-sm-2">
                     <img src="~/images/userNonImage.png" id="UserImage" width="100" height="100" />
                 </div><div class="col-sm-4">
-                    <div class="custom-file">
-                        <input type="file" id="imageUser" name="imageUser" class="form-control custom-file-input">
+                    <div class="box">
+                        <input type="file" id="file-1" asp-for="PhotoUser" name="imageUser" class="inputfile inputfile-1">
 
-                        <label class="custom-file-label">Ավելացնել լուսանկար...</label>
+                        <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z" /></svg> <span>Ավելացնել նկար&hellip;</span></label>
+
 
                     </div>
                 </div>
@@ -40,10 +41,11 @@
 
             @if (!string.IsNullOrEmpty(base64))
             {<div class="col-sm-4">
-                    <div class="custom-file">
-                        <input type="file" id="imageUser" name="imageUser" class="form-control custom-file-input">
+                    <div class="box">
+                        <input type="file" id="file-3" asp-for="PhotoUser" name="imageUser" class="inputfile inputfile-1">
 
-                        <label class="custom-file-label">Փոխել լուսանկարը</label>
+                        <label for="file-3"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z" /></svg> <span>Փոխել լուսանկարը&hellip;</span></label>
+
 
                     </div>
                     <input type="hidden" name="PhotoUser" asp-for="PhotoUser" id="PhotoUser" value="@imgsrc">
@@ -177,11 +179,11 @@
                 <td>Բջջային հեռախոսահամար</td>
                 @if (Model.PhoneNumber != null)
                 {
-            <td>
-                <label class="control-label">
-                    <span style="margin-right7px;" class="text-left PhoneNumberButtonChangeType ">@Model.PhoneNumber</span>
-                </label><span style="color:darkred"> @ViewBag.phone</span>
-            </td>
+                    <td>
+                        <label class="control-label">
+                            <span style="margin-right7px;" class="text-left PhoneNumberButtonChangeType ">@Model.PhoneNumber</span>
+                        </label><span style="color:darkred"> @ViewBag.phone</span>
+                    </td>
                     <td><input type="button" class="btn  btn-primary editPhoneNumberButton" value="Խմբագրել" /></td>
                     @if (Model.PhoneNumberConfirmed)
                     {
@@ -218,39 +220,38 @@
                 }
             </tr>
             <tr>
-                <td>@Model.Email -ի Բաղադրատոմսերը</td>
+                <td>Գլխավոր էջում ավելացրած իմ բաղադրատոմսերը</td>
 
 
                 <td colspan="3">
-                    @if (ViewBag.countArticle > 0)
+                    @if (@Model.Articles.Count > 0)
                     {
-                        <a asp-action="PersonArticles" asp-route-userId="@Model.Id" class="btn btn-primary">Բաղադրատոմսերը թվով @ViewBag.countArticle</a>
-
+                        <a asp-action="PersonArticles" asp-route-userId="@Model.Id" class="btn btn-primary"> Իմ բաղադրատոմսերը թվով @Model.Articles.Count</a>
                     }
                     else
                     {
-                        <input class="btn btn-primary" type="button" value="@Model.Email -ը ավելացված բաղադրատոմս չունի" />
+                        <input class="btn btn-primary" type="button" value="Դուք ավելացված բաղադրատոմս չունեք" />
                     }
                 </td>
 
             </tr>
             <tr>
-                <td>Հավանած Բաղադրատոմսերը</td>
+                <td>Ցանկում ավելացրած իմ բաղադրատոմսերը</td>
 
 
                 <td colspan="3">
-                    @if (ViewBag.countArticle > 0)
+                    @if (@Model.BarArticles.Count > 0)
                     {
-                        <a asp-action="PersonArticles" class="btn btn-primary"> Իմ բաղադրատոմսերը թվով @ViewBag.countArticle</a>
-
+                        <a asp-action="PersonBarArticles" asp-route-userId="@Model.Id" class="btn btn-primary">Ցանկում Իմ բաղադրատոմսերը թվով @Model.BarArticles.Count</a>
                     }
                     else
                     {
-                        <input class="btn btn-primary" type="button" value="Դուք Հավանած բաղադրատոմս չունեք" />
+                        <input class="btn btn-primary" type="button" value="Դուք ցանկում ավելացրած բաղադրատոմս չունեք" />
                     }
                 </td>
 
             </tr>
+            <tr>
             <tr>
                 <td colspan="4"> <input type="submit" class="btn btn-default" value="Պահպանել փոփոխությունները" /></td>
             </tr>
@@ -323,3 +324,4 @@ else
 
 
 </script>
+<script src="~/js/custom-file-input.js"></script>

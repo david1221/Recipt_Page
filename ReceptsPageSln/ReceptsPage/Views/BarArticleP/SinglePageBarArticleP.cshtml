@@ -10,7 +10,7 @@
 
     <h1 class="text-center single-page-h1">@Model.Title</h1>
     <div class="col-lg-11 single-page-desc">
-        <div class="single-page-p" style="white-space: pre-wrap;">@Model.Description</div>
+        <div class="single-page-p" style="white-space: pre-wrap;">@Html.Raw(Model.Description)</div>
 
         <div class="content-justify ">
             @{
@@ -32,12 +32,13 @@
 
     @if ((User.IsInRole("admin")))
     {<div class="row" style="margin-bottom:30px">
-            <div class="text-center col-xs-6 h4">
+    <div class="col-sm-12"><h4>Ավելացվել է <a asp-action="UserPageForChange" asp-controller="Users" asp-route-userId="@Model.AppUser.Id.ToString()" class="btn btn-info"><i>@Model.AppUser.Email</i></a>  ի կողմից ,ID : @Model.AppUser.Id</h4></div>
+    <div class="text-center col-xs-6 h4">
 
-                <a class="text-left" style="margin:5px 0px" asp-controller="BarArticleP" asp-action="BarArticlesDelete" asp-route-id="@Model.BarArticleId"> <input class="btn btn-danger" type="button" id="Submit1" value="Ջնջել բաղադրատոմսը" /></a>
-            </div>
-            <div class="text-center col-xs-6 h4 "> <a asp-area="" asp-controller="BarArticleP" asp-action="BarArticlesEdit" asp-route-userName="@Model.AppUser.Email" asp-route-id="@Model.BarArticleId" class="text-right col-lg-11 btn btn-primary">Փոփոխել</a></div>
-        </div>
+        <a class="text-left" style="margin:5px 0px" asp-controller="BarArticleP" asp-action="ArticlesDelete" asp-route-id="@Model.BarArticleId"> <input class="btn btn-danger" type="button" id="Submit1" value="Ջնջել բաղադրատոմսը" /></a>
+    </div>
+    <div class="text-center col-xs-6 h4 "> <a asp-area="" asp-controller="BarArticleP" asp-action="BarArticlesEdit" asp-route-userName="@Model.AppUser.Email" asp-route-id="@Model.BarArticleId" class="text-right col-lg-11 btn btn-primary">Փոփոխել</a></div>
+</div>
     }
     else
     {

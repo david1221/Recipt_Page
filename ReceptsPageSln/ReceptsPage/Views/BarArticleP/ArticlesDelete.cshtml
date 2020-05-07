@@ -1,13 +1,13 @@
 ﻿@model BarArticleP
 @{
-    ViewData["Title"] = "Ջնջեել բղադրատոմսը";
+    ViewData["Title"] = "Ջնջել Բաղադրատոմսը";
 }
 
 <div class="col-md-12 ">
 
     <h1 class="text-center single-page-h1">@Model.Title</h1>
     <div class="col-lg-11 single-page-desc">
-        <p class="single-page-p">@Model.Description</p>
+        <p class="single-page-p">@Html.Raw(Model.Description)</p>
 
         <div class="content-justify ">
             @{
@@ -18,22 +18,16 @@
             {
                 <img class="single-page-img" src="@imgsrc" />
             }
-
         </div>
-
-
     </div>
 </div>
 <div class="text-center">
-    <form class="text-center col-lg-11" style="margin:5px 0px" asp-controller="BarArticleP" asp-action="ArticlesPostDelete" asp-route-id="@Model.BarArticleId" method="post">
+    <form class="text-center col-lg-11" style="margin:5px 0px" asp-controller="BarArticleP" asp-action="BarArticlesPostDelete" asp-route-id="@Model.BarArticleId" method="post">
+        @if (User.IsInRole("admin"))
+        {
+            <input class="btn btn-danger" type="submit" id="Submit1" value="Համոզվա՞ծ եք,որ ցանկանում եք ջնջել" />
 
-        <input type="submit" id="Submit1" value="Համոզվա՞ծ եք,որ ցանկանում եք ջնջել" />
-        @*<script type="text/javascript" >
-                $("#Submit1").click(function () {
-                    alert("համոզվա՞ծ եք որ ցանկանում եք ջնջել բաղադրատոմսը");
-                 // do other stuff as per your requirement
-                });
+        }
 
-            </script>*@
     </form>
 </div>

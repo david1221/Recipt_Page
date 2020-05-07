@@ -12,6 +12,7 @@ using PagedList.Core;
 using ReceptsPage.Interfaces;
 using ReceptsPage.ModelIdentity;
 using ReceptsPage.Models;
+using ReceptsPage.Models.VideoModel;
 using ReceptsPage.Repozitories;
 using ReceptsPage.ViewModels;
 
@@ -76,7 +77,62 @@ namespace ReceptsPage.Controllers
             var model1 = allImages.AsQueryable();
             ;
 
-            var model = model1.ToPagedList(page ?? 1, 5);
+            var model = model1.ToPagedList(page ?? 1, 9);
+
+            // barArticleImage= _allArticlesRepozitory.BarArticleImage().ToPagedList(page ?? 1, 18)
+
+
+            return View(model);
+
+
+        }
+
+        public IActionResult VideoSinglePage(int id)
+        {
+            var model = _barArticlesRepozitory.GetBarVideoArticles().FirstOrDefault(v => v.Id == id);
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public IActionResult AddBarVideoArticle()
+        {
+            return View();
+        }
+
+
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public IActionResult AddBarVideoArticle(VideoArticleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string UniqeFileName = null;
+                if (model.image != null)
+                {
+                    string uploadFolder = Path.Combine(_iHostingEnvironment.WebRootPath, "images\\VideoImages");
+                    UniqeFileName = Guid.NewGuid().ToString() + "_" + model.image.FileName;
+                    string filePath = Path.Combine(uploadFolder, UniqeFileName);
+                    model.image.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
+                VideoModelA newVideoModel = new VideoModelA
+                {
+                    Description = model.Description,
+                    date = DateTime.Now,
+                    image = UniqeFileName,
+                    usl_src = model.YoutubeFrame
+                };
+                _barArticlesRepozitory.SaveBarVideoArticle(newVideoModel);
+                return RedirectToAction("Index", "Articles");
+            }
+            return View();
+        }
+        public IActionResult PageArticleVideo(int? page)
+        {
+            var model1 = _barArticlesRepozitory.GetBarVideoArticles();
+            var model = model1.ToPagedList(page ?? 1, 6);
 
             // barArticleImage= _allArticlesRepozitory.BarArticleImage().ToPagedList(page ?? 1, 18)
 
@@ -160,7 +216,7 @@ namespace ReceptsPage.Controllers
         [Authorize(Roles = "admin,user")]
         public IActionResult BarArticlesEdit(int id, string userName)    //get method for Change barArticleP
         {
-           
+
 
             if ((User.IsInRole("admin") || User.Identity.Name == userName) && (_barArticlesRepozitory.GetBarArticlesByUser().FirstOrDefault(u => u.Email == User.Identity.Name) == _barArticlesRepozitory.BarGetArticlePById(id).AppUser) || (User.IsInRole("admin")))
             {
@@ -168,11 +224,11 @@ namespace ReceptsPage.Controllers
                 var a = new List<BarCategory>();
                 foreach (var item in _barArticlesRepozitory.BarCategories())
                 {
-                    if (item.BarCategoryId!=10)
+                    if (item.BarCategoryId != 10)
                     {
                         a.Add(new BarCategory() { Name = item.Name, BarCategoryId = item.BarCategoryId });
                     }
-                    
+
                 }
                 ViewBag.Category = a;
                 var selected = model.BarCategory.Name;
@@ -191,10 +247,10 @@ namespace ReceptsPage.Controllers
             }
             else
             {
-               return RedirectToAction("Index", "Articles");
+                return RedirectToAction("Index", "Articles");
             }
 
-           
+
 
         }
 
@@ -216,7 +272,7 @@ namespace ReceptsPage.Controllers
                     if (User.IsInRole("admin"))
                     {
                         var user = _userManager.FindByNameAsync(ArticleUser).Result;
-                        
+
                     }
                     else
                     {
@@ -240,14 +296,14 @@ namespace ReceptsPage.Controllers
                             }
                         }
 
-                       
+
                     }
                     else
                     {
                         model.ImgGeneral = null;
                     }
                     _barArticlesRepozitory.SaveBarArticle(model);
-                    return RedirectToAction("Index","Articles");
+                    return RedirectToAction("Index", "Articles");
                 }
                 return View(model);
             }
@@ -256,11 +312,30 @@ namespace ReceptsPage.Controllers
                 return RedirectToAction("Index", "Articles");
             }
 
+        }
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public IActionResult barArticlesConfirmByAdmin(int id)
+        {
+
+            BarArticleP model = _barArticlesRepozitory.BarGetArticlePById(id);
+            model.AdminConfirm = true;
+            _barArticlesRepozitory.SaveBarArticle(model);
+            return RedirectToAction("Index", "Articles");
 
         }
 
+        [Authorize(Roles = "admin")]
+        public IActionResult IndexNonConfirm(int? page)
+        {
 
+            var model = _barArticlesRepozitory.GetBarArticles().Where(x => x.AdminConfirm == false).ToPagedList(page ?? 1, 8);
+
+
+            return View(model);
+        }
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult ArticlesDelete(int id)
         {
             BarArticleP model = _barArticlesRepozitory.BarGetArticlePById(id);
@@ -269,10 +344,21 @@ namespace ReceptsPage.Controllers
             //return RedirectToAction("Index");
         }
         [HttpPost]
-        public IActionResult ArticlesPostDelete(int id)
+        [Authorize(Roles = "admin")]
+        public IActionResult BarArticlesPostDelete(int id)
         {
             _barArticlesRepozitory.DeleteBarArticle(new BarArticleP() { BarArticleId = id });
             return RedirectToAction("Index", "Articles");
         }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public IActionResult VideoArticlesPostDelete(int id)
+        {
+            _barArticlesRepozitory.DeleteVideoBarArticle(new VideoModelA() { Id = id });
+            return RedirectToAction("Index", "Articles");
+        }
+
+
     }
 }

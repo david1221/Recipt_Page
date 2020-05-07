@@ -1,19 +1,19 @@
-﻿@model SinglePageVieModel
+﻿@model ArticleP
 @{
-    ViewData["Title"] = "SinglePage";
+    ViewData["Title"] = Model.Title;
 }
 
 <div class="col-md-12 ">
 
 
 
-    <h1 class="text-center single-page-h1">@Model.articleP.Title</h1>
+    <h1 class="text-center single-page-h1">@Model.Title</h1>
     <div class="col-lg-11 single-page-desc">
-        <div class="single-page-p" style="white-space: pre-wrap;">@Model.articleP.Description</div>
+        <div class="single-page-p" style="white-space: pre-wrap;">@Html.Raw(Model.Description)</div>
 
         <div class="content-justify ">
             @{
-                var base64 = Convert.ToBase64String(Model.articleP.ImgGeneral ?? new byte[0]);
+                var base64 = Convert.ToBase64String(Model.ImgGeneral ?? new byte[0]);
                 var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
             }
             @if (!string.IsNullOrEmpty(base64))
@@ -31,19 +31,20 @@
 
     @if ((User.IsInRole("admin")))
     {<div class="row" style="margin-bottom:30px">
-            <div class="text-center col-xs-6 h4">
+         <div class="col-sm-12"><h4>Ավելացվել է <a asp-action="UserPageForChange" asp-controller="Users" asp-route-userId="@Model.AppUser.Id.ToString()" class="btn btn-info"><i>@Model.AppUser.Email</i></a>  ի կողմից ,ID : @Model.AppUser.Id</h4></div>
+    <div class="text-center col-xs-6 h4">
 
-                <a class="text-left" style="margin:5px 0px" asp-controller="Articles" asp-action="ArticlesDelete" asp-route-id="@Model.articleP.ArticleId"> <input class="btn btn-danger" type="button" id="Submit1" value="Ջնջել բաղադրատոմսը" /></a>
+                <a class="text-left" style="margin:5px 0px" asp-controller="Articles" asp-action="ArticlesDelete" asp-route-id="@Model.ArticleId"> <input class="btn btn-danger" type="button" id="Submit1" value="Ջնջել բաղադրատոմսը" /></a>
             </div>
-            <div class="text-center col-xs-6 h4 "> <a asp-area="" asp-controller="Articles" asp-action="Articlesedit" asp-route-userName="@Model.articleP.AppUser.Email" asp-route-id="@Model.articleP.ArticleId" class="text-right col-lg-11 btn btn-primary">Փոփոխել</a></div>
+            <div class="text-center col-xs-6 h4 "> <a asp-area="" asp-controller="Articles" asp-action="Articlesedit" asp-route-userName="@Model.AppUser.Email" asp-route-id="@Model.ArticleId" class="text-right col-lg-11 btn btn-primary">Փոփոխել</a></div>
         </div>
     }
     else
     {
-        if ((User.IsInRole("user") && User.Identity.Name == Model.articleP.AppUser.Email))
+        if ((User.IsInRole("user") && User.Identity.Name == Model.AppUser.Email))
         {
             <div class="row" style="margin-bottom:30px">
-                <div class="text-center  h4"> <a asp-area="" asp-controller="Articles" asp-action="Articlesedit" asp-route-userName="@Model.articleP.AppUser.Email" asp-route-id="@Model.articleP.ArticleId" class="text-center  btn btn-primary">Փոփոխել</a></div>
+                <div class="text-center  h4"> <a asp-area="" asp-controller="Articles" asp-action="Articlesedit" asp-route-userName="@Model.AppUser.Email" asp-route-id="@Model.ArticleId" class="text-center  btn btn-primary">Փոփոխել</a></div>
             </div>
         }
     }
@@ -120,7 +121,7 @@ catch (Exception)
     
     var disqus_config = function () {
     this.page.url = window.location.href;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = '@Model.articleP.ArticleId'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    this.page.identifier = '@Model.ArticleId'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
     
     (function () { // DON'T EDIT BELOW THIS LINE

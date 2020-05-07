@@ -2,7 +2,7 @@
 @model ReceptsPage.ViewModels.CategoriesArticlesView
 
 @{
-    ViewData["Title"] =@Model.SubCategoryByIdSingle ;
+    ViewData["Title"] =Model.SubCategoryByIdSingle ;
 }
 
 
@@ -22,7 +22,7 @@
                 </div>
                 <div class="text-center"> <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center title_article_style">@entity.Title</a></div>
                 <div class="content_left_up_text text-descr-gen">
-                    <p>@entity.Description</p>
+                    <p>@Html.Raw(entity.Description)</p>
                 </div>
              
               

@@ -24,7 +24,7 @@ namespace ReceptsPage.Repozitories
 
         public IEnumerable<BarArticleP> BarArticleImage()
         {
-            return _articlePContetxt.BarArticles.Where(x => x.ImgGeneral != null).OrderBy(x => x.DateAdded);
+            return _articlePContetxt.BarArticles.Where(x => x.ImgGeneral != null).Where(a=>a.BarCategoryId!=10).OrderBy(x => x.DateAdded);
         }
 
         public IEnumerable<ImageAll> ImagesAll()

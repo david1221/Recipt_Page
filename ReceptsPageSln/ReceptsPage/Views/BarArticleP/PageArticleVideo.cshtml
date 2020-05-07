@@ -1,0 +1,46 @@
+﻿@using PagedList.Core
+@model IPagedList<ReceptsPage.Models.VideoModel.VideoModelA>
+
+@{
+
+    ViewData["Title"] = "Վիդեոներ";
+
+}
+
+
+<div class="row">
+
+
+    @foreach (var entity in Model)
+    {
+        <div class="left-up-col col-md-4 col-sm-6">
+
+            <div class="text-center" style="height:340px;overflow:hidden;">
+                <a asp-action="VideoSinglePage" asp-controller="BarArticleP" asp-route-id="@entity.Id">
+                    <img class="img-thumbnail" src="~/images/VideoImages/@entity.image" style="height:236px;" />
+                </a>
+                <div>
+                    <h5 class="text-right" style="color:cadetblue;margin:2px;color:#223805">@entity.date.ToString("yyyy-MM-dd HH:mm tt")</h5>
+                </div>
+                <div>
+                    <p style="height:85px;margin:5px;">@entity.Description</p>
+                </div>
+            </div>
+
+
+        </div>
+    }
+</div>
+@if (User.IsInRole("Admin"))
+{
+    <div>
+        <a style="margin:15px;" asp-action="AddBarVideoArticle" class="btn btn-default">Ավելացնել վիդեո</a>
+    </div>
+}
+
+<nav aria-label="ArticleP Padding">
+
+
+    <pager class="pagination" list="@Model" asp-action="PageArticleVideo" asp-controller="BarArticleP" asp-route-query="@Model" />
+
+</nav>

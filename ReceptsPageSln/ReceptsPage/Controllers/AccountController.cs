@@ -53,23 +53,35 @@ namespace ReceptsPage.Controllers
 
             if (ModelState.IsValid)
             {
-                AppUser user = new AppUser { Email = model.Email, UserName = model.Email, Gender = model.Gender };
-                // добавляем пользователя
-                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-                var roleResult = await _userManager.AddToRoleAsync(user, "user");
-                if (result.Succeeded && roleResult.Succeeded)
+                try
                 {
-                    // установка куки
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Articles");
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
+                    
+                    AppUser user = new AppUser { Email = model.Email, UserName = model.Email, Gender = model.Gender };
+                    // добавляем пользователя
+                    IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+                    var roleResult = await _userManager.AddToRoleAsync(user, "user");
+                    if (result.Succeeded && roleResult.Succeeded)
                     {
-                        ModelState.AddModelError(string.Empty, error.Description);
+                        // установка куки
+                        await _signInManager.SignInAsync(user, false);
+                        return RedirectToAction("Index", "Articles");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
                     }
                 }
+                catch (Exception)
+                {
+
+                    ViewBag.ErrorTitle = "Գրանցվելը չի ստացվել";
+                    ViewBag.ErrorMessege = "Փորձեք կրկին, եթե չի ստացվում գրանցումը ավարտել ,խնդրում ենք կապ հաստատել մեր սպասարկման բաժնի հետ info.pagerecepts@gmail.com Էլեկրոնային հասցեի միջոցով";
+                    return View("Error");
+                    }
+
             }
             return View(model);
         }
@@ -289,6 +301,68 @@ namespace ReceptsPage.Controllers
             }
 
             return RedirectToAction("Index", "Articles");
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null )
+                {
+                    return View("ForgotPasswordConfirmation");
+                }
+
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                EmailService emailService = new EmailService();
+                await emailService.SendEmailAsync(model.Email, "Վերականգնել գաղտնաբառը",
+                    $"Ձեր Գաղտնաբառի վերականգնման համար անցեք հետևյալ  հղումով: <a href='{callbackUrl}'>link</a>");
+                return View("ForgotPasswordConfirmation");
+            }
+            return View(model);
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string code = null)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return View("ResetPasswordConfirmation");
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return View("ResetPasswordConfirmation");
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
         }
 
         /// <summary>

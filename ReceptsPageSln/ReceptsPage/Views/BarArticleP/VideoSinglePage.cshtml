@@ -1,0 +1,28 @@
+﻿@using ReceptsPage.Models.VideoModel
+@model VideoModelA
+@{
+    ViewData["Title"] = "Դիտել ՎԻդեո";
+}
+
+<h1></h1>
+<iframe style="width: 92%;height: 590px;" src="//www.youtube.com/embed/@Model.usl_src" frameborder="0" allowfullscreen></iframe>
+
+
+<div>
+
+
+
+    @Model.Description
+
+
+    <h1></h1>
+    @if (User.IsInRole("admin"))
+    {
+        <input type="hidden" asp-for="@Model.Id" value="" />
+        <form class="text-center col-lg-11" style="margin:5px 0px" asp-controller="BarArticleP" asp-action="VideoArticlesPostDelete" asp-route-id="@Model.Id" method="post">
+            <input class="btn btn-danger" type="submit" value="Ջնջել վիդեոն" />
+        </form>
+            }
+    </div>
+
+<div class="fb-comments" data-href="@($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}")" data-numposts="10" data-width="" data-order-by="social"></div>

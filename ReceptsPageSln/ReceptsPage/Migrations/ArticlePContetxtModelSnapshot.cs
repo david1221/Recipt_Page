@@ -534,6 +534,23 @@ namespace ReceptsPage.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ReceptsPage.Models.VideoModel.VideoModelA", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("date");
+
+                    b.Property<string>("image");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("videoModels");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("ReceptsPage.ModelIdentity.AppRole")

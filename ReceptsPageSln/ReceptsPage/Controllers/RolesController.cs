@@ -257,7 +257,7 @@ namespace ReceptsPage.Controllers
                 return RedirectToAction("Index","Users");
             }
 
-            return NotFound();
+            return View("NotFound");
         }
 
     }
