@@ -1,4 +1,4 @@
-﻿@using PagedList.Core
+﻿@using PagedList.Core;
 @model IPagedList<ReceptsPage.Models.VideoModel.VideoModelA>
 
 @{
@@ -23,7 +23,7 @@
                     <h5 class="text-right" style="color:cadetblue;margin:2px;color:#223805">@entity.date.ToString("yyyy-MM-dd HH:mm tt")</h5>
                 </div>
                 <div>
-                    <p style="height:85px;margin:5px;">@entity.Description</p>
+                    <p style="height:85px;margin:5px;">@Html.Raw(entity.Description)</p>
                 </div>
             </div>
 

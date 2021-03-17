@@ -1,6 +1,5 @@
 ﻿
 @using System
-@using PagedList.Core;
 
 
 @model ReceptsPage.ViewModels.IndexSlideArticles
@@ -16,73 +15,75 @@
     <h4 style="background: #88d622; padding: 7px; border-radius: 9px;">Օգտատերերի կողմից Գլխավոր էջում ավելացնելու համար</h4>
     @foreach (ArticleP entity in Model.GetArticles.Cast<ArticleP>())
     {
-        <div class="col-md-6 left-up-col ">
-
-            <div class="text-center"> <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center title_article_style">@entity.Title</a></div>
-
-
-            <div class="content_left_up_text text-descr-gen">
-                <p>@Html.Raw(entity.Description)</p>
-            </div>
-            <div class="content_left_up_type content-justify">
-                <div id="new_year_type">
-                    <p>
-                        @{string cat = "";
-                            if (entity.SubCategoryId != null)
-                            {
-                                int id = (int)entity.SubCategoryId;
-                                if (id != 17)
-                                {
-                                    cat = entity.SubCategory.Name;
-                                }<a asp-area="" asp-controller="Articles" asp-action="Categories" asp-route-id="@id">
-                                    @cat
-                                </a>
-                            }
-
-                        }
-                    </p>
-                </div>
+<div class="col-md-6 left-up-col ">
+    <div class=col-md-12>
+        <h5 class="text-right" style="color:cadetblue;margin:0;">@entity.DateAdded.Value.ToString("yyyy-MM-dd HH:mm tt")</h5>
+    </div>
+    <div class="text-center"> <a asp-area="" asp-controller="Articles" asp-action="SinglePage" asp-route-id="@entity.ArticleId" class="text-center title_article_style">@entity.Title</a></div>
 
 
-            </div>
-
-            <div class="content_left_up_comment content-justify">
-                <div class="content_left_up_star">
-
-                </div>
-            </div>
-            <div class="content-justify img-gen-size">
-                @{var imgsrc = "";
-
-                    if (entity.ImgGeneral == null)
+    <div class="content_left_up_text text-descr-gen">
+        <p>@Html.Raw(entity.Description)</p>
+    </div>
+    <div class="content_left_up_type content-justify">
+        <div id="new_year_type">
+            <p>
+                @{string cat = "";
+                    if (entity.SubCategoryId != null)
                     {
-                        //imgsrc = ViewBag.imgPath;
-                        imgsrc = "\\images\\default.jpg";
+                        int id = (int)entity.SubCategoryId;
+                        if (id != 17)
+                        {
+                            cat = entity.SubCategory.Name;
+                        }<a asp-area="" asp-controller="Articles" asp-action="Categories" asp-route-id="@id">
+                            @cat
+                        </a>
                     }
-                    else
-                    {
-                        var base64 = Convert.ToBase64String(entity.ImgGeneral ?? new byte[0]);
-                        imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
-                    }
+
                 }
-                <img src="@imgsrc" alt="Առանց նկար" />
+            </p>
+        </div>
 
-            </div>
-            
-            @if (User.IsInRole("admin"))
-            {<div style="margin-top:5px" class="row">
-                    <div class="text-center col-xs-4"> <a asp-area="" style="font-size: 14px; color: #fff" asp-controller="Articles" asp-action="Articlesedit" asp-route-id="@entity.ArticleId" class="text-center btn btn-primary">Փոփոխել</a></div>
-                    <div class="text-center col-xs-4">
-                        <form asp-controller="Articles" asp-action="ArticlesConfirmByAdmin" asp-route-id="@entity.ArticleId" method="post">
-                            <input type="submit" style="font-size:14px;color:#fff" value="Հաստատել" class="text-center btn btn-default">
-                        </form>
-                    </div>
-                    <div class="text-center col-xs-4"> <a asp-area="" style="font-size:14px;color:#fff" asp-controller="Articles" asp-action="ArticlesDelete" asp-route-id="@entity.ArticleId" class="text-center btn btn-danger">Ջնջել</a></div>
-                </div>
-                <div class="text-justify"style="margin-top:10px" ><p>Ավելացվել է  <a  asp-controller="Users" asp-action="UserPageForChange" asp-route-userId="@entity.AppUser.Id" class="text-center  ">@entity.AppUser.Email</a> օգտատիրոջ կողմից,,որի ID=@entity.AppUser.Id</p></div>
-            }
+
+    </div>
+
+    <div class="content_left_up_comment content-justify">
+        <div class="content_left_up_star">
 
         </div>
+    </div>
+    <div class="content-justify img-gen-size">
+        @{var imgsrc = "";
+
+            if (entity.ImgGeneral == null)
+            {
+                //imgsrc = ViewBag.imgPath;
+                imgsrc = "\\images\\default.jpg";
+            }
+            else
+            {
+                var base64 = Convert.ToBase64String(entity.ImgGeneral ?? new byte[0]);
+                imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
+            }
+        }
+        <img src="@imgsrc" alt="Առանց նկար" />
+
+    </div>
+
+    @if (User.IsInRole("admin"))
+    {<div style="margin-top:5px" class="row">
+            <div class="text-center col-xs-4"> <a asp-area="" style="font-size: 14px; color: #fff" asp-controller="Articles" asp-action="Articlesedit" asp-route-id="@entity.ArticleId" class="text-center btn btn-primary">Փոփոխել</a></div>
+            <div class="text-center col-xs-4">
+                <form asp-controller="Articles" asp-action="ArticlesConfirmByAdmin" asp-route-id="@entity.ArticleId" method="post">
+                    <input type="submit" style="font-size:14px;color:#fff" value="Հաստատել" class="text-center btn btn-default">
+                </form>
+            </div>
+            <div class="text-center col-xs-4"> <a asp-area="" style="font-size:14px;color:#fff" asp-controller="Articles" asp-action="ArticlesDelete" asp-route-id="@entity.ArticleId" class="text-center btn btn-danger">Ջնջել</a></div>
+        </div>
+        <div class="text-justify" style="margin-top:10px"><p>Ավելացվել է  <a asp-controller="Users" asp-action="UserPageForChange" asp-route-userId="@entity.AppUser.Id" class="text-center  ">@entity.AppUser.Email</a> օգտատիրոջ կողմից,,որի ID=@entity.AppUser.Id</p></div>
+    }
+
+</div>
     }
 
 </div>

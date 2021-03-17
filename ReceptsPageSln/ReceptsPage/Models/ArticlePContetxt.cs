@@ -23,13 +23,13 @@ namespace ReceptsPage.Models
 
         public DbSet<BarCategory> BarCategories { get; set; }
         public DbSet<BarArticleP> BarArticles { get; set; }
-        public DbSet<MainComment> MainComments { get; set; }
-        public DbSet<MainComment> mainComments { get; set; }
+     //   public DbSet<MainComment> MainComments { get; set; }
+      //  public DbSet<MainComment> mainComments { get; set; }
         public DbSet<VideoModelA> videoModels { get; set; }
       
         public DbSet<AppUser> AppUsers { get; set; }
        
-        public DbSet<ChildComment> ChildComments { get; set; }
+       // public DbSet<ChildComment> ChildComments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -86,7 +86,7 @@ namespace ReceptsPage.Models
               new { BarCategoryId = 1, Name = "Ինչ եփել այսօր", },
               new { BarCategoryId = 2, Name = "Տորթեր", },
               new { BarCategoryId = 3, Name = "Թխվածքաբլիթներ", },
-              new { BarCategoryId = 4, Name = "Պիցաներ", },
+              new { BarCategoryId = 4, Name = "Պիցցաներ", },
               new { BarCategoryId = 5, Name = "Աղցաններ", },
               new { BarCategoryId = 6, Name = "Դիետաներ", },
               new { BarCategoryId = 7, Name = "Առողջ սնունդ", },

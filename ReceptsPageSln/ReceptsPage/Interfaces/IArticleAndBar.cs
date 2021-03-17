@@ -10,9 +10,9 @@ namespace ReceptsPage.Interfaces
   public  interface IArticleAndBar
 
     {
-       // IEnumerable<BarArticleP> BarArticleImage();
-        IEnumerable<ArticleP> ArticleImage();
-        IEnumerable<BarArticleP> BarArticleImage();
+        // IEnumerable<BarArticleP> BarArticleImage();
+        Task<IList<ArticleP>> ArticleImage();
+        Task<IList<BarArticleP>> BarArticleImage();
         IEnumerable<ImageAll> ImagesAll();
     }
 }

@@ -17,14 +17,14 @@ namespace ReceptsPage.ModelIdentity
         public string Gender { get; set; }
         public List<ArticleP> Articles { get; set; }
         public List<BarArticleP> BarArticles { get; set; }
-        public List<MainComment> MainMomments { get; set; }
-        public List<ChildComment> ChildComments { get; set; }
+      //public List<MainComment> MainMomments { get; set; }
+      //  public List<ChildComment> ChildComments { get; set; }
 
-        public AppUser()
-        {
-            MainMomments = new List<MainComment>();
-            ChildComments = new List<ChildComment>();
-        }
+      //  public AppUser()
+      //  {
+      //      MainMomments = new List<MainComment>();
+      //      ChildComments = new List<ChildComment>();
+      //  }
 
 
     }

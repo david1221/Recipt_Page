@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Hosting;
 using ReceptsPage.Models.Comments;
 using ReceptsPage.CommentViewModels;
 
+
 namespace ReceptsPage.Controllers
 {
     public class ArticlesController : Controller
@@ -25,14 +26,14 @@ namespace ReceptsPage.Controllers
         private readonly IGetArticles articlesRepozitory;
         private readonly UserManager<AppUser> userManager;
         private readonly IHostingEnvironment iHostingEnvironment;
-        private readonly IGetComments _commentsRepoziory;
+        // private readonly IGetComments _commentsRepoziory;
 
-        public ArticlesController(IGetArticles articlesRepozitory, UserManager<AppUser> userManager, IGetComments GetComments, IHostingEnvironment IHostingEnvironment)
+        public ArticlesController(IGetArticles articlesRepozitory, UserManager<AppUser> userManager,/* IGetComments GetComments*/ IHostingEnvironment IHostingEnvironment)
         {
             this.articlesRepozitory = articlesRepozitory;
             this.userManager = userManager;
             iHostingEnvironment = IHostingEnvironment;
-            _commentsRepoziory = GetComments;
+            //_commentsRepoziory = GetComments;
         }
 
         /// <summary>
@@ -40,20 +41,22 @@ namespace ReceptsPage.Controllers
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 300)]
         public IActionResult Index(int? page)
         {
-           
-            IndexSlideArticles indexSlide = new IndexSlideArticles
+            var articles = articlesRepozitory.GetArticles().Result
+            .Where(x => x.AdminConfirm == true)
+             .AsQueryable<ArticleP>();
+            DateTime time2 = DateTime.Now;
+            IndexSlideArticles indexSlide = new IndexSlideArticles()
             {
-                articlesRepozitory = articlesRepozitory,
-                GetArticles = articlesRepozitory.GetArticles().Where(x => x.AdminConfirm == true).ToPagedList(page ?? 1, 8),
-                GetArticlesSlide = articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null)
+                GetArticles = articles.ToPagedList(page ?? 1, 8),
+                GetArticlesSlide = articles.Where(x => x.IfFavorite == true).Take(5)
             };
             // ViewBag.imgPath = Path.Combine(iHostingEnvironment.WebRootPath, @"images\default.jpg");
-
             return View(indexSlide);
         }
+
         /// <summary>
         /// articles page added from user
         /// </summary>
@@ -64,9 +67,13 @@ namespace ReceptsPage.Controllers
         {
             IndexSlideArticles indexSlide = new IndexSlideArticles
             {
-                articlesRepozitory = articlesRepozitory,
-                GetArticles = articlesRepozitory.GetArticles().Where(x => x.AdminConfirm == false).ToPagedList(page ?? 1, 8),
-                GetArticlesSlide = articlesRepozitory.GetArticles().Where(x => x.ImgGeneral != null)
+                GetArticles = articlesRepozitory.GetArticlesByAdmin().Result
+                .Where(x => x.AdminConfirm == false)
+                .AsQueryable<ArticleP>()
+                .ToPagedList(page ?? 1, 8),
+                GetArticlesSlide = articlesRepozitory.GetArticlesByAdmin().Result
+                .Where(x => x.ImgGeneral != null)
+                .AsQueryable<ArticleP>()
             };
 
             return View(indexSlide);
@@ -93,12 +100,13 @@ namespace ReceptsPage.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 300)]
         public IActionResult SinglePage(int id)
         {
             try
             {
                 ArticleP model = articlesRepozitory.GetArticlePById(id);
-                if (model!=null)
+                if (model != null)
                 {
                     if (User.IsInRole("user") || model.AdminConfirm == true || model != null)
                     {
@@ -122,9 +130,9 @@ namespace ReceptsPage.Controllers
             }
             catch (Exception)
             {
-                 ;
+                ;
             }
-           
+
             return View("NotFound");
 
         }
@@ -221,7 +229,7 @@ namespace ReceptsPage.Controllers
                     {
                         model.SubCategory.Name = selected;
                     }
-                    else model.SubCategory.Name = "all";
+                    else model.SubCategory.Name = "Այլ";
                 }
                 catch (Exception)
                 { }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+//using PagedList;
 using PagedList.Core;
 using ReceptsPage.Interfaces;
 using ReceptsPage.ModelIdentity;
@@ -15,7 +16,7 @@ using ReceptsPage.Models;
 using ReceptsPage.Models.VideoModel;
 using ReceptsPage.Repozitories;
 using ReceptsPage.ViewModels;
-
+//using X.PagedList;
 
 namespace ReceptsPage.Controllers
 {

@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta property="fb:app_id" content="3237336539652232" />
     <link rel="shortcut icon" href="/favicon.ico" />
-    
+
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -28,6 +28,7 @@
     </environment>
 </head>
 <body>
+
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hy_AM/sdk.js#xfbml=1&version=v6.0&appId=3237336539652232&autoLogAppEvents=1"></script>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -90,14 +91,13 @@
                         </div>
                         @*</a>*@
                     </li>
-                    @if (User.IsInRole("user"))
-                    {
+                   
                         <li><a asp-area="" asp-controller="Articles" asp-action="AddArticle">Ավելացնել բաղադրատոմս</a></li>
-                    }
+                    
                     @if (!User.IsInRole("admin"))
                     {
                         <li><a asp-area="" asp-controller="Home" asp-action="About">Մեր մասին</a></li>
-}
+                    }
                     @if (User.IsInRole("admin"))
                     {
 
@@ -111,6 +111,7 @@
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-submenu"><a tabindex="-1" asp-controller="Users" asp-action="Index">Users</a></li>
                                     <li class="dropdown-submenu"><a tabindex="-1" asp-controller="Roles" asp-action="Roles">Roles</a></li>
+                                    <li class="dropdown-submenu"><a tabindex="-1" asp-controller="Admin" asp-action="Index">Index</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -186,7 +187,7 @@
                 crossorigin="anonymous"
                 integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
         </script>
-      
+
     </environment>
 
     @RenderSection("Scripts", required: false)
@@ -213,7 +214,7 @@
                     <a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="2">Տորթեր</a>
                 </li>
                 <li> <a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="3">Թխվածքներ</a></li>
-                <li> <a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="4">Պիցաներ</a></li>
+                <li> <a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="4">Պիցցաներ</a></li>
                 <li> <a asp-controller="BarArticleP" asp-action="Categories" asp-route-id="5">Աղցաններ</a></li>
                 <li>
 
@@ -271,6 +272,8 @@
                         <div class="row">
                             @RenderBody()
                         </div>
+
+
                         @RenderSection("scriptsEditor", required: false)
                         <div class="modal-footer"><p>Company © DaLA. All rights reserved.</p></div>
 
@@ -279,7 +282,8 @@
 
                     </div>
 
-
+                    <div id="yandex_rtb_R-A-597585-3"></div>
+                    <div id="yandex_rtb_R-A-597585-2"></div>
 
                 </div>
             </nav>
@@ -288,6 +292,7 @@
 
 
         <div class="overlay "></div>
+
 
 
     </div>

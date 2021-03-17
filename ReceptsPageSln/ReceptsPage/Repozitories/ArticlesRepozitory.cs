@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ReceptsPage.Interfaces;
 using ReceptsPage.ModelIdentity;
+using ReceptsPage.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,20 +16,57 @@ namespace ReceptsPage.Models
     {
         private readonly ArticlePContetxt _articlePContetxt;
         private readonly UserManager<AppUser> appUsers;
+        private readonly CacheResponse _cache;
+        //   private readonly IConfiguration configuration;
 
-        public ArticlesRepozitory(ArticlePContetxt articlePContetxt, UserManager<AppUser> appUsers)
+        public ArticlesRepozitory(ArticlePContetxt articlePContetxt, UserManager<AppUser> appUsers, CacheResponse cache/*, IConfiguration configuration*/)
         {
             _articlePContetxt = articlePContetxt;
             this.appUsers = appUsers;
+            //  configuration = configuration;
         }
-        public IQueryable<ArticleP> GetArticles()
+        public async Task<IList<ArticleP>> GetArticles()
         {
-            return _articlePContetxt.Articles.OrderByDescending(x => x.DateAdded.Value).Include(x => x.SubCategory).Include(x => x.AppUser);
+            try
+            {
+                var a = await _articlePContetxt.Articles
+               .OrderByDescending(x => x.DateAdded.Value)
+               .Include(x => x.SubCategory)
+               .Where(x => x.AdminConfirm == true)
+               .ToListAsync();
+                return a;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+
 
         }
-        public IQueryable<ArticleP> GetArticlesWithoutSubCategory()
+        public async Task<IList<ArticleP>> GetArticlesByAdmin()
         {
-            return _articlePContetxt.Articles.OrderByDescending(x => x.DateAdded.Value);
+            try
+            {
+                var a = await _articlePContetxt.Articles
+               .OrderByDescending(x => x.DateAdded.Value)
+               .Include(x => x.SubCategory)
+               .Include(x => x.AppUser)
+               .ToListAsync();
+                return a;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+
+
+        }
+      
+        public async Task<IList<ArticleP>> GetArticlesWithoutSubCategory()
+        {
+            return await _articlePContetxt.Articles.OrderByDescending(x => x.DateAdded.Value).ToListAsync();
 
         }
         public IQueryable<AppUser> GetArticlesByUser()
@@ -35,9 +75,17 @@ namespace ReceptsPage.Models
             //return _articlePContetxt.AppUsers.Include(mc => mc.MainMomments).Include(cc => cc.ChildComments).Include(a => a.Articles).ThenInclude(s => s.SubCategory);
             return _articlePContetxt.AppUsers.Include(a => a.Articles).ThenInclude(s => s.SubCategory);
         }
+        public IList<ArticleP> GetArticlesFromCacheRep()
+        {
+            int a = 100;
+
+            var articles = _cache.GetArticlesFromCache(a);
+            return (IList<ArticleP>)articles;
+
+        }
         public IQueryable<AppUser> GetArticlesByUserWithoutSubCategory()
         {
-           
+
             return _articlePContetxt.AppUsers.Include(a => a.Articles);
         }
         //public IQueryable<Category> GetArticlesBySession(int a)
@@ -79,10 +127,11 @@ namespace ReceptsPage.Models
             catch (Exception)
             {
 
-                return new ArticleP { ArticleId = 0 }; 
+
+                return new ArticleP { ArticleId = 0 };
             }
 
-            
+
 
         }
 

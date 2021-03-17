@@ -294,8 +294,17 @@ namespace ReceptsPage.Controllers
                     new { userId = user.Id, code = code },
                     protocol: HttpContext.Request.Scheme);
                 EmailService emailService = new EmailService();
-                await emailService.SendEmailAsync(user.Email, "Confirm your account",
-                    $"Անցեք հետևյալ հղումով հաստատելու համար էլեկտրոնային հասցեն: <a href='{callbackUrl}'>link</a>");
+                try
+                {
+                    await emailService.SendEmailAsync(user.Email, "Confirm your account",
+                   $"Անցեք հետևյալ հղումով հաստատելու համար էլեկտրոնային հասցեն: <a href='{callbackUrl}'>link</a>");
+                }
+                catch (Exception)
+                {
+
+                    return RedirectToAction("Person", "Users");
+                }
+               
 
                 return RedirectToAction("Person", "Users");
             }

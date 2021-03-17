@@ -14,6 +14,7 @@ using ReceptsPage.Interfaces;
 using ReceptsPage.ModelIdentity;
 using ReceptsPage.Models;
 using ReceptsPage.ViewModels;
+//using X.PagedList;
 
 namespace ReceptsPage.Controllers
 {
@@ -39,7 +40,11 @@ namespace ReceptsPage.Controllers
         /// </summary>
         /// <returns></returns>
         [Authorize(Roles = "admin")]
-        public IActionResult Index(int? page) => View(_userManager.Users.ToPagedList(page ?? 1, 10));
+        public IActionResult Index(int? page)
+        {
+            ViewBag.Count = _userManager.Users.Where(a => a.Email != null).Count();
+            return View(_userManager.Users.ToPagedList(page ?? 1, 10));
+        }
 
 
         /// <summary>
@@ -54,8 +59,16 @@ namespace ReceptsPage.Controllers
             AppUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
+                try
+                {
+                    IdentityResult result = await _userManager.DeleteAsync(user);
+                }
+                catch (Exception)
+                {
 
-                IdentityResult result = await _userManager.DeleteAsync(user);
+                    return RedirectToAction("Index");
+                }
+
             }
             return RedirectToAction("Index");
         }
@@ -179,8 +192,10 @@ namespace ReceptsPage.Controllers
         {
 
             var user = await _userManager.FindByIdAsync(userId);
-            user.Articles = _articlesRepozitory.GetArticles().Where(u => u.AppUser.Id == int.Parse(userId)).ToList();
-            user.BarArticles = _barArticlesRepozitory.GetBarArticles().Where(u => u.AppUser.Id == int.Parse(userId)).ToList();
+            user.Articles = _articlesRepozitory.GetArticles().Result
+                .Where(u => u.AppUser.Id == int.Parse(userId)).ToList();
+            user.BarArticles = _barArticlesRepozitory.GetBarArticles()
+                .Where(u => u.AppUser.Id == int.Parse(userId)).ToList();
 
             if (user != null)
             {
@@ -210,8 +225,10 @@ namespace ReceptsPage.Controllers
 
             AppUser appUser = await _userManager.FindByNameAsync(user.EmailUser);
 
-            ViewBag.countArticle = _articlesRepozitory.GetArticlesWithoutSubCategory().Where(a => a.AppUser.Id == appUser.Id).Count();
-            ViewBag.countBarArticle = _barArticlesRepozitory.GetBarArticlesWithoutBarCategory().Where(a => a.AppUser.Id == appUser.Id).Count();
+            ViewBag.countArticle = _articlesRepozitory.GetArticlesWithoutSubCategory().Result
+                .Where(a => a.AppUser.Id == appUser.Id).Count();
+            ViewBag.countBarArticle = _barArticlesRepozitory.GetBarArticlesWithoutBarCategory()
+                .Where(a => a.AppUser.Id == appUser.Id).Count();
             bool IsPhoneAlreadyRegistered = _userManager.Users.Any(item => item.PhoneNumber == phone && phone != appUser.PhoneNumber) && phone != null;
             appUser.Birthdate = user.Birthdate;
             appUser.FirstName = user.FirstName;
@@ -282,15 +299,17 @@ namespace ReceptsPage.Controllers
             }
 
         }
-      
+
         [Authorize(Roles = "user")]
         [HttpGet]
         public async Task<IActionResult> Person()
         {
 
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            user.Articles = _articlesRepozitory.GetArticlesWithoutSubCategory().Where(u=>u.AppUser.Email==User.Identity.Name).ToList();
-            user.BarArticles = _barArticlesRepozitory.GetBarArticlesWithoutBarCategory().Where(u => u.AppUser.Email == User.Identity.Name).ToList();
+            user.Articles = _articlesRepozitory.GetArticlesWithoutSubCategory().Result
+                .Where(u => u.AppUser.Email == User.Identity.Name).ToList();
+            user.BarArticles = _barArticlesRepozitory.GetBarArticlesWithoutBarCategory()
+                .Where(u => u.AppUser.Email == User.Identity.Name).ToList();
 
             if (user != null)
             {
@@ -394,7 +413,11 @@ namespace ReceptsPage.Controllers
                 appUser = await _userManager.FindByNameAsync(ap.FirstOrDefault(u => u.Email == User.Identity.Name).Email);
             }
 
-            var model = _articlesRepozitory.GetArticles().Where(x => x.AppUser.Id == appUser.Id).ToPagedList(page ?? 1, 10);
+            var model = _articlesRepozitory.GetArticles().Result
+                .Where(x => x.AppUser.Id == appUser.Id)
+                .AsQueryable<ArticleP>()
+                .ToPagedList(page ?? 1, 10);
+
 
             //ViewBag.imgPath = Path.Combine(iHostingEnvironment.WebRootPath, @"images\default.jpg");
             return View(model);
@@ -419,7 +442,8 @@ namespace ReceptsPage.Controllers
                 appUser = await _userManager.FindByNameAsync(ap.FirstOrDefault(u => u.Email == User.Identity.Name).Email);
             }
 
-            var model = _barArticlesRepozitory.GetBarArticles().Where(x => x.AppUser.Id == appUser.Id).ToPagedList(page ?? 1, 10);
+            var model = _barArticlesRepozitory.GetBarArticles()
+                .Where(x => x.AppUser.Id == appUser.Id).ToPagedList(page ?? 1, 10);
 
             //ViewBag.imgPath = Path.Combine(iHostingEnvironment.WebRootPath, @"images\default.jpg");
             return View(model);

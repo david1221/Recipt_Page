@@ -10,9 +10,9 @@ namespace ReceptsPage.Interfaces
     public interface IGetArticles
     {
         IQueryable<ArticleP> SubCategoryById(int id);
-
-        IQueryable<ArticleP> GetArticles();
-
+        Task<IList<ArticleP>> GetArticlesByAdmin();
+        Task<IList<ArticleP>> GetArticles();
+        IList<ArticleP> GetArticlesFromCacheRep();
         IQueryable<SubCategory> SubCategories();
 
         ArticleP GetArticlePById(int id);
@@ -21,9 +21,9 @@ namespace ReceptsPage.Interfaces
 
         void DeleteArticle(ArticleP article);
         string SubCategoryByIdSingle(int id);
-         IQueryable<AppUser> GetArticlesByUser();
+        IQueryable<AppUser> GetArticlesByUser();
         IQueryable<AppUser> GetArticlesByUserWithoutSubCategory();
-        IQueryable<ArticleP> GetArticlesWithoutSubCategory();
+        Task<IList<ArticleP>> GetArticlesWithoutSubCategory();
 
     }
 }

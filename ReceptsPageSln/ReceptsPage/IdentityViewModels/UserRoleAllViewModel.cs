@@ -1,9 +1,11 @@
-﻿using PagedList.Core;
+﻿//using PagedList;
+//using PagedList.Core;
 using ReceptsPage.ModelIdentity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PagedList.Core;
 
 namespace ReceptsPage.IdentityViewModels
 {

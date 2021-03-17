@@ -1,9 +1,9 @@
 ﻿@using PagedList.Core;
 @model IPagedList<ReceptsPage.ModelIdentity.AppUser>
 @{
-     ViewData["Title"] = "Օգտատերերի ցուցակ";
+    ViewData["Title"] = "Օգտատերերի ցուցակ";
 }
-<div class="col-md-6 "><h3>Օգտատերերի ցուցակ (Ընդհանուր <i>@Model.Count</i>)</h3></div>
+<div class="col-md-6 "><h3>Օգտատերերի ցուցակ (Ընդհանուր <i>@ViewBag.Count</i>)</h3></div>
 
 <div class="col-md-2 "><h3><a class="btn btn-default" asp-action="AdminEdit" asp-controller="Roles">Ադմիններ</a></h3></div>
 <div class="col-md-2 "><h3><a class="btn btn-default" asp-action="Roles" asp-controller="Roles">Պաշտոններ</a></h3></div>
@@ -18,7 +18,7 @@
             <td>@user.Email</td>
 
             <td>
-                <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                <form asp-action="Delete" asp-controller="Users" asp-route-id="@user.Id" method="post">
 
                     <a class="btn btn-sm btn-default" asp-controller="Roles" asp-action="Edit" asp-route-UserId="@user.Id" style=" padding: 4px 9px 1px 9px; "><img src="~/images/role-icon-user.png" alt="Role User" title="Օգտագործողի մուտքի իրավունքը" width="23" height="25" /></a>
                     <a class="btn btn-sm btn-primary" asp-controller="Users" asp-action="UserPageForChange" asp-route-UserId="@user.Id"><img src="~/images/editing-user.png" alt="Change User" title="փոփոխել" width="19" height="19" /></a>

@@ -8,7 +8,7 @@
     ViewData["Title"] = "Ավելացրած բաղադրատոմսեր";
 }
 <div class="row">
-    @foreach (ArticleP entity in Model)
+    @foreach (ArticleP entity in Model.Cast<ArticleP>())
     {
 
 

@@ -1,10 +1,10 @@
-﻿@using PagedList.Core
+﻿@using PagedList.Core;
 @model IPagedList<ReceptsPage.ViewModels.ImageAll>
 
 @{
-    
-        ViewData["Title"] = "Նկարներ";
-  
+
+    ViewData["Title"] = "Նկարներ";
+
 }
 
 
@@ -22,18 +22,18 @@
                     {
                         var base64 = Convert.ToBase64String(entity.image);
                         var imgsrc = string.Format("data:image/jpeg;base64,{0}", base64);
-                        <a  asp-controller="@entity.category" asp-action="@entity.action" asp-route-id="@entity.ArticleId" class="text-center"> <img class="img-thumbnail" src="@imgsrc"  title="@entity.Title" /></a>
+                        <a asp-controller="@entity.category" asp-action="@entity.action" asp-route-id="@entity.ArticleId" class="text-center"> <img class="img-thumbnail" src="@imgsrc" title="@entity.Title" /></a>
                     }
                 }
             </div>
- 
+
 
         </div>
     }
 </div>
 <nav aria-label="ArticleP Padding">
 
-    
-    <pager class="pagination" list="@Model"  asp-action="PageArticleImage" asp-controller="BarArticleP" asp-route-query="@Model" />
-   
+
+    <pager class="pagination" list="@Model" asp-action="PageArticleImage" asp-controller="BarArticleP" asp-route-query="@Model" />
+
 </nav>

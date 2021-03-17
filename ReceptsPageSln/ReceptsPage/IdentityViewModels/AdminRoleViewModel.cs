@@ -1,4 +1,4 @@
-﻿using PagedList.Core;
+﻿//using PagedList.Core;
 using ReceptsPage.ModelIdentity;
 using System.Collections.Generic;
 

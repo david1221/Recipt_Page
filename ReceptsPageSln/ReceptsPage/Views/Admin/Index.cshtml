@@ -124,7 +124,10 @@
                 </a>
 
             </div>
-
+            @if (User.IsInRole("admin"))
+            {
+                <div style="margin:3px;" class="text-center"> <a asp-area="" style="font-size:14px;color:#fff" asp-controller="Articles" asp-action="Articlesedit" asp-route-id="@entity.ArticleId" class="text-center btn btn-primary">Փոփոխել</a></div>
+            }
 
         </div>
 

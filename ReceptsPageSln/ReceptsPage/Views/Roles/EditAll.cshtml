@@ -1,4 +1,5 @@
-﻿@model UserRoleAllViewModel
+﻿@using PagedList.Core;
+@model UserRoleAllViewModel
 @{
     ViewData["Title"] = "Դերերի կարգավորում";
 }
@@ -36,7 +37,7 @@
                 <b>Ընտրել բոլորը</b>
             </td>
 
-            <td style="padding:6px 15px 6px 6px;text-align: center"><input type="checkbox"  onclick="toggle(this);" /></td>
+            <td style="padding:6px 15px 6px 6px;text-align: center"><input type="checkbox" onclick="toggle(this);" /></td>
         </tr>
 
         @foreach (var item in Model.AllUsersPage)

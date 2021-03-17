@@ -11,8 +11,8 @@
 <div>
 
 
-
-    @Model.Description
+    
+    @Html.Raw(Model.Description)
 
 
     <h1></h1>
@@ -22,7 +22,7 @@
         <form class="text-center col-lg-11" style="margin:5px 0px" asp-controller="BarArticleP" asp-action="VideoArticlesPostDelete" asp-route-id="@Model.Id" method="post">
             <input class="btn btn-danger" type="submit" value="Ջնջել վիդեոն" />
         </form>
-            }
-    </div>
+    }
+</div>
 
 <div class="fb-comments" data-href="@($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}")" data-numposts="10" data-width="" data-order-by="social"></div>

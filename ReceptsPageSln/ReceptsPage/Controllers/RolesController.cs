@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using PagedList.Core;
+//using PagedList.Core;
 using ReceptsPage.IdentityViewModels;
 using ReceptsPage.ModelIdentity;
 using ReceptsPage.Models;
+using X.PagedList;
 
 namespace ReceptsPage.Controllers
 {
@@ -72,7 +73,7 @@ namespace ReceptsPage.Controllers
                 UserRoleAllViewModel model = new UserRoleAllViewModel();
 
                 model.AllUsers = _userManager.Users.ToList();
-                model.AllUsersPage = _userManager.Users.ToPagedList(page ?? 1, 5);
+                model.AllUsersPage = (PagedList.Core.IPagedList<AppUser>)_userManager.Users.ToPagedList(page ?? 1, 5);
 
                 foreach (var user in _userManager.Users.ToList())
                 {
@@ -135,7 +136,7 @@ namespace ReceptsPage.Controllers
 
             List<int> UserInt = new List<int>();
 
-            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("MyConnection")))
+            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand($"select [UserId] from [dbo].[AspNetUserRoles] where roleId = 1", connection);

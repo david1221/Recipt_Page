@@ -10,14 +10,14 @@ using ReceptsPage.Models;
 namespace ReceptsPage.Migrations
 {
     [DbContext(typeof(ArticlePContetxt))]
-    [Migration("20200422163625_VIdeoPage")]
-    partial class VIdeoPage
+    [Migration("20210310085017_aa")]
+    partial class aa
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -272,66 +272,19 @@ namespace ReceptsPage.Migrations
                     b.ToTable("BarCategories");
 
                     b.HasData(
-                        new
-                        {
-                            BarCategoryId = 1,
-                            Name = "Ինչ եփել այսօր"
-                        },
-                        new
-                        {
-                            BarCategoryId = 2,
-                            Name = "Տորթեր"
-                        },
-                        new
-                        {
-                            BarCategoryId = 3,
-                            Name = "Թխվածքաբլիթներ"
-                        },
-                        new
-                        {
-                            BarCategoryId = 4,
-                            Name = "Պիցաներ"
-                        },
-                        new
-                        {
-                            BarCategoryId = 5,
-                            Name = "Աղցաններ"
-                        },
-                        new
-                        {
-                            BarCategoryId = 6,
-                            Name = "Դիետաներ"
-                        },
-                        new
-                        {
-                            BarCategoryId = 7,
-                            Name = "Առողջ սնունդ"
-                        },
-                        new
-                        {
-                            BarCategoryId = 8,
-                            Name = "Օգտայկար Խորհուրդներ"
-                        },
-                        new
-                        {
-                            BarCategoryId = 9,
-                            Name = "Նկարներ"
-                        },
-                        new
-                        {
-                            BarCategoryId = 10,
-                            Name = "Վիդեոներ"
-                        },
-                        new
-                        {
-                            BarCategoryId = 11,
-                            Name = "Ռեստորաններ"
-                        },
-                        new
-                        {
-                            BarCategoryId = 12,
-                            Name = "Այլ"
-                        });
+                        new { BarCategoryId = 1, Name = "Ինչ եփել այսօր" },
+                        new { BarCategoryId = 2, Name = "Տորթեր" },
+                        new { BarCategoryId = 3, Name = "Թխվածքաբլիթներ" },
+                        new { BarCategoryId = 4, Name = "Պիցցաներ" },
+                        new { BarCategoryId = 5, Name = "Աղցաններ" },
+                        new { BarCategoryId = 6, Name = "Դիետաներ" },
+                        new { BarCategoryId = 7, Name = "Առողջ սնունդ" },
+                        new { BarCategoryId = 8, Name = "Օգտայկար Խորհուրդներ" },
+                        new { BarCategoryId = 9, Name = "Նկարներ" },
+                        new { BarCategoryId = 10, Name = "Վիդեոներ" },
+                        new { BarCategoryId = 11, Name = "Ռեստորաններ" },
+                        new { BarCategoryId = 12, Name = "Այլ" }
+                    );
                 });
 
             modelBuilder.Entity("ReceptsPage.Models.Category", b =>
@@ -347,72 +300,11 @@ namespace ReceptsPage.Migrations
                     b.ToTable("Categories");
 
                     b.HasData(
-                        new
-                        {
-                            CategoryId = 1,
-                            Name = "Ազգային"
-                        },
-                        new
-                        {
-                            CategoryId = 2,
-                            Name = "Տոնական"
-                        },
-                        new
-                        {
-                            CategoryId = 3,
-                            Name = "Ամենօրյա"
-                        },
-                        new
-                        {
-                            CategoryId = 4,
-                            Name = "Ընդհանուր"
-                        });
-                });
-
-            modelBuilder.Entity("ReceptsPage.Models.Comments.ChildComment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Text");
-
-                    b.Property<int>("appUserId");
-
-                    b.Property<int>("mainCommentId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("appUserId");
-
-                    b.HasIndex("mainCommentId");
-
-                    b.ToTable("ChildComments");
-                });
-
-            modelBuilder.Entity("ReceptsPage.Models.Comments.MainComment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Text");
-
-                    b.Property<int?>("appUserId");
-
-                    b.Property<int?>("articlePArticleId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("appUserId");
-
-                    b.HasIndex("articlePArticleId");
-
-                    b.ToTable("MainComment");
+                        new { CategoryId = 1, Name = "Ազգային" },
+                        new { CategoryId = 2, Name = "Տոնական" },
+                        new { CategoryId = 3, Name = "Ամենօրյա" },
+                        new { CategoryId = 4, Name = "Ընդհանուր" }
+                    );
                 });
 
             modelBuilder.Entity("ReceptsPage.Models.SubCategory", b =>
@@ -432,108 +324,24 @@ namespace ReceptsPage.Migrations
                     b.ToTable("SubCategories");
 
                     b.HasData(
-                        new
-                        {
-                            SubCategoryId = 1,
-                            CategoryId = 1,
-                            Name = "Հայկական խոհանոց"
-                        },
-                        new
-                        {
-                            SubCategoryId = 2,
-                            CategoryId = 1,
-                            Name = "Վրացական խոհանոց"
-                        },
-                        new
-                        {
-                            SubCategoryId = 3,
-                            CategoryId = 1,
-                            Name = "Իտալական խոհանոց"
-                        },
-                        new
-                        {
-                            SubCategoryId = 4,
-                            CategoryId = 1,
-                            Name = "Ֆրանսիական խոհանոց"
-                        },
-                        new
-                        {
-                            SubCategoryId = 5,
-                            CategoryId = 1,
-                            Name = "Արևելյան խոհանոց"
-                        },
-                        new
-                        {
-                            SubCategoryId = 6,
-                            CategoryId = 1,
-                            Name = "Չինական խոհանոց"
-                        },
-                        new
-                        {
-                            SubCategoryId = 7,
-                            CategoryId = 1,
-                            Name = "Մեքսիկական խոհանոց"
-                        },
-                        new
-                        {
-                            SubCategoryId = 8,
-                            CategoryId = 2,
-                            Name = "Ամանորյա"
-                        },
-                        new
-                        {
-                            SubCategoryId = 9,
-                            CategoryId = 2,
-                            Name = "Զատկի ուտեստներ"
-                        },
-                        new
-                        {
-                            SubCategoryId = 10,
-                            CategoryId = 2,
-                            Name = "Ծննդյան"
-                        },
-                        new
-                        {
-                            SubCategoryId = 11,
-                            CategoryId = 2,
-                            Name = "Պասի ուտեստներ"
-                        },
-                        new
-                        {
-                            SubCategoryId = 12,
-                            CategoryId = 3,
-                            Name = "Առաջին ուտեստ"
-                        },
-                        new
-                        {
-                            SubCategoryId = 13,
-                            CategoryId = 3,
-                            Name = "Տաք ճաշ"
-                        },
-                        new
-                        {
-                            SubCategoryId = 14,
-                            CategoryId = 3,
-                            Name = "Աղանդեր"
-                        },
-                        new
-                        {
-                            SubCategoryId = 15,
-                            CategoryId = 3,
-                            Name = "Մանկական կերակուր"
-                        },
-                        new
-                        {
-                            SubCategoryId = 16,
-                            CategoryId = 3,
-                            Name = "Նախաճաշ"
-                        },
-                        new
-                        {
-                            SubCategoryId = 17,
-                            CategoryId = 4,
-                            Name = "Այլ"
-                        });
+                        new { SubCategoryId = 1, CategoryId = 1, Name = "Հայկական խոհանոց" },
+                        new { SubCategoryId = 2, CategoryId = 1, Name = "Վրացական խոհանոց" },
+                        new { SubCategoryId = 3, CategoryId = 1, Name = "Իտալական խոհանոց" },
+                        new { SubCategoryId = 4, CategoryId = 1, Name = "Ֆրանսիական խոհանոց" },
+                        new { SubCategoryId = 5, CategoryId = 1, Name = "Արևելյան խոհանոց" },
+                        new { SubCategoryId = 6, CategoryId = 1, Name = "Չինական խոհանոց" },
+                        new { SubCategoryId = 7, CategoryId = 1, Name = "Մեքսիկական խոհանոց" },
+                        new { SubCategoryId = 8, CategoryId = 2, Name = "Ամանորյա" },
+                        new { SubCategoryId = 9, CategoryId = 2, Name = "Զատկի ուտեստներ" },
+                        new { SubCategoryId = 10, CategoryId = 2, Name = "Ծննդյան" },
+                        new { SubCategoryId = 11, CategoryId = 2, Name = "Պասի ուտեստներ" },
+                        new { SubCategoryId = 12, CategoryId = 3, Name = "Առաջին ուտեստ" },
+                        new { SubCategoryId = 13, CategoryId = 3, Name = "Տաք ճաշ" },
+                        new { SubCategoryId = 14, CategoryId = 3, Name = "Աղանդեր" },
+                        new { SubCategoryId = 15, CategoryId = 3, Name = "Մանկական կերակուր" },
+                        new { SubCategoryId = 16, CategoryId = 3, Name = "Նախաճաշ" },
+                        new { SubCategoryId = 17, CategoryId = 4, Name = "Այլ" }
+                    );
                 });
 
             modelBuilder.Entity("ReceptsPage.Models.VideoModel.VideoModelA", b =>
@@ -543,6 +351,8 @@ namespace ReceptsPage.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description");
+
+                    b.Property<DateTime>("date");
 
                     b.Property<string>("image");
 
@@ -618,30 +428,6 @@ namespace ReceptsPage.Migrations
                     b.HasOne("ReceptsPage.Models.BarCategory", "BarCategory")
                         .WithMany("BarArticles")
                         .HasForeignKey("BarCategoryId");
-                });
-
-            modelBuilder.Entity("ReceptsPage.Models.Comments.ChildComment", b =>
-                {
-                    b.HasOne("ReceptsPage.ModelIdentity.AppUser")
-                        .WithMany("ChildComments")
-                        .HasForeignKey("appUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ReceptsPage.Models.Comments.MainComment")
-                        .WithMany("childComments")
-                        .HasForeignKey("mainCommentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ReceptsPage.Models.Comments.MainComment", b =>
-                {
-                    b.HasOne("ReceptsPage.ModelIdentity.AppUser", "appUser")
-                        .WithMany("MainMomments")
-                        .HasForeignKey("appUserId");
-
-                    b.HasOne("ReceptsPage.Models.ArticleP", "articleP")
-                        .WithMany("mainComments")
-                        .HasForeignKey("articlePArticleId");
                 });
 
             modelBuilder.Entity("ReceptsPage.Models.SubCategory", b =>

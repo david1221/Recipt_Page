@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 using PagedList.Core;
 using ReceptsPage.Interfaces;
 
+
 namespace ReceptsPage.ViewModels
 {
     public class IndexSlideArticles
     {
-        public IQueryable<ArticleP> GetArticlesSlide { get; set; }
+        public IEnumerable<ArticleP> GetArticlesSlide { get; set; }
         public IPagedList<ArticleP> GetArticles { get; set; }
 
-       public IGetArticles articlesRepozitory{get;set;}
+     //   public IGetArticles articlesRepozitory{get;set;}
         public string By { get; set; }
 
     }

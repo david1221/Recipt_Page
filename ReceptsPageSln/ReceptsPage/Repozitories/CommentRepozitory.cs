@@ -40,8 +40,8 @@ namespace ReceptsPage.Repozitories
 
         public IQueryable<MainComment> GetAllMainComments(int ariclePId)
         {
-            var comments = _articlePContetxt.MainComments.Include(cc=>cc.childComments).Where(a => a.articleP.ArticleId == ariclePId);
-            return comments;
+            //  var comments = _articlePContetxt.MainComments.Include(cc=>cc.childComments).Where(a => a.articleP.ArticleId == ariclePId);
+            throw new NotImplementedException();
         }
 
         public int SaveMainComments(MainComment comment)
@@ -65,7 +65,8 @@ namespace ReceptsPage.Repozitories
 
         public MainComment GetCommentByMainId(int id)
         {
-            return _articlePContetxt.MainComments.Include(x => x.appUser).Include(x => x.childComments).FirstOrDefault(x => x.Id == id);
+            // return _articlePContetxt.MainComments.Include(x => x.appUser).Include(x => x.childComments).FirstOrDefault(x => x.Id == id);
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ReceptsPage.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using ReceptsPage.Interfaces;
 using ReceptsPage.Models;
 using ReceptsPage.ViewModels;
 using System;
@@ -16,31 +17,39 @@ namespace ReceptsPage.Repozitories
         {
             _articlePContetxt = articlePContetxt;
         }
-        public IEnumerable<ArticleP> ArticleImage()
+        public async Task<IList<ArticleP>> ArticleImage()
         {
-            return _articlePContetxt.Articles.Where(x=>x.ImgGeneral!=null).OrderBy(x=>x.DateAdded);
+            return await _articlePContetxt.Articles
+            .Where(x => x.ImgGeneral != null)
+
+            .OrderBy(x => x.DateAdded)
+            .ToListAsync();
+
 
         }
 
-        public IEnumerable<BarArticleP> BarArticleImage()
+        public async Task<IList<BarArticleP>> BarArticleImage()
         {
-            return _articlePContetxt.BarArticles.Where(x => x.ImgGeneral != null).Where(a=>a.BarCategoryId!=10).OrderBy(x => x.DateAdded);
+            return await _articlePContetxt.BarArticles
+                .Where(x => x.ImgGeneral != null)
+                .Where(a => a.BarCategoryId != 10)
+                .OrderBy(x => x.DateAdded)
+                .ToListAsync();
         }
-
         public IEnumerable<ImageAll> ImagesAll()
         {
             var AllImageAll = new List<ImageAll>();
             
             var imagesA= ArticleImage();
             var imagesB = BarArticleImage();
-            foreach (var item in imagesA)
+            foreach (var item in imagesA.Result)
             {
                
                 AllImageAll.Add(
                     new ImageAll { image = item.ImgGeneral, ArticleId = item.ArticleId ,category="Articles",action= "SinglePage",Title=item.Title });
 
             }
-            foreach (var item in imagesB)
+            foreach (var item in imagesB.Result)
             {
                 
                 AllImageAll.Add(

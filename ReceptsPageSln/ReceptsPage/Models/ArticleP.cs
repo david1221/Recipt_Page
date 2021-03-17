@@ -26,10 +26,10 @@ namespace ReceptsPage.Models
         public virtual SubCategory SubCategory { get; set; }
         public AppUser AppUser { get; set; }
         public bool AdminConfirm { get; set; }
-       public List<MainComment> mainComments { get; set; }
+     //public List<MainComment> mainComments { get; set; }
         public ArticleP()
         {
-            mainComments = new List<MainComment>();
+           //ainComments = new List<MainComment>();
             AppUser = new AppUser();
 
         }
