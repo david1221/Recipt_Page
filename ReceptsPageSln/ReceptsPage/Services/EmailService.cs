@@ -20,7 +20,7 @@ namespace EmailApp
             using (var client = new SmtpClient())
             {
                await client.ConnectAsync("smtp.gmail.com",587, false);
-               await  client.AuthenticateAsync("info.pagerecepts@gmail.com", "1994dD++");
+               await  client.AuthenticateAsync("", "");
                 await client.SendAsync(emailMessage);
 
                 await client.DisconnectAsync(true);
